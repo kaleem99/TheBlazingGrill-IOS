@@ -1,0 +1,399 @@
+import React, { useState, useEffect } from "react";
+// import { BackHandler, Alert } from "react-native"; // Replace with appropriate React.js imports for your environment
+
+import Menu from "./Menu";
+import Cart from "./Cart";
+// import LoginPage from "./Login";
+// import SignUpPage from "./Signup";
+// import Checkout from "./checkout";
+import Store from "./Store";
+import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from "../database/config";
+// import Profile from "./Profile";
+// import ResetPasswordPage from "./ResetPassword";
+import { getCartData } from "../Helpers/Common";
+// import PlacingOrder from "./PlacingOrder";
+import firebase from "firebase/compat/app";
+// import VerifyPhoneNumber from "./VerifyPhonenumber";
+import { ReactComponent as Homesvg } from "../assets/home-svgrepo-com.svg";
+
+function MainApp({
+  setQuantity,
+  quantity,
+  cart,
+  setCart,
+  setSelectedStore,
+  isLoggedIn,
+  userDetails,
+  selectedStore,
+  setSection,
+  setUserDetails,
+  latitude,
+  longitude,
+  setLatitude,
+  setLongitude,
+  address,
+  setAddress,
+  menuItemClicked,
+  setMenuItemClicked,
+  chosenItem,
+  setChosenItem,
+  arrOfMenuSections,
+  driverLoggedIn,
+  setState,
+}) {
+  const [mainSection, setMainSection] = useState(
+    driverLoggedIn ? "Profile" : "Menu"
+  );
+  const icons = ["wysiwyg", "shopping-cart", "store", "perm-identity"];
+  const [storeDetails, setStoreDetails] = useState([]);
+  const [orderStatus, setOrderStatus] = useState([]);
+  const [orderType, setOrderType] = useState("Collection");
+  const [profileSection, setProfileSection] = useState("");
+  const [items, setItems] = useState("");
+  const [deliveryInstructions, setDeliveryInstructions] = useState("");
+  const [drinksQuantity, setDrinksQuantity] = useState([]);
+
+  useEffect(() => {
+    getCartData(userDetails, setCart);
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "BlazingStores"),
+      (querySnapshot) => {
+        if (!querySnapshot.empty) {
+          const newData = [];
+          querySnapshot.forEach((doc) => {
+            newData.push({
+              ...doc.data(),
+              id: doc.id,
+            });
+          });
+          setStoreDetails(newData);
+        }
+      }
+    );
+    return () => {
+      // Cleanup function to unsubscribe from snapshot listener
+      unsubscribe();
+    };
+  }, []);
+
+  const backAction = () => {
+    if (menuItemClicked !== "" && chosenItem === "") {
+      setMenuItemClicked("");
+    } else if (chosenItem !== "") {
+      setChosenItem("");
+      setDrinksQuantity([]);
+    } else if (profileSection !== "") {
+      setProfileSection("");
+    } else if (mainSection === "Checkout") {
+      setMainSection("Cart");
+    } else {
+      const shouldExit = window.confirm("Are you sure you want to exit?");
+      if (shouldExit) {
+        window.close(); // Replace with your preferred method to close the window
+      }
+    }
+    return true;
+  };
+
+  const fetchPost = async (name) => {
+    if (name === "Sources") {
+      name = "sources";
+    }
+    await getDocs(collection(db, name)).then((querySnapshot) => {
+      const newData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      setItems(newData);
+    });
+  };
+
+  const iconImages = (iconName, mainSection) => {
+    if (iconName === "Menu") {
+      if (mainSection === "Menu") {
+        return require("../assets/menuWhite.png"); // Replace with your React.js image import
+      } else {
+        return require("../assets/menuBlack.png"); // Replace with your React.js image import
+      }
+    }
+    if (iconName === "Cart") {
+      if (mainSection === "Cart") {
+        return require("../assets/shoppingBagWhite.png"); // Replace with your React.js image import
+      } else {
+        return require("../assets/shoppingBagBlack.png"); // Replace with your React.js image import
+      }
+    }
+    if (iconName === "Stores") {
+      if (mainSection === "Stores") {
+        return require("../assets/homeWhite.png"); // Replace with your React.js image import
+      } else {
+        return require("../assets/homeBlack.png"); // Replace with your React.js image import
+      }
+    }
+    if (iconName === "Profile") {
+      if (mainSection === "Profile") {
+        return require("../assets/userWhite.png"); // Replace with your React.js image import
+      } else {
+        return require("../assets/userBlack.png"); // Replace with your React.js image import
+      }
+    }
+  };
+
+  let body = "";
+
+  switch (mainSection) {
+    case "Menu":
+      body = (
+        <Menu
+          cart={cart}
+          setCart={setCart}
+          setQuantity={setQuantity}
+          quantity={quantity}
+          user={userDetails}
+          setMenuItemClicked={setMenuItemClicked}
+          menuItemClicked={menuItemClicked}
+          setItems={setItems}
+          items={items}
+          fetchPost={fetchPost}
+          setMainSection={setMainSection}
+          chosenItem={chosenItem}
+          setChosenItem={setChosenItem}
+          setDrinksQuantity={setDrinksQuantity}
+          drinksQuantity={drinksQuantity}
+        />
+      );
+      break;
+    case "Cart":
+      body = (
+        <Cart
+          cart={cart}
+          setCart={setCart}
+          setQuantity={setQuantity}
+          quantity={quantity}
+          setMainSection={setMainSection}
+          setMenuItemClicked={setMenuItemClicked}
+          fetchPost={fetchPost}
+          getCartData={getCartData}
+          userDetails={userDetails}
+        />
+      );
+      break;
+    // case "Login":
+    //   body = <LoginPage setMainSection={setMainSection} />;
+    //   break;
+    // case "SignUp":
+    //   body = <SignUpPage setState={setState} setMainSection={setMainSection} />;
+    //   break;
+    // case "ResetPassword":
+    //   body = <ResetPasswordPage setMainSection={setMainSection} />;
+    //   break;
+    // case "Checkout":
+    //   body = (
+    //     <Checkout
+    //       setMainSection={setMainSection}
+    //       cart={cart}
+    //       userDetails={userDetails}
+    //       selectedStore={selectedStore}
+    //       orderType={orderType}
+    //       setOrderType={setOrderType}
+    //       orderStatus={orderStatus}
+    //       setProfileSection={setProfileSection}
+    //       address={address}
+    //       setStoreDetails={setStoreDetails}
+    //       storeDetails={storeDetails}
+    //       latitude={latitude}
+    //       longitude={longitude}
+    //       setLatitude={setLatitude}
+    //       setLongitude={setLongitude}
+    //       setAddress={setAddress}
+    //       setSelectedStore={setSelectedStore}
+    //       deliveryInstructions={deliveryInstructions}
+    //       setDeliveryInstructions={setDeliveryInstructions}
+    //     />
+    //   );
+    //   break;
+    // case "Profile":
+    //   body = (
+    //     <Profile
+    //       setUserDetails={setUserDetails}
+    //       setSection={setSection}
+    //       userDetails={userDetails}
+    //       isLoggedIn={isLoggedIn}
+    //       setMainSection={setMainSection}
+    //       orderStatus={orderStatus}
+    //       cart={cart}
+    //       selectedStore={selectedStore}
+    //       setOrderStatus={setOrderStatus}
+    //       setProfileSection={setProfileSection}
+    //       profileSection={profileSection}
+    //       setCart={setCart}
+    //       driverLoggedIn={driverLoggedIn}
+    //     />
+    //   );
+    //   break;
+    case "Stores":
+      body = (
+        <Store
+          storeDetails={storeDetails}
+          setSelectedStore={setSelectedStore}
+          selectedStore={selectedStore}
+          setStoreDetails={setStoreDetails}
+          orderType={orderType}
+          setOrderType={setOrderType}
+          latitude={latitude}
+          longitude={longitude}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          setAddress={setAddress}
+          address={address}
+        />
+      );
+      break;
+    // case "PlaceOrder":
+    //   body = (
+    //     <PlacingOrder
+    //       setMainSection={setMainSection}
+    //       cart={cart}
+    //       userDetails={userDetails}
+    //       selectedStore={selectedStore}
+    //       orderStatus={orderStatus}
+    //       setOrderStatus={setOrderStatus}
+    //       setProfile={setProfileSection}
+    //       setCart={setCart}
+    //     />
+    //   );
+    //   break;
+    // case "VerifyPhoneNumber":
+    //   body = (
+    //     <VerifyPhoneNumber
+    //       userDetails={userDetails}
+    //       setMainSection={setMainSection}
+    //       type={"User"}
+    //       setSection={setSection}
+    //     />
+    //   );
+    //   break;
+    default:
+      body = "";
+      break;
+  }
+
+  const setMenuSection = (section, userDetails, setCart) => {
+    setChosenItem("");
+    setMenuItemClicked("");
+    setMainSection(section);
+    if (section === "Cart" || section === "Checkout") {
+      getCartData(userDetails, setCart);
+    }
+  };
+
+  return (
+    <div style={styles.div}>
+      <div style={styles.topMenu}></div>
+      {body}
+
+      <div style={styles.bottomMenu}>
+        {arrOfMenuSections.map((section, i) => {
+          return (
+            <div
+              onClick={() =>
+                setMenuSection(
+                  section === "Login" && isLoggedIn ? "Logout" : section,
+                  userDetails,
+                  setCart
+                )
+              }
+              style={styles.icon}
+              key={i + 30}
+            >
+              {cart.length > 0 && i === 1 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    right: -15,
+                    width: 20,
+                    height: 20,
+                    backgroundColor: "green",
+                    borderRadius: 10,
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontSize: 16,
+                    }}
+                  >
+                    {cart.length}
+                  </span>
+                </div>
+              )}
+              <img
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+                src={iconImages(arrOfMenuSections[i], mainSection)}
+                alt={section}
+              />
+
+              <p
+                key={i + 20}
+                style={{
+                  marginBlockStart: 0,
+                  color:
+                    mainSection === section
+                      ? "white"
+                      : "black" ||
+                        mainSection === "PlaceOrder" ||
+                        (mainSection === "Checkout" && "white"),
+                }}
+              >
+                {section === "Login" && isLoggedIn ? "Logout" : section}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  div: {
+    width: "100%",
+    height: "100%",
+  },
+  icon: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "2px",
+  },
+  bottomMenu: {
+    width: "100%",
+    height: "7%",
+    paddingTop: 5,
+    backgroundColor: "#F7941D",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    textAlign: "center",
+    alignItems: "center",
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+  },
+  topMenu: {
+    width: "100%",
+    height: "1%",
+  },
+};
+
+export default MainApp;
