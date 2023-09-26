@@ -13,7 +13,7 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
-// import MainApp from "./Pages/Main";
+import MainApp from "./Pages/Main";
 
 function Sections({
   state,
@@ -43,7 +43,7 @@ function Sections({
 }) {
   let bodySection = "";
   const arrOfMenuSections = ["Menu", "Cart", "Stores", "Profile"];
-  
+
   switch (state) {
     case "Welcome":
       bodySection = <WelcomePage setState={setState} />;
@@ -59,35 +59,35 @@ function Sections({
     //     />
     //   );
     //   break;
-    // case "Main":
-    //   bodySection = (
-    //     <MainApp
-    //       cart={cart}
-    //       setCart={setCart}
-    //       setQuantity={setQuantity}
-    //       quantity={quantity}
-    //       setState={setState}
-    //       setSelectedStore={setSelectedStore}
-    //       isLoggedIn={isLoggedIn}
-    //       userDetails={userDetails}
-    //       setSection={setSection}
-    //       setUserDetails={setUserDetails}
-    //       selectedStore={selectedStore}
-    //       latitude={latitude}
-    //       longitude={longitude}
-    //       setLatitude={setLatitude}
-    //       setLongitude={setLongitude}
-    //       setAddress={setAddress}
-    //       address={address}
-    //       menuItemClicked={menuItemClicked}
-    //       setMenuItemClicked={setMenuItemClicked}
-    //       chosenItem={chosenItem}
-    //       setChosenItem={setChosenItem}
-    //       arrOfMenuSections={arrOfMenuSections}
-    //       driverLoggedIn={driverLoggedIn}
-    //     />
-    //   );
-    //   break;
+    case "Main":
+      bodySection = (
+        <MainApp
+          cart={cart}
+          setCart={setCart}
+          setQuantity={setQuantity}
+          quantity={quantity}
+          setState={setState}
+          setSelectedStore={setSelectedStore}
+          isLoggedIn={isLoggedIn}
+          userDetails={userDetails}
+          setSection={setSection}
+          setUserDetails={setUserDetails}
+          selectedStore={selectedStore}
+          latitude={latitude}
+          longitude={longitude}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          setAddress={setAddress}
+          address={address}
+          menuItemClicked={menuItemClicked}
+          setMenuItemClicked={setMenuItemClicked}
+          chosenItem={chosenItem}
+          setChosenItem={setChosenItem}
+          arrOfMenuSections={arrOfMenuSections}
+          driverLoggedIn={driverLoggedIn}
+        />
+      );
+      break;
     case "Specials":
       bodySection = <Specials data={data} setState={setState} />;
       break;

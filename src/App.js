@@ -67,7 +67,9 @@ function App() {
         }
       } else {
         setIsLoggedIn(false);
-        setSection("");
+        // 
+        setSection("Main");
+        // 
       }
     });
 
@@ -113,7 +115,7 @@ function App() {
         backgroundRepeat: "no-repeat",
         width: "100%",
         minHeight: "100vh",
-        maxHeight: "auto"
+        maxHeight: "auto",
       }}
       className="container"
     >
@@ -173,7 +175,7 @@ function App() {
             <h1>Driver Profile</h1>
           </div>
         ) : (
-          <div style={{textAlign: "center"}}>
+          <div style={{ textAlign: "center" }}>
             <img
               className="blazing-image"
               src={require("./assets/TBG_Final_TransWhite-1024x894.png")}
