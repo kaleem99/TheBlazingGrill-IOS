@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+.background{
+  margin: auto;
+  width: 90%;
+}
+
+.blazing-image{
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 80px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
