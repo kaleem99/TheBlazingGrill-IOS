@@ -6,7 +6,7 @@ import Logout from "./Logout";
 import LoginPage from "./Login";
 import AccountDetails from "./AccountDetails";
 import Orders from "./Orders";
-// import PlacingOrder from "./PlacingOrder";
+import PlacingOrder from "./PlacingOrder";
 // import firebase from "firebase/compat/app";
 // import { Button } from "react-native-elements";
 // import base64 from "react-native-base64";
@@ -79,34 +79,35 @@ const Profile = ({
   if (driverLoggedIn === true) {
     content = ["Sign out", "Delivery Orders"];
   }
-console.log(auth.currentUser)
   return auth.currentUser != undefined && profileSection === "" ? (
     <div className="container" style={styles.container}>
-      {/* <div
+      <div
         style={{
           width: "100%",
           height: 90,
-          position: "absolute",
+          // position: "absolute",
           margin: "auto",
-          top: 10,
+          // top: 10,
         }}
       >
         <h1 style={styles.title}>Profile</h1>
         <p style={styles.text}>{userDetails.displayName}</p>
         <p style={styles.text1}>{userDetails.email}</p>
       </div>
-      <img
-        style={{ width: 160, height: 150, top: 140, position: "absolute" }}
-        src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
-        alt="Profile Image"
-      ></img>
-      <div style={{ width: "100%", marginTop: 340 }}>
+      <div style={{ margin: "auto", width: 160 }}>
+        <img
+          style={{ width: 160, top: 140 }}
+          src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+          alt="Profile"
+        ></img>
+      </div>
+      <div style={{ width: "100%" }}>
         {content.map((data, i) => {
           return (
             <div
               key={i}
               style={{
-                width: "94%",
+                width: "90%",
                 marginLeft: "auto",
                 marginRight: "auto",
                 marginTop: 20,
@@ -114,6 +115,8 @@ console.log(auth.currentUser)
                 borderBottomWidth: 1,
                 display: "flex",
                 flexDirection: "row",
+                borderBottom: "1px solid white",
+                // paddingBottom: 5
               }}
               onClick={() => checkOnClick(data)}
             >
@@ -135,11 +138,12 @@ console.log(auth.currentUser)
       </div>
       <div
         style={{
+          display: "flex", // Add this to enable flex layout
           flexDirection: "row",
-          position: "absolute",
-          bottom: 160,
-          width: "70%",
-          justifyContent: "center",
+          // position: "absolute",
+          width: "60%",
+          margin: "auto",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
@@ -150,11 +154,10 @@ console.log(auth.currentUser)
           style={{
             width: 50,
             height: 50,
+            background: "none",
             borderColor: "white",
             marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
             borderRadius: 5,
           }}
         >
@@ -162,10 +165,7 @@ console.log(auth.currentUser)
         </button>
         <button
           onClick={() =>
-            window.open(
-              "https://web.facebook.com/forloveofgoodfood/",
-              "_blank"
-            )
+            window.open("https://web.facebook.com/forloveofgoodfood/", "_blank")
           }
           style={{
             width: 50,
@@ -173,8 +173,7 @@ console.log(auth.currentUser)
             borderColor: "white",
             marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
+            background: "none",
             borderRadius: 5,
           }}
         >
@@ -198,8 +197,8 @@ console.log(auth.currentUser)
             borderColor: "white",
             marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
+            background: "none",
+            textAlign: "center",
             borderRadius: 5,
           }}
         >
@@ -210,29 +209,33 @@ console.log(auth.currentUser)
           />
         </button>
       </div>
+
       <div
         style={{
+          display: "flex", // Add this to enable flex layout
           flexDirection: "row",
-          position: "absolute",
+          // position: "absolute",
           bottom: 90,
-          width: "70%",
-          justifyContent: "center",
+          width: "60%",
+          margin: "auto",
+          justifyContent: "space-between",
           alignItems: "center",
         }}
       >
         <button
           onClick={() =>
-            window.open("https://www.instagram.com/the_blazing_grill/", "_blank")
+            window.open(
+              "https://www.instagram.com/the_blazing_grill/",
+              "_blank"
+            )
           }
           style={{
             width: 50,
             height: 50,
             borderColor: "white",
-            marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
             borderRadius: 5,
+            background: "none",
           }}
         >
           <img
@@ -249,11 +252,9 @@ console.log(auth.currentUser)
             width: 50,
             height: 50,
             borderColor: "white",
-            marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
             borderRadius: 5,
+            background: "none",
           }}
         >
           <img
@@ -271,11 +272,9 @@ console.log(auth.currentUser)
             width: 50,
             height: 50,
             borderColor: "white",
-            marginTop: 20,
             borderWidth: 1,
-            marginRight: "auto",
-            marginLeft: "auto",
             borderRadius: 5,
+            background: "none",
           }}
         >
           <img
@@ -284,7 +283,7 @@ console.log(auth.currentUser)
             alt="Twitter Logo"
           />
         </button>
-      </div> */}
+      </div>
     </div>
   ) : profileSection === "Account Details" ? (
     <AccountDetails
@@ -295,17 +294,16 @@ console.log(auth.currentUser)
   ) : profileSection === "Orders" ? (
     <Orders userDetails={userDetails} setProfile={setProfileSection} />
   ) : profileSection === "Current Orders" ? (
-    // <PlacingOrder
-    //   setMainSection={setMainSection}
-    //   cart={cart}
-    //   userDetails={userDetails}
-    //   selectedStore={selectedStore}
-    //   orderStatus={orderStatus}
-    //   setOrderStatus={setOrderStatus}
-    //   setProfile={setProfileSection}
-    //   setCart={setCart}
-    // />
-    <h1>Hello</h1>
+    <PlacingOrder
+      setMainSection={setMainSection}
+      cart={cart}
+      userDetails={userDetails}
+      selectedStore={selectedStore}
+      orderStatus={orderStatus}
+      setOrderStatus={setOrderStatus}
+      setProfile={setProfileSection}
+      setCart={setCart}
+    />
   ) : (
     <LoginPage setMainSection={setMainSection} />
   );
@@ -313,11 +311,13 @@ console.log(auth.currentUser)
 
 const styles = {
   container: {
-    alignItems: "center",
-    justifyContent: "center",
-    // padding: 20,
+    paddingTop: 20,
     width: "100%",
-    height: "100%",
+    // height: "100%",
+    display: "flex",
+    flexDirection: "column",
+    height: "85vh",
+    textAlign: "center",
   },
   title: {
     fontSize: 24,
@@ -328,15 +328,19 @@ const styles = {
   },
   text: {
     color: "white",
-    marginTop: "5%",
+    margin: "10px auto",
     fontSize: 22,
+    width: "90%",
+    textAlign: "left",
   },
   text1: {
     color: "darkgray",
     marginTop: "0%",
     fontSize: 16,
-    marginTop: 5,
+    margin: "10px auto",
     fontWeight: "600",
+    textAlign: "left",
+    width: "90%",
   },
   BlazingImage: {
     width: 45,
@@ -349,10 +353,7 @@ const styles = {
   halalCertificate: {
     width: 40,
     height: 40,
-    marginLeft: "auto",
-    marginRight: "auto",
-    marginTop: "auto",
-    marginBottom: "auto",
+    margin: "auto",
   },
 };
 

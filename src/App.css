@@ -96,9 +96,12 @@ body {
   background-color: #6a0dad;
 }
 
-
 /* store */
-.css-b62m3t-container{
+.css-b62m3t-container {
   width: 80%;
   margin: auto;
+}
+::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
 }

@@ -1,4 +1,4 @@
-import { View } from "react-native";
+// import { View } from "react-native";
 import { db } from "../database/config";
 import {
   collection,
@@ -79,6 +79,6 @@ function PlaceOrder(
   } catch (e) {
     console.log(e.message);
   }
-  return <View></View>;
+  return <div></div>;
 }
 export default PlaceOrder;

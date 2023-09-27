@@ -315,7 +315,7 @@ function MainApp({
                   style={{
                     position: "absolute",
                     top: 0,
-                    right: -15,
+                    // right: -15,
                     width: 20,
                     height: 20,
                     backgroundColor: "green",

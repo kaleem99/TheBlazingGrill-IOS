@@ -62,9 +62,9 @@ function Cart({
           height: 50,
           marginLeft: "auto",
           marginRight: "auto",
-          flexDirection: "row",
           marginBottom: -15,
           marginTop: "auto",
+          display: "flex",
         }}
       >
         <button
@@ -139,13 +139,13 @@ function Cart({
                   padding: 5,
                   marginBottom: 10,
                   borderRadius: 20,
-                  flexDirection: "row",
+                  display: "flex",
                 }}
               >
                 <img
                   style={{
                     width: "30%",
-                    height: "100%",
+                    // height: "100%",
                     marginTop: "auto",
                     marginBottom: "auto",
                     borderRadius: 10,
@@ -165,6 +165,7 @@ function Cart({
                         fontWeight: "700",
                         fontSize: 17,
                         textAlign: "center",
+                        marginTop: 2,
                       }}
                     >
                       R{totalPrices[i].toFixed(2)}
@@ -219,9 +220,10 @@ function Cart({
           style={{
             width: "100%",
             height: "30%",
+            textAlign: "center",
           }}
         >
-          <div style={{ flexDirection: "row", width: "100%" }}>
+          <div style={{ display: "flex", width: "90%", margin: "auto" }}>
             <p style={styles.text3}>Total:</p>
             <p style={styles.text4}>R{getTotalSum()}</p>
           </div>
@@ -235,6 +237,7 @@ function Cart({
               marginLeft: "auto",
               marginRight: "auto",
               paddingTop: 5,
+              border: "none",
             }}
             onClick={() => {
               auth.currentUser === null
@@ -256,6 +259,9 @@ const styles = {
     fontSize: 20,
     textAlign: "center",
     marginTop: 20,
+    background: "none",
+    border: "none",
+    width: "100%",
   },
   div: {
     width: "100%",
@@ -279,26 +285,28 @@ const styles = {
     marginRight: "auto",
     justifyContent: "center",
     color: "#F7941D",
-    fontSize: 12,
+    fontSize: 11,
   },
   text3: {
-    marginLeft: 20,
+    marginLeft: 10,
     marginRight: "auto",
     marginTop: 10,
     justifyContent: "center",
     color: "white",
     fontSize: 21,
     width: 150,
+    textAlign: "left",
   },
   text4: {
-    marginLeft: "40%",
-    marginRight: "auto",
+    marginLeft: "auto",
+    marginRight: "10px",
     marginTop: 10,
     justifyContent: "center",
     color: "#F7941D",
     fontSize: 21,
     width: 150,
     fontWeight: "bold",
+    textAlign: "right",
   },
   text5: {
     marginLeft: "auto",
@@ -330,13 +338,13 @@ const styles = {
     marginRight: 10,
     justifyContent: "center",
     color: "white",
-    fontSize: 25,
+    fontSize: 22,
     marginBottom: 20,
-    marginTop: -6,
+    marginTop: 0,
   },
   itemPrice: {
     textAlign: "center",
-    display: "flex",
+    // display: "flex",
     justifyContent: "center",
     color: "white",
     fontSize: 20,

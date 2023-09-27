@@ -7,7 +7,7 @@ import LoginPage from "./Login";
 import { firebaseConfig } from "../database/config";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../database/config";
-import backImage from "../assets/back.png"
+import backImage from "../assets/back.png";
 const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
   const [details, setDetails] = useState({
     username: userDetails.displayName,
@@ -36,9 +36,10 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
   const myIcon2 = (
     <span
       onClick={() => setProfile("")}
-      style={{ cursor: "pointer", marginRight: "20px" }}
+      style={{ cursor: "pointer" }}
     >
       <img
+        alt=""
         style={{
           width: 28,
           height: 22,
@@ -86,10 +87,11 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
       >
         <div
           style={{
-            width: "100%",
+            width: "90%",
             height: 40,
             display: "flex",
             alignItems: "center",
+            margin: "auto",
           }}
         >
           {myIcon2}
@@ -104,38 +106,35 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
         </div>
       </div>
 
-      <p style={styles.labelp}>Username</p>
-      <input
-        style={styles.input}
-        onChange={(e) => upDateState("username", e.target.value)}
-        value={details.username}
-      />
-      <p style={styles.labelp}>Email</p>
-
-      <input
-        style={styles.input}
-        onChange={(e) => upDateState("email", e.target.value)}
-        value={details.email}
-      />
-      <p style={styles.labelp}>Phone Number</p>
-
-      <input
-        style={styles.input}
-        value={details.phoneNumber}
-        readOnly
-      />
+      <div
+        style={{ paddingTop: 20, width: "90%", height: "auto", margin: "auto" }}
+      >
+        <p style={styles.labelp}>Username</p>
+        <input
+          style={styles.input}
+          onChange={(e) => upDateState("username", e.target.value)}
+          value={details.username}
+        />
+        <p style={styles.labelp}>Email</p>
+        <input
+          style={styles.input}
+          onChange={(e) => upDateState("email", e.target.value)}
+          value={details.email}
+        />
+        <p style={styles.labelp}>Phone Number</p>
+        <input style={styles.input} value={details.phoneNumber} />
+      </div>
     </div>
   );
 };
 
-const styles ={
+const styles = {
   container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
     width: "100%",
-    height: "100%",
+    height: "80vh",
+    paddingTop: 20,
+    display: "flex",
+    flexDirection: "column",
   },
   title: {
     fontSize: 22,
@@ -147,13 +146,13 @@ const styles ={
     marginRight: "auto",
   },
   input: {
-    width: "100%",
+    width: "98%",
     height: 40,
-    padding: 10,
-    marginBottom: 20,
+
     borderWidth: 1,
     color: "white",
-    borderColor: "#ccc",
+    borderColor: "white",
+    background: "none",
   },
   button: {
     width: "100%",
@@ -171,14 +170,15 @@ const styles ={
   },
   p: {
     color: "#F0941E",
-    marginTop: "0%",
+    // marginTop: "0%",
     fontSize: 18,
+    width: "50px"
   },
   p1: {
     color: "darkgray",
     marginTop: "0%",
     fontSize: 16,
-    marginTop: 5,
+    // marginTop: 5,
     fontWeight: "600",
   },
   icons: {
@@ -193,7 +193,6 @@ const styles ={
     marginLeft: 0,
     marginBottom: 10,
     marginRight: "auto",
-    pAlign: "right",
   },
 };
 

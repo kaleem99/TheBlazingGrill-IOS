@@ -14,12 +14,6 @@ import {
 import { db } from "../database/config";
 import jwtDecode from "jwt-decode";
 import { clearAllData, getData } from "../Helpers/localStorage";
-import { async } from "@firebase/util";
-import Icon from "react-native-vector-icons/MaterialIcons";
-import axios from "axios";
-import { Button } from "react-native-elements";
-import { sendGridEmail } from "react-native-sendgrid";
-import templateDat from "../frontend/emailTemplate";
 import { checkForOrders } from "../Helpers/Common";
 
 const PlacingOrder = ({
@@ -42,21 +36,23 @@ const PlacingOrder = ({
   };
 
   const checkStatus = () => {
-    useEffect(() => {
-      checkForOrders(userDetails, setOrder, setStatus);
-      if (status !== "In Progress" && cart.length > 0) {
-        setCart([]);
-        clearAllData(setCart);
-      }
-    }, []);
+    // useEffect(() => {
+    checkForOrders(userDetails, setOrder, setStatus);
+    if (status !== "In Progress" && cart.length > 0) {
+      setCart([]);
+      clearAllData(setCart);
+    }
+    // }, []);
 
     return (
       <>
         <button
           style={{
             position: "absolute",
-            top: 5,
+            top: 15,
             left: 10,
+            background: "none",
+            border: "none",
           }}
           onClick={() => setProfile("")}
         >
@@ -203,22 +199,12 @@ const PlacingOrder = ({
               style={{
                 width: "100%",
                 height: 40,
-                flexDirection: "row",
                 margin: "auto",
                 alignItems: "center",
               }}
             >
               <p style={styles.text3}>No Current Orders.</p>
             </div>
-            <div
-              style={{
-                width: "100%",
-                height: 40,
-                margin: "auto",
-                marginTop: 30,
-                alignItems: "center",
-              }}
-            ></div>
           </>
         )}
       </>
@@ -235,7 +221,8 @@ const styles = {
     alignItems: "center",
     width: "100%",
     height: "100%",
-    padding: 20,
+    paddingTop: 15,
+    // padding: 20,
   },
   cardContainer: {
     width: "100%",
@@ -270,8 +257,9 @@ const styles = {
   text3: {
     color: "white",
     fontSize: 18,
-    marginLeft: "auto",
-    marginRight: "auto",
+    margin: "0 auto",
+    width: "50%",
+    textAlign: "center",
   },
   icons: {
     color: "#F0941E",
