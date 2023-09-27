@@ -3,13 +3,13 @@ import React, { useState, useEffect } from "react";
 
 import Menu from "./Menu";
 import Cart from "./Cart";
-// import LoginPage from "./Login";
+import LoginPage from "./Login";
 // import SignUpPage from "./Signup";
 // import Checkout from "./checkout";
 import Store from "./Store";
 import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../database/config";
-// import Profile from "./Profile";
+import Profile from "./Profile";
 // import ResetPasswordPage from "./ResetPassword";
 import { getCartData } from "../Helpers/Common";
 // import PlacingOrder from "./PlacingOrder";
@@ -182,9 +182,9 @@ function MainApp({
         />
       );
       break;
-    // case "Login":
-    //   body = <LoginPage setMainSection={setMainSection} />;
-    //   break;
+    case "Login":
+      body = <LoginPage setMainSection={setMainSection} />;
+      break;
     // case "SignUp":
     //   body = <SignUpPage setState={setState} setMainSection={setMainSection} />;
     //   break;
@@ -216,25 +216,25 @@ function MainApp({
     //     />
     //   );
     //   break;
-    // case "Profile":
-    //   body = (
-    //     <Profile
-    //       setUserDetails={setUserDetails}
-    //       setSection={setSection}
-    //       userDetails={userDetails}
-    //       isLoggedIn={isLoggedIn}
-    //       setMainSection={setMainSection}
-    //       orderStatus={orderStatus}
-    //       cart={cart}
-    //       selectedStore={selectedStore}
-    //       setOrderStatus={setOrderStatus}
-    //       setProfileSection={setProfileSection}
-    //       profileSection={profileSection}
-    //       setCart={setCart}
-    //       driverLoggedIn={driverLoggedIn}
-    //     />
-    //   );
-    //   break;
+    case "Profile":
+      body = (
+        <Profile
+          setUserDetails={setUserDetails}
+          setSection={setSection}
+          userDetails={userDetails}
+          isLoggedIn={isLoggedIn}
+          setMainSection={setMainSection}
+          orderStatus={orderStatus}
+          cart={cart}
+          selectedStore={selectedStore}
+          setOrderStatus={setOrderStatus}
+          setProfileSection={setProfileSection}
+          profileSection={profileSection}
+          setCart={setCart}
+          driverLoggedIn={driverLoggedIn}
+        />
+      );
+      break;
     case "Stores":
       body = (
         <Store

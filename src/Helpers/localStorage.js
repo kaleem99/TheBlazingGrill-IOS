@@ -28,12 +28,12 @@ export const clearData = async (key) => {
 export const getAllData = async (setCart) => {
   const cartData = [];
   try {
-    const keys = await localStorage.getAllKeys();
-    const items = await localStorage.multiGet(keys);
-
+    const keys = await Object.keys(localStorage);
+  
     // Process the items array
-    items.forEach(([key, value]) => {
+    keys.forEach((key) => {
       if (key.includes("cart")) {
+        const value = localStorage.getItem(key)
         cartData.push(JSON.parse(value));
       }
     });
@@ -45,11 +45,10 @@ export const getAllData = async (setCart) => {
 
 export const clearAllData = async (setCart) => {
   try {
-    const keys = await localStorage.getAllKeys();
-    const items = await localStorage.multiGet(keys);
+    const keys = await Object.keys(localStorage);
 
     // Process the items array
-    items.forEach(([key, value]) => {
+    keys.forEach((key) => {
       console.log(key);
       if (key.includes("cart")) {
         clearData(key);

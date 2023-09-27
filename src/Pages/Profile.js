@@ -1,0 +1,359 @@
+import React, { useState } from "react";
+import { auth } from "../database/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+// import Icon from "react-native-vector-icons/MaterialIcons";
+import Logout from "./Logout";
+import LoginPage from "./Login";
+import AccountDetails from "./AccountDetails";
+import Orders from "./Orders";
+// import PlacingOrder from "./PlacingOrder";
+// import firebase from "firebase/compat/app";
+// import { Button } from "react-native-elements";
+// import base64 from "react-native-base64";
+
+const Profile = ({
+  setMainSection,
+  userDetails,
+  setUserDetails,
+  isLoggedIn,
+  orderStatus,
+  cart,
+  selectedStore,
+  setOrderStatus,
+  setProfileSection,
+  profileSection,
+  setCart,
+  driverLoggedIn,
+  setSection,
+}) => {
+  let content = ["Account Details", "Orders", "Sign out", "Current Orders"];
+  const icons = [
+    require("../assets/TBG_Final_TransWhite-1024x894.png"),
+    require("../assets/facebookLogo.png"),
+    "logout",
+    "restaurant",
+  ];
+
+  const callSignOut = () => {
+    if (driverLoggedIn) {
+      setSection("");
+    } else {
+      setMainSection("Main");
+    }
+    Logout();
+    setUserDetails([]);
+  };
+
+  const showAlert = () => {
+    return window.confirm("Are you sure you want to sign out?")
+      ? callSignOut()
+      : null;
+  };
+
+  const checkOnClick = (type) => {
+    switch (type) {
+      case "Account Details":
+        setProfileSection("Account Details");
+        return;
+      case "Orders":
+        setProfileSection("Orders");
+        return;
+      case "Sign out":
+        return showAlert();
+      case "Current Orders":
+        return setProfileSection("Current Orders");
+      case "Delivery Orders":
+        return setMainSection("Delivery");
+      default:
+        return;
+    }
+  };
+
+  const data1 = [
+    { img: require("../assets/userAccount.png") },
+    { img: require("../assets/previousOrders.png") },
+    { img: require("../assets/exit.png") },
+    { img: require("../assets/currentOrders.png") },
+  ];
+
+  if (driverLoggedIn === true) {
+    content = ["Sign out", "Delivery Orders"];
+  }
+console.log(auth.currentUser)
+  return auth.currentUser != undefined && profileSection === "" ? (
+    <div className="container" style={styles.container}>
+      {/* <div
+        style={{
+          width: "100%",
+          height: 90,
+          position: "absolute",
+          margin: "auto",
+          top: 10,
+        }}
+      >
+        <h1 style={styles.title}>Profile</h1>
+        <p style={styles.text}>{userDetails.displayName}</p>
+        <p style={styles.text1}>{userDetails.email}</p>
+      </div>
+      <img
+        style={{ width: 160, height: 150, top: 140, position: "absolute" }}
+        src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+        alt="Profile Image"
+      ></img>
+      <div style={{ width: "100%", marginTop: 340 }}>
+        {content.map((data, i) => {
+          return (
+            <div
+              key={i}
+              style={{
+                width: "94%",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginTop: 20,
+                borderColor: "white",
+                borderBottomWidth: 1,
+                display: "flex",
+                flexDirection: "row",
+              }}
+              onClick={() => checkOnClick(data)}
+            >
+              <img
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginRight: 20,
+                }}
+                src={data1[i].img}
+                alt={data}
+              />
+              <span style={{ color: "white", fontWeight: "600", fontSize: 20 }}>
+                {data}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+      <div
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 160,
+          width: "70%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <button
+          onClick={() =>
+            window.open("https://www.theblazinggrill.co.za/", "_blank")
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img style={styles.BlazingImage} src={icons[0]} alt="Blazing Grill" />
+        </button>
+        <button
+          onClick={() =>
+            window.open(
+              "https://web.facebook.com/forloveofgoodfood/",
+              "_blank"
+            )
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img
+            style={styles.halalCertificate}
+            src={icons[1]}
+            alt="Facebook Logo"
+          />
+        </button>
+
+        <button
+          onClick={() =>
+            window.open(
+              "https://www.sanha.co.za/a/index.php?option=com_content&task=view&id=6086&Itemid=262",
+              "_blank"
+            )
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img
+            style={styles.halalCertificate}
+            src={require("../assets/halalCertificate.jpeg")}
+            alt="Halal Certificate"
+          />
+        </button>
+      </div>
+      <div
+        style={{
+          flexDirection: "row",
+          position: "absolute",
+          bottom: 90,
+          width: "70%",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <button
+          onClick={() =>
+            window.open("https://www.instagram.com/the_blazing_grill/", "_blank")
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img
+            style={styles.halalCertificate}
+            src={require("../assets/instagramLogo.png")}
+            alt="Instagram Logo"
+          />
+        </button>
+        <button
+          onClick={() =>
+            window.open("https://www.tiktok.com/@theblazinggrill", "_blank")
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img
+            style={styles.halalCertificate}
+            src={require("../assets/tiktok.png")}
+            alt="TikTok Logo"
+          />
+        </button>
+
+        <button
+          onClick={() =>
+            window.open("https://twitter.com/BlazingGrill", "_blank")
+          }
+          style={{
+            width: 50,
+            height: 50,
+            borderColor: "white",
+            marginTop: 20,
+            borderWidth: 1,
+            marginRight: "auto",
+            marginLeft: "auto",
+            borderRadius: 5,
+          }}
+        >
+          <img
+            style={styles.halalCertificate}
+            src={require("../assets/twitter.png")}
+            alt="Twitter Logo"
+          />
+        </button>
+      </div> */}
+    </div>
+  ) : profileSection === "Account Details" ? (
+    <AccountDetails
+      userDetails={userDetails}
+      setProfile={setProfileSection}
+      setMainSection={setMainSection}
+    />
+  ) : profileSection === "Orders" ? (
+    <Orders userDetails={userDetails} setProfile={setProfileSection} />
+  ) : profileSection === "Current Orders" ? (
+    // <PlacingOrder
+    //   setMainSection={setMainSection}
+    //   cart={cart}
+    //   userDetails={userDetails}
+    //   selectedStore={selectedStore}
+    //   orderStatus={orderStatus}
+    //   setOrderStatus={setOrderStatus}
+    //   setProfile={setProfileSection}
+    //   setCart={setCart}
+    // />
+    <h1>Hello</h1>
+  ) : (
+    <LoginPage setMainSection={setMainSection} />
+  );
+};
+
+const styles = {
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    // padding: 20,
+    width: "100%",
+    height: "100%",
+  },
+  title: {
+    fontSize: 24,
+    textAlign: "center",
+    marginBottom: "auto",
+    marginTop: "auto",
+    color: "#F0941E",
+  },
+  text: {
+    color: "white",
+    marginTop: "5%",
+    fontSize: 22,
+  },
+  text1: {
+    color: "darkgray",
+    marginTop: "0%",
+    fontSize: 16,
+    marginTop: 5,
+    fontWeight: "600",
+  },
+  BlazingImage: {
+    width: 45,
+    height: 40,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "auto",
+    marginBottom: "auto",
+  },
+  halalCertificate: {
+    width: 40,
+    height: 40,
+    marginLeft: "auto",
+    marginRight: "auto",
+    marginTop: "auto",
+    marginBottom: "auto",
+  },
+};
+
+export default Profile;
