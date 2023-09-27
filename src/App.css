@@ -95,3 +95,10 @@ body {
 .slideshowDot.active {
   background-color: #6a0dad;
 }
+
+
+/* store */
+.css-b62m3t-container{
+  width: 80%;
+  margin: auto;
+}

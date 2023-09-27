@@ -48,7 +48,7 @@ function App() {
   const [user, setUser] = useState("");
   const [longitude, setLongitude] = useState("");
   const [latitude, setLatitude] = useState("");
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState(null);
   const [menuItemClicked, setMenuItemClicked] = useState("");
   const [chosenItem, setChosenItem] = useState("");
   const [driverLoggedIn, setDriverLoggedIn] = useState(false);
@@ -67,9 +67,9 @@ function App() {
         }
       } else {
         setIsLoggedIn(false);
-        // 
+        //
         setSection("Main");
-        // 
+        //
       }
     });
 

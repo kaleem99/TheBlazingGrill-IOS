@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 // import { Button } from "react-native-elements";
-// import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../database/config";
+import Geocode from "react-geocode";
+
 import { checkStoreTimes, distance } from "../Helpers/StoreFunctions";
 // import Geolocation from "react-native-geolocation-service";
 // import Geocoder from "react-native-geocoding";
+const APIKEY = "AIzaSyAe8Q7gExQ3CEzxqr4PFm3ikcMboQPKJIg";
+// set Google Maps Geocoding API for purposes of quota management. Its optional but recommended.
 
+Geocode.setApiKey(APIKEY);
+Geocode.setLanguage("en");
+
+Geocode.setRegion("za");
+
+Geocode.setLocationType("ROOFTOP");
+
+// Enable or disable logs. Its optional.
+Geocode.enableDebug();
 function Store({
   storeDetails,
   setSelectedStore,
@@ -24,10 +37,30 @@ function Store({
   const [storeTimes, setStoreTimes] = useState(checkStoreTimes());
 
   useEffect(() => {
-    // Add code here to fetch store details from Firebase
-    // and set the storeDetails state.
-  }, []);
-
+    if (address) {
+      handleAddress();
+    }
+  }, [address]);
+  const handleAddress = async () => {
+    console.log(address, " Address");
+    await Geocode.fromAddress(address.label).then(
+      (response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        console.log(lat, lng);
+        setLatitude(lat);
+        setLongitude(lng);
+        // setFormData({
+        //   ...formData,
+        //   latitude: lat,
+        //   longitude: lng,
+        // });
+        setAddress(address.label);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  };
   const storeSelected = (store, data, storeName, distanceResult) => {
     if (!storeTimes) {
       return alert("Stores are currently closed.");
@@ -57,7 +90,17 @@ function Store({
 
   return (
     <div style={styles.div}>
-      <p style={styles.text}>Stores</p>
+      <p
+        onClick={() => {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("Latitude is :", position.coords.latitude);
+            console.log("Longitude is :", position.coords.longitude);
+          });
+        }}
+        style={styles.text}
+      >
+        Stores
+      </p>
       <div
         style={{
           width: "80%",
@@ -78,6 +121,7 @@ function Store({
             borderRadius: 10,
             marginRight: "3%",
             height: 40,
+            color: "white",
           }}
           onClick={() => deliveryOrder()}
         >
@@ -92,6 +136,8 @@ function Store({
             borderWidth: 1,
             borderRadius: 10,
             marginLeft: "2%",
+            height: 40,
+            color: "white",
           }}
           onClick={() => setOrderType("Collection")}
         >
@@ -101,6 +147,10 @@ function Store({
       {orderType === "Delivery" && (
         <div style={{ width: "100%", height: 60, marginTop: 10 }}>
           {/* Google Places Autocomplete component */}
+          <GooglePlacesAutocomplete
+            selectProps={{ address, onChange: setAddress }}
+            apiKey={APIKEY}
+          />
         </div>
       )}
       {storeDetails.length > 0 &&
@@ -157,6 +207,7 @@ const styles = {
   div: {
     width: "100%",
     height: "100%",
+    paddingTop: "20px",
   },
   icon: {
     marginLeft: 50,
@@ -168,7 +219,7 @@ const styles = {
     marginRight: "auto",
     borderColor: "white",
     borderWidth: 1,
-    marginTop: 20,
+    // marginTop: 20,
     borderRadius: 10,
   },
   storeBoxSelected: {
@@ -178,7 +229,7 @@ const styles = {
     marginRight: "auto",
     borderColor: "#F7941D",
     borderWidth: 1,
-    marginTop: 20,
+    // marginTop: 20,
     borderRadius: 10,
   },
   text: {
@@ -187,13 +238,14 @@ const styles = {
     justifyContent: "center",
     color: "white",
     fontSize: 20,
-    marginTop: 30,
+    marginBlockStart: 0,
+    // marginTop: 30,
   },
   standardText: {
     fontSize: 14,
     color: "white",
     textAlign: "center",
-    marginTop: 10,
+    // marginTop: 10,
   },
 };
 

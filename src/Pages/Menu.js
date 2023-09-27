@@ -364,6 +364,7 @@ function ChosenCategory({
           //   }}
           //   scrollEnabled={itemsData.length > 6 ? true : false}
         >
+          {console.log(itemsData)}
           {itemsData && name !== "Burgers" ? (
             itemsData
               .sort((a, b) => (a.name > b.name ? 1 : -1))
@@ -537,6 +538,7 @@ function ChosenCategory({
                   margin: "auto",
                 }}
               >
+                {console.log(chosenItem)}
                 <img
                   style={
                     name === "Specials"
@@ -558,7 +560,7 @@ function ChosenCategory({
                   src={
                     chosenItem.fileURL
                       ? chosenItem.fileURL
-                      : "your_default_image" // Replace with your image URL or default image
+                      : img // Replace with your image URL or default image
                   }
                   alt="Special"
                 />
