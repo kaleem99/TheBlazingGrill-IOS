@@ -5,7 +5,7 @@ import Menu from "./Menu";
 import Cart from "./Cart";
 import LoginPage from "./Login";
 // import SignUpPage from "./Signup";
-// import Checkout from "./checkout";
+import Checkout from "./Checkout";
 import Store from "./Store";
 import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../database/config";
@@ -191,31 +191,31 @@ function MainApp({
     // case "ResetPassword":
     //   body = <ResetPasswordPage setMainSection={setMainSection} />;
     //   break;
-    // case "Checkout":
-    //   body = (
-    //     <Checkout
-    //       setMainSection={setMainSection}
-    //       cart={cart}
-    //       userDetails={userDetails}
-    //       selectedStore={selectedStore}
-    //       orderType={orderType}
-    //       setOrderType={setOrderType}
-    //       orderStatus={orderStatus}
-    //       setProfileSection={setProfileSection}
-    //       address={address}
-    //       setStoreDetails={setStoreDetails}
-    //       storeDetails={storeDetails}
-    //       latitude={latitude}
-    //       longitude={longitude}
-    //       setLatitude={setLatitude}
-    //       setLongitude={setLongitude}
-    //       setAddress={setAddress}
-    //       setSelectedStore={setSelectedStore}
-    //       deliveryInstructions={deliveryInstructions}
-    //       setDeliveryInstructions={setDeliveryInstructions}
-    //     />
-    //   );
-    //   break;
+    case "Checkout":
+      body = (
+        <Checkout
+          setMainSection={setMainSection}
+          cart={cart}
+          userDetails={userDetails}
+          selectedStore={selectedStore}
+          orderType={orderType}
+          setOrderType={setOrderType}
+          orderStatus={orderStatus}
+          setProfileSection={setProfileSection}
+          address={address}
+          setStoreDetails={setStoreDetails}
+          storeDetails={storeDetails}
+          latitude={latitude}
+          longitude={longitude}
+          setLatitude={setLatitude}
+          setLongitude={setLongitude}
+          setAddress={setAddress}
+          setSelectedStore={setSelectedStore}
+          deliveryInstructions={deliveryInstructions}
+          setDeliveryInstructions={setDeliveryInstructions}
+        />
+      );
+      break;
     case "Profile":
       body = (
         <Profile
@@ -340,11 +340,13 @@ function MainApp({
                   marginLeft: "auto",
                   marginRight: "auto",
                 }}
+                className="MainMenuImages"
                 src={iconImages(arrOfMenuSections[i], mainSection)}
                 alt={section}
               />
 
               <p
+              className="MainMenuText"
                 key={i + 20}
                 style={{
                   marginBlockStart: 0,

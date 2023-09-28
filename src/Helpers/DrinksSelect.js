@@ -19,7 +19,7 @@ const SelectBox = ({
     };
     return quantityObj;
   });
-  
+
   useEffect(() => {
     setDrinksQuantity(drinksData);
   }, []);
@@ -108,7 +108,9 @@ const styles = {
   container: {
     height: "auto",
     width: "80%",
-    marginBottom: 20,
+    // marginBottom: 20,
+    margin: "auto",
+    textAlign: "center",
   },
   section: {
     display: "flex",

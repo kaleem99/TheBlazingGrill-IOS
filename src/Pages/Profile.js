@@ -151,15 +151,7 @@ const Profile = ({
           onClick={() =>
             window.open("https://www.theblazinggrill.co.za/", "_blank")
           }
-          style={{
-            width: 50,
-            height: 50,
-            background: "none",
-            borderColor: "white",
-            marginTop: 20,
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
+          style={styles.buttonImages2}
         >
           <img style={styles.BlazingImage} src={icons[0]} alt="Blazing Grill" />
         </button>
@@ -167,15 +159,7 @@ const Profile = ({
           onClick={() =>
             window.open("https://web.facebook.com/forloveofgoodfood/", "_blank")
           }
-          style={{
-            width: 50,
-            height: 50,
-            borderColor: "white",
-            marginTop: 20,
-            borderWidth: 1,
-            background: "none",
-            borderRadius: 5,
-          }}
+          style={styles.buttonImages2}
         >
           <img
             style={styles.halalCertificate}
@@ -191,16 +175,7 @@ const Profile = ({
               "_blank"
             )
           }
-          style={{
-            width: 50,
-            height: 50,
-            borderColor: "white",
-            marginTop: 20,
-            borderWidth: 1,
-            background: "none",
-            textAlign: "center",
-            borderRadius: 5,
-          }}
+          style={styles.buttonImages2}
         >
           <img
             style={styles.halalCertificate}
@@ -229,14 +204,7 @@ const Profile = ({
               "_blank"
             )
           }
-          style={{
-            width: 50,
-            height: 50,
-            borderColor: "white",
-            borderWidth: 1,
-            borderRadius: 5,
-            background: "none",
-          }}
+          style={styles.buttonImages}
         >
           <img
             style={styles.halalCertificate}
@@ -248,14 +216,7 @@ const Profile = ({
           onClick={() =>
             window.open("https://www.tiktok.com/@theblazinggrill", "_blank")
           }
-          style={{
-            width: 50,
-            height: 50,
-            borderColor: "white",
-            borderWidth: 1,
-            borderRadius: 5,
-            background: "none",
-          }}
+          style={styles.buttonImages}
         >
           <img
             style={styles.halalCertificate}
@@ -268,14 +229,7 @@ const Profile = ({
           onClick={() =>
             window.open("https://twitter.com/BlazingGrill", "_blank")
           }
-          style={{
-            width: 50,
-            height: 50,
-            borderColor: "white",
-            borderWidth: 1,
-            borderRadius: 5,
-            background: "none",
-          }}
+          style={styles.buttonImages}
         >
           <img
             style={styles.halalCertificate}
@@ -354,6 +308,27 @@ const styles = {
     width: 40,
     height: 40,
     margin: "auto",
+  },
+  buttonImages: {
+    display: "flex",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    borderColor: "white",
+    borderWidth: 1,
+    borderRadius: 5,
+    background: "none",
+  },
+  buttonImages2: {
+    display: "flex",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+    borderColor: "white",
+    borderWidth: 1,
+    borderRadius: 5,
+    background: "none",
+    marginTop: 20,
   },
 };
 

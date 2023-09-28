@@ -115,8 +115,9 @@ function Cart({
       <div
         style={{
           width: "100%",
-          height: 500,
+          height: "64vh",
         }}
+        className="CartDivHeight"
         scrollEnabled={true}
       >
         {cart.map((items, i) => {
@@ -236,8 +237,11 @@ function Cart({
               borderRadius: 19,
               marginLeft: "auto",
               marginRight: "auto",
-              paddingTop: 5,
+              // paddingTop: 5,
               border: "none",
+              color: "white",
+              // fontWeight: "bold",
+              fontSize: 20,
             }}
             onClick={() => {
               auth.currentUser === null

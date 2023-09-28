@@ -9,7 +9,7 @@ import LoginPage from "./Login";
 const Orders = ({ userDetails, setProfile }) => {
   const [prevOrders, setPrevOrder] = useState([]);
   const [orderDetails, setOrderDetails] = useState("");
-  
+
   useEffect(() => {
     getDocs(collection(db, "Orders")).then((querySnapshot) => {
       const newData = querySnapshot.docs.map((doc) => ({
@@ -27,8 +27,7 @@ const Orders = ({ userDetails, setProfile }) => {
       setPrevOrder(filteredData);
     });
   }, []);
-  
- 
+
   return (
     <div className="container" style={styles.container}>
       <div
@@ -41,13 +40,16 @@ const Orders = ({ userDetails, setProfile }) => {
       >
         <div
           style={{
-            width: "100%",
+            width: "90%",
             height: 40,
             display: "flex",
             alignItems: "center",
           }}
         >
-          <button onClick={() => setProfile("")}>
+          <button
+            style={{ background: "none", border: "none" }}
+            onClick={() => setProfile("")}
+          >
             <img
               style={{
                 width: 28,
@@ -66,8 +68,11 @@ const Orders = ({ userDetails, setProfile }) => {
         <div
           style={{
             width: "100%",
-            height: 450,
-            marginTop: 45,
+            height: "80vh",
+            // marginTop: 45,
+            paddingTop: 70,
+            margin: "auto",
+            overflow: "auto",
           }}
         >
           {prevOrders.map((data, i) => (
@@ -116,12 +121,11 @@ const Orders = ({ userDetails, setProfile }) => {
 
 const styles = {
   container: {
-    flex: 1,
+    // flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    // padding: 20,
     width: "100%",
-    height: "100%",
   },
   title: {
     fontSize: 22,
@@ -131,6 +135,19 @@ const styles = {
     color: "white",
     marginLeft: "auto",
     marginRight: "auto",
+  },
+  ordersColumn: {
+    width: "90%",
+    display: "flex",
+    margin: "10px auto",
+    background: "none",
+    color: "white",
+    border: "1px solid white",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  textOrders: {
+    width: "25%",
   },
   // Add your other styles here
 };

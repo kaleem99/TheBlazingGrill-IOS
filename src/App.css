@@ -105,3 +105,33 @@ body {
   color: white;
   opacity: 1; /* Firefox */
 }
+.modal {
+  position: absolute;
+  /* top: 10px; */
+  width: 100%;
+  margin: auto;
+  background-image: url("./assets/smokeyBackground1024_1.png");
+  background-repeat: no-repeat;
+  left: 0;
+  right: 0;
+}
+.modal-content {
+  background-image: url("./assets/smokeyBackground1024_1.png");
+  /* margin: 20px auto; */
+}
+
+@media only screen and (max-height: 670px) {
+  .MainMenuImages {
+    width: 22px !important;
+    height: 22px !important;
+  }
+  .MainMenuText {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (max-height: 600px) {
+  .CartDivHeight {
+    height: 58vh !important;
+  }
+}
