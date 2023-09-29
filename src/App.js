@@ -68,7 +68,7 @@ function App() {
       } else {
         setIsLoggedIn(false);
         //
-        setSection("Main");
+        setSection("");
         //
       }
     });

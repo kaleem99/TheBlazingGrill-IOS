@@ -34,10 +34,7 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
   }, []);
 
   const myIcon2 = (
-    <span
-      onClick={() => setProfile("")}
-      style={{ cursor: "pointer" }}
-    >
+    <span onClick={() => setProfile("")} style={{ cursor: "pointer" }}>
       <img
         alt=""
         style={{
@@ -122,7 +119,11 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
           value={details.email}
         />
         <p style={styles.labelp}>Phone Number</p>
-        <input style={styles.input} value={details.phoneNumber} />
+        <input
+          onClick={() => setMainSection("VerifyPhoneNumber")}
+          style={styles.input}
+          value={details.phoneNumber}
+        />
       </div>
     </div>
   );
@@ -172,7 +173,7 @@ const styles = {
     color: "#F0941E",
     // marginTop: "0%",
     fontSize: 18,
-    width: "50px"
+    width: "50px",
   },
   p1: {
     color: "darkgray",

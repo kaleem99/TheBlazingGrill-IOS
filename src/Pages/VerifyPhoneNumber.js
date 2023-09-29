@@ -9,13 +9,20 @@ import {
 import { db } from "../database/config";
 import { firebaseConfig } from "../database/config";
 // import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { RecaptchaVerifier, linkWithCredential } from "firebase/auth";
+import {
+  RecaptchaVerifier,
+  getAuth,
+  linkWithCredential,
+  signInWithPhoneNumber,
+} from "firebase/auth";
 import { auth } from "../database/config";
 import firebase from "firebase/compat/app";
 import { storeData } from "../Helpers/localStorage";
 
 function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
   const [drivers, setDrivers] = useState([]);
+  // auth.settings.appVerificationDisabledForTesting = true;
+
   useEffect(() => {
     const getDeliveryDrivers = async () => {
       const querySnapshot = await getDocs(collection(db, "DriverProfiles"));
@@ -47,7 +54,7 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
   const recapchaVerifier = useRef(null);
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
         "recaptcha-container",
         {
           size: "invisible",
@@ -61,22 +68,64 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
     }
   }
   const sendVerification = () => {
+    console.log(auth.settings);
+    console.log(100);
     const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
-    if (!result) {
-      return alert("Please ensure number format is correct");
-    }
-    try {
-      const phoneProvider = new firebase.auth.PhoneAuthProvider();
-      phoneProvider
-        .verifyPhoneNumber(result, recapchaVerifier.current)
-        .then(setVerificationId)
-        .then(() => {
-          alert("mobile verification code sent successfully");
-        })
-        .catch((err) => alert(err + " Please Try again later"));
-    } catch (err) {
-      alert(err);
-    }
+    console.log(result);
+
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'normal',
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        // ...
+      },
+      'expired-callback': () => {
+        // Response expired. Ask user to solve reCAPTCHA again.
+        // ...
+      }
+    });
+    // window.recaptchaVerifier.render();
+    // if (!result) {
+    //   return alert("Please ensure number format is correct");
+    // }
+    // try {
+    //   const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    //   phoneProvider
+    //     .verifyPhoneNumber(result, recapchaVerifier.current)
+    //     .then(setVerificationId)
+    //     .then(() => {
+    //       alert("mobile verification code sent successfully");
+    //     })
+    //     .catch((err) => alert(err + " Please Try again later"));
+    // } catch (err) {
+    //   alert(err);
+    // }
+    // const newAuth = getAuth();
+    const appVerifier = window.recaptchaVerifier;
+    console.log(appVerifier);
+    signInWithPhoneNumber(auth, result, appVerifier)
+      .then((confirmationResult) => {
+        console.log(confirmationResult);
+        // SMS sent. Prompt user to type the code from the message, then sign the
+        // user in with confirmationResult.confirm(code).
+        window.confirmationResult = confirmationResult;
+        // ...
+      })
+      .catch((error) => {
+        // Error; SMS not sent
+        // ...
+      });
+    // console.log(verify);
+    // firebase.auth.RecaptchaVerifier
+    //   auth.signInWithPhoneNumber(result, verify).then((result) => {
+    //     // setfinal(result);
+    //     alert("code sent")
+    //     // setshow(true);
+    // })
+    //     .catch((err) => {
+    //         alert(err);
+    //         window.location.reload()
+    //     });
   };
 
   const resendVerificationCode = () => {
@@ -147,19 +196,47 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
   };
 
   return (
-    <div className="content">
-      <div className="container">
-        <div className="logo-container">
+    <div style={styles.content} className="content">
+      <div style={{position: "absolute"}} id="recaptcha-container"></div>
+
+      <button
+        style={{
+          background: "none",
+          border: "none",
+          position: "absolute",
+          top: 20,
+          left: 10,
+        }}
+        onClick={() => setMainSection("Profile")}
+      >
+        <img
+          style={{
+            width: 28,
+            height: 22,
+            marginTop: "0%",
+          }}
+          src={require("../assets/back.png")}
+          alt="Back"
+        />
+      </button>
+      <div style={styles.container} className="container">
+        <div style={{ textAlign: "center" }} className="logo-container">
           <img
+            style={styles.BlazingImage}
             className="BlazingImage"
             src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
             alt="Logo"
           />
         </div>
-        <h1 className="title">Phone number</h1>
-        <p className="text">Please add and verify your phone number</p>
+        <h1 style={styles.title} className="title">
+          Phone number
+        </h1>
+        <p style={styles.text} className="text">
+          Please add and verify your phone number
+        </p>
 
         <input
+          style={styles.input}
           className="input"
           type="text"
           onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
@@ -179,12 +256,16 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
               value={code}
               placeholder="otp code"
             />
-            <button onClick={() => resendVerificationCode()}>
+            <button
+              style={styles.button}
+              onClick={() => resendVerificationCode()}
+            >
               Did not receive otp? <span className="specialText">Resend</span>
             </button>
           </div>
         )}
         <button
+          style={styles.button}
           className="button"
           onClick={() =>
             verificationId !== "" ? confirmCode() : sendVerification()
@@ -196,5 +277,74 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
     </div>
   );
 }
-
+const styles = {
+  container: {
+    // flex: 1,
+    // backgroundColor: "#212121",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    height: "460px",
+    width: "90%",
+    // display: "flex",
+  },
+  content: {
+    display: "flex",
+    height: "90vh",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    color: "white",
+    textAlign: "center",
+  },
+  input: {
+    width: "98%",
+    height: 40,
+    // padding: 10,
+    marginBottom: 20,
+    marginTop: 20,
+    borderWidth: 1,
+    borderColor: "white",
+    color: "white",
+    background: "none",
+  },
+  button: {
+    width: "100%",
+    height: 40,
+    marginTop: 10,
+    backgroundColor: "#F0941E",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "none",
+    color: "white",
+    fontWeight: "bold",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+  BlazingImage: {
+    width: 220,
+    height: 200,
+    // marginTop: 60,
+    // marginBottom: "auto",
+    // backgroundColor: "black",
+    marginLeft: "auto",
+    marginRight: "auto",
+    borderRadius: 40,
+  },
+  specialText: {
+    color: "#F0941E",
+    fontSize: 18,
+    textAlign: "center",
+  },
+  text: {
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+  },
+};
 export default VerifyPhoneNumber;

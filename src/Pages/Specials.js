@@ -166,6 +166,7 @@ const styles = {
     // paddingTop: 10,
     backgroundColor: "#F0941E",
     borderRadius: 25,
+    border: "none",
   },
 };
 

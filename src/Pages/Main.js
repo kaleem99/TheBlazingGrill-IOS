@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Menu from "./Menu";
 import Cart from "./Cart";
 import LoginPage from "./Login";
-// import SignUpPage from "./Signup";
+import SignUpPage from "./Signup";
 import Checkout from "./Checkout";
 import Store from "./Store";
 import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
@@ -14,7 +14,7 @@ import Profile from "./Profile";
 import { getCartData } from "../Helpers/Common";
 // import PlacingOrder from "./PlacingOrder";
 import firebase from "firebase/compat/app";
-// import VerifyPhoneNumber from "./VerifyPhonenumber";
+import VerifyPhoneNumber from "./VerifyPhoneNumber";
 import { ReactComponent as Homesvg } from "../assets/home-svgrepo-com.svg";
 
 function MainApp({
@@ -185,9 +185,9 @@ function MainApp({
     case "Login":
       body = <LoginPage setMainSection={setMainSection} />;
       break;
-    // case "SignUp":
-    //   body = <SignUpPage setState={setState} setMainSection={setMainSection} />;
-    //   break;
+    case "SignUp":
+      body = <SignUpPage setState={setState} setMainSection={setMainSection} />;
+      break;
     // case "ResetPassword":
     //   body = <ResetPasswordPage setMainSection={setMainSection} />;
     //   break;
@@ -267,16 +267,16 @@ function MainApp({
     //     />
     //   );
     //   break;
-    // case "VerifyPhoneNumber":
-    //   body = (
-    //     <VerifyPhoneNumber
-    //       userDetails={userDetails}
-    //       setMainSection={setMainSection}
-    //       type={"User"}
-    //       setSection={setSection}
-    //     />
-    //   );
-    //   break;
+    case "VerifyPhoneNumber":
+      body = (
+        <VerifyPhoneNumber
+          userDetails={userDetails}
+          setMainSection={setMainSection}
+          type={"User"}
+          setSection={setSection}
+        />
+      );
+      break;
     default:
       body = "";
       break;
@@ -346,7 +346,7 @@ function MainApp({
               />
 
               <p
-              className="MainMenuText"
+                className="MainMenuText"
                 key={i + 20}
                 style={{
                   marginBlockStart: 0,

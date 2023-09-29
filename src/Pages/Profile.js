@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../database/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 // import Icon from "react-native-vector-icons/MaterialIcons";
-import Logout from "./Logout";
+import logout from "./Logout";
 import LoginPage from "./Login";
 import AccountDetails from "./AccountDetails";
 import Orders from "./Orders";
@@ -40,14 +40,17 @@ const Profile = ({
     } else {
       setMainSection("Main");
     }
-    Logout();
+    console.log(2000);
+    logout();
     setUserDetails([]);
   };
 
   const showAlert = () => {
-    return window.confirm("Are you sure you want to sign out?")
-      ? callSignOut()
-      : null;
+    const result = window.confirm("Are you sure you want to sign out?");
+    console.log(result);
+    return result ? callSignOut() : null;
+    // ? callSignOut()
+    // : null;
   };
 
   const checkOnClick = (type) => {
@@ -272,6 +275,7 @@ const styles = {
     flexDirection: "column",
     height: "85vh",
     textAlign: "center",
+    overflow: "auto",
   },
   title: {
     fontSize: 24,

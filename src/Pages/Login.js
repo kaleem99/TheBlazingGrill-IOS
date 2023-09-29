@@ -3,6 +3,7 @@ import { auth } from "../database/config";
 import {
   sendEmailVerification,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { storeData } from "../Helpers/localStorage";
 
@@ -41,6 +42,7 @@ const LoginPage = ({ setMainSection }) => {
           if (min > 60) {
             sendEmailVerification(user);
           }
+          signOut(auth);
           return alert(
             min > 60
               ? "Email Verification link was sent to your spam or inbox folder, please verify to login."
@@ -65,11 +67,13 @@ const LoginPage = ({ setMainSection }) => {
 
   return (
     <div style={styles.container}>
-      <div style={{margin: "auto", width: 220, height: "30vh"}}><img
-        style={styles.BlazingImage}
-        src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
-        alt="BlazingImage"
-      /></div>
+      <div style={{ margin: "auto", width: 220, height: "30vh" }}>
+        <img
+          style={styles.BlazingImage}
+          src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+          alt="BlazingImage"
+        />
+      </div>
       <h1 style={styles.title}>Login</h1>
       <input
         style={styles.input}
@@ -87,9 +91,12 @@ const LoginPage = ({ setMainSection }) => {
       <button style={styles.button} onClick={() => login()}>
         Login
       </button>
-      <div style={{marginTop: "20px" }}>
+      <div style={{ marginTop: "20px" }}>
         <span style={styles.text}>Don't have an Account! </span>
-        <span style={styles.specialText} onClick={() => setMainSection("SignUp")}>
+        <span
+          style={styles.specialText}
+          onClick={() => setMainSection("SignUp")}
+        >
           Sign Up
         </span>
       </div>
@@ -110,13 +117,13 @@ const styles = {
     width: "90%",
     height: "100%",
     paddingTop: "20px",
-    margin: "auto"
+    margin: "auto",
   },
   BlazingImage: {
     width: 220,
     height: 200,
     // margin: "10% auto",
-  
+
     borderRadius: 40,
   },
   title: {
@@ -132,7 +139,7 @@ const styles = {
     border: "1px solid #ccc",
     color: "white",
     borderColor: "#ccc",
-    background: "none"
+    background: "none",
   },
   button: {
     width: "100%",
