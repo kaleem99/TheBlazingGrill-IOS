@@ -208,6 +208,7 @@ const styles = {
     width: "100%",
     height: "auto",
     paddingTop: "20px",
+    textAlign: "center",
   },
   icon: {
     marginLeft: 50,
@@ -221,6 +222,8 @@ const styles = {
     borderWidth: 1,
     // marginTop: 20,
     borderRadius: 10,
+    marginTop: 20,
+    background: "none",
   },
   storeBoxSelected: {
     width: "80%",
@@ -231,6 +234,8 @@ const styles = {
     borderWidth: 1,
     // marginTop: 20,
     borderRadius: 10,
+    marginTop: 20,
+    background: "none",
   },
   text: {
     textAlign: "center",

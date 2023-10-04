@@ -13,7 +13,9 @@ import {
   RecaptchaVerifier,
   getAuth,
   linkWithCredential,
+  PhoneAuthProvider,
   signInWithPhoneNumber,
+  updatePhoneNumber,
 } from "firebase/auth";
 import { auth } from "../database/config";
 import firebase from "firebase/compat/app";
@@ -51,7 +53,7 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
   const [verificationId, setVerificationId] = useState("");
   const [code, setCode] = useState("");
   const [verificationConfirmed, setVerificationConfirmed] = useState("");
-  const recapchaVerifier = useRef(null);
+  let recapchaVerifier = null;
   function onCaptchVerify() {
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
@@ -73,17 +75,10 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
     const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
     console.log(result);
 
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'normal',
-      'callback': (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        // ...
-      },
-      'expired-callback': () => {
-        // Response expired. Ask user to solve reCAPTCHA again.
-        // ...
-      }
-    });
+    // window.recaptchaVerifier = new RecaptchaVerifier(
+    //   auth,
+    //   "recaptcha-container"
+    // );
     // window.recaptchaVerifier.render();
     // if (!result) {
     //   return alert("Please ensure number format is correct");
@@ -101,20 +96,22 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
     //   alert(err);
     // }
     // const newAuth = getAuth();
-    const appVerifier = window.recaptchaVerifier;
-    console.log(appVerifier);
-    signInWithPhoneNumber(auth, result, appVerifier)
-      .then((confirmationResult) => {
-        console.log(confirmationResult);
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
-        window.confirmationResult = confirmationResult;
-        // ...
-      })
-      .catch((error) => {
-        // Error; SMS not sent
-        // ...
-      });
+    // const appVerifier = window.recaptchaVerifier;
+    // console.log(appVerifier);
+    // signInWithPhoneNumber(auth, result, appVerifier)
+    //   .then((confirmationResult) => {
+    //     console.log(confirmationResult);
+    //     setVerificationId(confirmationResult);
+    //     // SMS sent. Prompt user to type the code from the message, then sign the
+    //     // user in with confirmationResult.confirm(code).
+    //     window.confirmationResult = confirmationResult;
+    //     // ...
+
+    //   })
+    //   .catch((error) => {
+    //     // Error; SMS not sent
+    //     // ...
+    //   });
     // console.log(verify);
     // firebase.auth.RecaptchaVerifier
     //   auth.signInWithPhoneNumber(result, verify).then((result) => {
@@ -126,18 +123,41 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
     //         alert(err);
     //         window.location.reload()
     //     });
+    var appVerifier = new RecaptchaVerifier(auth, "recaptcha-container");
+    var provider = new PhoneAuthProvider(auth);
+    provider
+      .verifyPhoneNumber(result, appVerifier)
+      .then(function (verificationId) {
+        // var verificationCode = window.prompt(
+        //   "Please enter the verification " +
+        //     "code that was sent to your mobile device."
+        // );
+        // console.log(verificationCode);
+
+        recapchaVerifier = appVerifier;
+        setVerificationId(verificationId);
+        console.log(verificationId);
+        alert("otp sent successfully");
+      })
+      .catch((error) => {
+        // Error occurred.
+        console.log(error);
+      });
   };
 
   const resendVerificationCode = () => {
     const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
+    const phoneProvider = new PhoneAuthProvider(auth);
     phoneProvider
-      .verifyPhoneNumber(result, recapchaVerifier.current)
-      .then(setVerificationId)
+      .verifyPhoneNumber(result, recapchaVerifier)
       .then((data) => {
+        setVerificationId(data);
         alert("mobile verification code sent successfully");
       })
-      .catch((err) => alert(err + " Please Try again later"));
+      .catch((err) => {
+        alert(err + " Please Try again later");
+        console.log(result);
+      });
   };
 
   function formatPhoneNumberWithCountryCode(phoneNumberString, countryCode) {
@@ -151,53 +171,56 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
   }
 
   const confirmCode = async () => {
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-      verificationId,
-      code
-    );
-    if (userDetails.phoneNumber == undefined) {
-      await firebase
-        .auth()
-        .currentUser.linkWithCredential(credential)
-        .then(() => {
-          setVerificationConfirmed(credential);
-          alert("Phone number verified and updated successfully.");
+    const credential = PhoneAuthProvider.credential(verificationId, code);
+    // if (userDetails.phoneNumber == undefined) {
+    //   await firebase
+    //     .auth()
+    //     .currentUser.linkWithCredential(credential)
+    //     .then(() => {
+    //       setVerificationConfirmed(credential);
+    //       alert("Phone number verified and updated successfully.");
 
-          if (type === "Driver") {
-            const docRef = doc(db, "DriverProfiles", drivers[0].id);
-            const newDriverDetails = drivers[0];
-            newDriverDetails.phoneNumber = formatPhoneNumberWithCountryCode(
-              formData.mobile,
-              "+27"
-            );
-            updateDoc(docRef, newDriverDetails);
-            setSection("Main");
-          } else {
-            setMainSection("Profile");
-          }
-        })
-        .catch((err) => {
-          alert(err);
-          console.log(err);
-        });
-    } else {
-      await firebase
-        .auth()
-        .currentUser.updatePhoneNumber(credential)
-        .then(() => {
-          alert("Phone number updated successfully");
-          setVerificationConfirmed(credential);
-          setMainSection("Profile");
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    }
+    //       if (type === "Driver") {
+    //         const docRef = doc(db, "DriverProfiles", drivers[0].id);
+    //         const newDriverDetails = drivers[0];
+    //         newDriverDetails.phoneNumber = formatPhoneNumberWithCountryCode(
+    //           formData.mobile,
+    //           "+27"
+    //         );
+    //         updateDoc(docRef, newDriverDetails);
+    //         setSection("Main");
+    //       } else {
+    //         setMainSection("Profile");
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       alert(err);
+    //       console.log(err);
+    //     });
+    // } else {
+    //   await firebase
+    //     .auth()
+    //     .currentUser.updatePhoneNumber(credential)
+    //     .then(() => {
+    //       alert("Phone number updated successfully");
+    //       setVerificationConfirmed(credential);
+    //       setMainSection("Profile");
+    //     })
+    //     .catch((err) => {
+    //       alert(err);
+    //     });
+    // }
+    const phoneCredential = PhoneAuthProvider.credential(verificationId, code);
+    updatePhoneNumber(auth.currentUser, phoneCredential).then(() => {
+      alert("Phone number updated successfully");
+      setVerificationConfirmed(credential);
+      setMainSection("Profile");
+    });
   };
 
   return (
     <div style={styles.content} className="content">
-      <div style={{position: "absolute"}} id="recaptcha-container"></div>
+      <div style={{ position: "absolute" }} id="recaptcha-container"></div>
 
       <button
         style={{
@@ -250,6 +273,7 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
         {verificationId !== "" && (
           <div className="verification-container">
             <input
+              style={styles.input}
               className="input"
               type="text"
               onChange={(e) => setCode(e.target.value)}

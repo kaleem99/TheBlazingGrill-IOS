@@ -92,7 +92,7 @@ function Checkout({
   useEffect(() => {
     if (checkoutUrl) {
       const interval = setInterval(() => {
-        // getPaymentStatus();
+        getPaymentStatus();
       }, 1000);
       return () => {
         clearInterval(interval);
@@ -396,11 +396,11 @@ function Checkout({
           Pay and Place Order
         </button>
       </div>
-      {/* {payUsingCard === true && (
+      {payUsingCard === true && (
         <div
           style={{
-            width: "100%",
-            height: "90%",
+            width: "94%",
+            height: "80%",
             backgroundColor: "white",
             position: "absolute",
             zIndex: 1,
@@ -410,7 +410,10 @@ function Checkout({
             alignSelf: "center",
             justifyContent: "center",
             borderRadius: 10,
-            padding: 20,
+            // padding: 20,
+            top: 0,
+            left: 0,
+            right: 0,
           }}
         >
           <iframe
@@ -419,14 +422,15 @@ function Checkout({
             style={{ width: "100%", height: "100%" }}
           />
           <button
+            style={styles.saveOrCancel}
             onClick={() => setPayUsingCard(false)}
             className="cancel-button"
           >
             Cancel
           </button>
         </div>
-      )} */}
-      {/* {popup && (
+      )}
+      {popup && (
         <div
           style={{
             width: "90%",
@@ -470,7 +474,7 @@ function Checkout({
             </button>
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 }
@@ -537,7 +541,7 @@ const styles = {
     alignItems: "center",
   },
   saveOrCancel: {
-    width: "40%",
+    width: "100%",
     height: 40,
     backgroundColor: "#F7941D",
     color: "white",
@@ -549,7 +553,7 @@ const styles = {
     padding: 5,
     borderWidth: 2,
     borderColor: "white",
-    // marginTop: 20,
+    border: "none",
   },
   orderButtonText: {
     fontSize: 20,
