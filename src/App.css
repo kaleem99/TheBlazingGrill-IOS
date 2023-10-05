@@ -135,3 +135,17 @@ body {
     height: 58vh !important;
   }
 }
+
+
+.modalSlider2 {
+  position: absolute;
+  /* top: 10px; */
+  width: 100%;
+  margin: auto;
+  /* background-image: url("./assets/smokeyBackground1024_1.png"); */
+  background-repeat: no-repeat;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+}

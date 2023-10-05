@@ -10,7 +10,7 @@ import Store from "./Store";
 import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
 import { db } from "../database/config";
 import Profile from "./Profile";
-// import ResetPasswordPage from "./ResetPassword";
+import ResetPasswordPage from "./ResetPassword";
 import { getCartData } from "../Helpers/Common";
 // import PlacingOrder from "./PlacingOrder";
 import firebase from "firebase/compat/app";
@@ -188,9 +188,9 @@ function MainApp({
     case "SignUp":
       body = <SignUpPage setState={setState} setMainSection={setMainSection} />;
       break;
-    // case "ResetPassword":
-    //   body = <ResetPasswordPage setMainSection={setMainSection} />;
-    //   break;
+    case "ResetPassword":
+      body = <ResetPasswordPage setMainSection={setMainSection} />;
+      break;
     case "Checkout":
       body = (
         <Checkout

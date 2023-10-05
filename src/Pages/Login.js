@@ -97,10 +97,10 @@ const LoginPage = ({ setMainSection }) => {
           style={styles.specialText}
           onClick={() => setMainSection("SignUp")}
         >
-          Sign Up
+        {" "}  Sign Up
         </span>
       </div>
-      <div>
+      <div style={{ marginTop: "10px" }}>
         <span
           style={styles.text}
           onClick={() => setMainSection("ResetPassword")}

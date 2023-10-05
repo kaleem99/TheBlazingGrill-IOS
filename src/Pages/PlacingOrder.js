@@ -27,7 +27,14 @@ const PlacingOrder = ({
 }) => {
   const [status, setStatus] = useState("");
   const [order, setOrder] = useState("");
-
+  useEffect(() => {
+    checkForOrders(userDetails, setOrder, setStatus);
+    // console.log(status);
+    if (status !== "In Progress" && cart.length > 0) {
+      setCart([]);
+      clearAllData(setCart);
+    }
+  }, []);
   const deleteOrder = () => {
     const docRef = doc(db, "Orders", order.id);
     setTimeout(() => {
@@ -36,14 +43,6 @@ const PlacingOrder = ({
   };
 
   const checkStatus = () => {
-    // useEffect(() => {
-    checkForOrders(userDetails, setOrder, setStatus);
-    if (status !== "In Progress" && cart.length > 0) {
-      setCart([]);
-      clearAllData(setCart);
-    }
-    // }, []);
-
     return (
       <>
         <button
@@ -74,7 +73,7 @@ const PlacingOrder = ({
                 width: "80%",
                 height: "auto",
                 textAlign: "left",
-                marginTop: 20,
+                margin: "20px auto",
                 padding: 10,
               }}
             >
@@ -90,7 +89,7 @@ const PlacingOrder = ({
             </div>
 
             <Lottie
-              style={{ width: 300, marginTop: 50 }}
+              style={{ width: 300, margin: "50px auto" }}
               autoPlay={true}
               loop={true}
               animationData={require("../assets/PrapringFood.json")}
@@ -103,7 +102,7 @@ const PlacingOrder = ({
                 width: "80%",
                 height: "auto",
                 textAlign: "left",
-                marginTop: 20,
+                margin: "20px auto",
                 padding: 10,
               }}
             >
@@ -120,7 +119,7 @@ const PlacingOrder = ({
               autoPlay={true}
               loop={true}
               animationData={require("../assets/fetchOrder.json")}
-              style={{ width: 300, marginTop: 50 }}
+              style={{ width: 300, margin: "50px auto" }}
             />
           </>
         ) : status === "Pending" ? (
@@ -130,7 +129,7 @@ const PlacingOrder = ({
                 width: "80%",
                 height: "auto",
                 textAlign: "left",
-                marginTop: 20,
+                margin: "20px auto",
                 padding: 10,
               }}
             >
@@ -145,7 +144,7 @@ const PlacingOrder = ({
               autoPlay={true}
               loop={true}
               animationData={require("../assets/OrderPending.json")}
-              style={{ width: 300, marginTop: 50 }}
+              style={{ width: 300, margin: "50px auto" }}
             />
           </>
         ) : status === "Declined" ? (
@@ -155,7 +154,7 @@ const PlacingOrder = ({
                 width: "80%",
                 height: "auto",
                 textAlign: "left",
-                marginTop: 20,
+                margin: "20px auto",
                 padding: 10,
               }}
             >
@@ -174,7 +173,7 @@ const PlacingOrder = ({
                 width: "80%",
                 height: "auto",
                 textAlign: "left",
-                marginTop: 20,
+                margin: "20px auto",
                 padding: 10,
               }}
             >
@@ -190,7 +189,7 @@ const PlacingOrder = ({
               autoPlay={true}
               loop={true}
               animationData={require("../assets/food-delivery.json")}
-              style={{ width: 300, marginTop: 50 }}
+              style={{ width: 300, margin: "50px auto" }}
             />
           </>
         ) : (
@@ -222,6 +221,7 @@ const styles = {
     width: "100%",
     height: "100%",
     paddingTop: 15,
+    textAlign: "center",
     // padding: 20,
   },
   cardContainer: {

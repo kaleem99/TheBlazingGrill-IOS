@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import SlideUpModal from "../Components/slider";
+import SlideUpModal from "../Components/Slider";
 import { auth, db } from "../database/config";
 
 function Cart({
@@ -100,14 +100,14 @@ function Cart({
       <p style={styles.text}>My Cart</p>
       {cart.length > 0 ? (
         <>
-          {/* <SlideUpModal
+          <SlideUpModal
             setMainSection={setMainSection}
             visible={modalVisible}
             onClose={toggleModal}
             setMenuItemClicked={setMenuItemClicked}
             fetchPost={fetchPost}
             cart={cart}
-          /> */}
+          />
         </>
       ) : (
         <p style={styles.text5}>No Items added</p>

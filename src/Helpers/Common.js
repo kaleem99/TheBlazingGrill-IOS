@@ -63,12 +63,15 @@ export const generateUniqueOrderNumber = (storeName, username) => {
 };
 
 export const checkForOrders = (userDetails, setOrder, setStatus) => {
+  // console.log(userDetails);
   const q = query(collection(db, "Orders"));
+  // console.log(q)
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     if (!querySnapshot.empty) {
       const items = [];
       querySnapshot.forEach((doc) => {
-        if (doc.data().userId === userDetails.uid) {
+        if (doc.data().email === userDetails.email) {
+
           if (
             doc.data().status === "Pending" ||
             doc.data().status === "In Progress" ||
@@ -77,6 +80,7 @@ export const checkForOrders = (userDetails, setOrder, setStatus) => {
             doc.data().status === "Delivery"
           ) {
             items.push(doc.data().status);
+            // console.log(doc.data());
 
             setOrder(doc.data());
           }
