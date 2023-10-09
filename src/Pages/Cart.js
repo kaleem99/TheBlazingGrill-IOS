@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import SlideUpModal from "../Components/Slider";
 import { auth, db } from "../database/config";
-
+import {
+  LeadingActions,
+  SwipeableList,
+  SwipeableListItem,
+  SwipeAction,
+  TrailingActions,
+} from "react-swipeable-list";
+import "react-swipeable-list/dist/styles.css";
+import { clearAllData, clearData } from "../Helpers/localStorage";
 function Cart({
   cart,
   setCart,
@@ -51,9 +59,46 @@ function Cart({
   };
 
   const deleteCart = async () => {
-    // Handle cart item deletion logic here
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+    if (confirmed) {
+      // Perform delete logic here
+      await await clearAllData(setCart);
+      getCartData(userDetails, setCart);
+      alert("item has been deleted successfully.");
+      console.log(cart);
+    }
+    // Alert.alert(
+    //   "Confirmation",
+    //   "Are you sure you want to delete item?",
+    //   [
+    //     {
+    //       text: "Cancel",
+    //       style: "cancel",
+    //     },
+    //     {
+    //       text: "OK",
+    //       onPress: async () => {
+    //         // cart.forEach(async (item) => {
+    //         //   const itemRef = item.id;
+    //         //   const docRef = doc(db, "Cart", itemRef);
+    //         //   await deleteDoc(docRef);
+    //         // });
+    //         await clearAllData(setCart);
+    //         getCartData(userDetails, setCart);
+    //         alert("item has been deleted successfully.");
+    //         console.log(cart);
+    //       },
+    //     },
+    //   ],
+    //   { cancelable: false }
+    // );
   };
-
+  const handleSwipeLeft = () => {
+    // Your logic for handling the swipe left action goes here
+    console.log("Swiped left!");
+  };
   const updateCart = (items) => {
     return (
       <div
@@ -88,13 +133,36 @@ function Cart({
 
   const clearCart = async (id) => {
     // Handle cart item deletion confirmation logic here
+    const confirmed = window.confirm("Are you sure you want to delete item?");
+    if (confirmed) {
+      // Perform delete logic here
+      await clearData(id);
+      getCartData(userDetails, setCart);
+    }
   };
 
   const redirectUser = () => {
     alert("Please login or sign up before placing an order");
     setMainSection("Login");
   };
+  // const leadingActions = () => (
+  //   <LeadingActions>
+  //     <SwipeAction onClick={() => console.info("swipe action triggered")}>
+  //       Action name
+  //     </SwipeAction>
+  //   </LeadingActions>
+  // );
 
+  const trailingActions = (id) => (
+    <TrailingActions>
+      <SwipeAction
+        // destructive={true}
+        onClick={() => clearCart(id)}
+      >
+        {/* Delete */}
+      </SwipeAction>
+    </TrailingActions>
+  );
   return (
     <div style={styles.div}>
       <p style={styles.text}>My Cart</p>
@@ -122,92 +190,99 @@ function Cart({
       >
         {cart.map((items, i) => {
           return (
-            <div
-              key={items.dataId}
-              style={{
-                width: "100%",
-                height: 80,
-                marginTop: 10,
-              }}
-            >
-              <div
-                style={{
-                  width: "93%",
-                  height: 80,
-                  backgroundColor: "#303134",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  padding: 5,
-                  marginBottom: 10,
-                  borderRadius: 20,
-                  display: "flex",
-                }}
+            <SwipeableList style={{height: "auto"}}>
+              <SwipeableListItem
+                // leadingActions={leadingActions()}
+                trailingActions={trailingActions(items.dataId)}
               >
-                <img
+                <div
+                  key={items.dataId}
                   style={{
-                    width: "30%",
-                    // height: "100%",
-                    marginTop: "auto",
-                    marginBottom: "auto",
-                    borderRadius: 10,
+                    width: "100%",
+                    height: 80,
+                    marginTop: 10,
                   }}
-                  src={items.img}
-                  alt={items.productName}
-                />
-                <div style={{ width: "40%" }}>
-                  <p style={styles.text2}>{items.productName}</p>
-                  {updateCart(items)}
-                </div>
-                <div style={{ width: "30%" }}>
-                  <div style={styles.itemPrice}>
-                    <p
+                >
+                  <div
+                    style={{
+                      width: "93%",
+                      height: 80,
+                      backgroundColor: "#303134",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      padding: 5,
+                      marginBottom: 10,
+                      borderRadius: 20,
+                      display: "flex",
+                    }}
+                  >
+                    <img
                       style={{
-                        color: "#F7941D",
-                        fontWeight: "700",
-                        fontSize: 17,
-                        textAlign: "center",
-                        marginTop: 2,
+                        width: "30%",
+                        // height: "100%",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        borderRadius: 10,
                       }}
-                    >
-                      R{totalPrices[i].toFixed(2)}
-                    </p>
-                    <div
-                      style={{
-                        width: 70,
-                        height: 30,
-                        marginTop: 15,
-                        flexDirection: "row",
-                      }}
-                    >
-                      {items.specialInstruction !== "" && (
-                        <img
+                      src={items.img}
+                      alt={items.productName}
+                    />
+                    <div style={{ width: "40%" }}>
+                      <p style={styles.text2}>{items.productName}</p>
+                      {updateCart(items)}
+                    </div>
+                    <div style={{ width: "30%" }}>
+                      <div style={styles.itemPrice}>
+                        <p
                           style={{
-                            width: 25,
-                            height: 25,
-                            marginLeft: "auto",
-                            marginRight: "auto",
+                            color: "#F7941D",
+                            fontWeight: "700",
+                            fontSize: 17,
+                            textAlign: "center",
+                            marginTop: 2,
                           }}
-                          src={require("../assets/special.png")}
-                          alt="Special Instruction"
-                        />
-                      )}
-                      {items.extras.length > 0 && (
-                        <img
+                        >
+                          R{totalPrices[i].toFixed(2)}
+                        </p>
+                        <div
                           style={{
-                            width: 25,
-                            height: 25,
-                            marginLeft: "auto",
-                            marginRight: "auto",
+                            width: 70,
+                            height: 30,
+                            marginTop: 15,
+                            flexDirection: "row",
                           }}
-                          src={require("../assets/extra.png")}
-                          alt="Extras"
-                        />
-                      )}
+                        >
+                          {items.specialInstruction !== "" && (
+                            <img
+                              style={{
+                                width: 25,
+                                height: 25,
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                              }}
+                              src={require("../assets/special.png")}
+                              alt="Special Instruction"
+                            />
+                          )}
+                          {items.extras.length > 0 && (
+                            <img
+                              style={{
+                                width: 25,
+                                height: 25,
+                                marginLeft: "auto",
+                                marginRight: "auto",
+                              }}
+                              src={require("../assets/extra.png")}
+                              alt="Extras"
+                            />
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </SwipeableListItem>
+            </SwipeableList>
           );
         })}
         {cart.length > 0 && (

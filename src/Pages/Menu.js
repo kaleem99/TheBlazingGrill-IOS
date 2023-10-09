@@ -491,13 +491,20 @@ function ChosenCategory({
           </div>
         </div>
 
-        <div style={{ height: "80%", width: "100%" }}>
+        <div
+          style={{
+            height: "90%",
+            width: "100%",
+            marginTop: "30px",
+            overflow: "auto",
+          }}
+        >
           <div
             style={{
               alignItems: "center",
               width: "100%",
               paddingBottom: 50,
-              paddingTop: 35,
+              paddingTop: 20,
               marginBottom: 10,
               height: "auto",
             }}
@@ -558,9 +565,7 @@ function ChosenCategory({
                         }
                   }
                   src={
-                    chosenItem.fileURL
-                      ? chosenItem.fileURL
-                      : img // Replace with your image URL or default image
+                    chosenItem.fileURL ? chosenItem.fileURL : img // Replace with your image URL or default image
                   }
                   alt="Special"
                 />
@@ -639,30 +644,34 @@ function ChosenCategory({
                 />
               </>
             )}
-            {chosenItem.flavours != undefined && (
-              <>
-                <button
-                  style={styles.extrasAndToppingsButton}
-                  onClick={() =>
-                    setDropDown((prevState) => ({
-                      ...prevState,
-                      flavours: !prevState.flavours,
-                    }))
-                  }
-                >
-                  <span style={styles.toppings}>Choose Your Flavour</span>
-                </button>
-                {dropDown.flavours && (
-                  <PsychoFriesExtras
-                    flavoursArr={chosenItem.flavours.filter(
-                      (data) => data.name !== ""
-                    )}
-                    setSelectedTopping={setSelectedTopping}
-                    selectedTopping={selectedTopping}
-                  />
-                )}
-              </>
-            )}
+            {console.log(chosenItem.flavours, "Hello World")}
+            {chosenItem.flavours != undefined &&
+              chosenItem.flavours.filter(
+                (data) => data.name !== "" && data.price !== ""
+              ).length > 0 && (
+                <>
+                  <button
+                    style={styles.extrasAndToppingsButton}
+                    onClick={() =>
+                      setDropDown((prevState) => ({
+                        ...prevState,
+                        flavours: !prevState.flavours,
+                      }))
+                    }
+                  >
+                    <span style={styles.toppings}>Choose Your Flavour</span>
+                  </button>
+                  {dropDown.flavours && (
+                    <PsychoFriesExtras
+                      flavoursArr={chosenItem.flavours.filter(
+                        (data) => data.name !== ""
+                      )}
+                      setSelectedTopping={setSelectedTopping}
+                      selectedTopping={selectedTopping}
+                    />
+                  )}
+                </>
+              )}
             {(chosenItem.name === "1/4 Grilled Chicken" ||
               chosenItem.name === "1/4 Grilled Chicken and Fries") && (
               <>
