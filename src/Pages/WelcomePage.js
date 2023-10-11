@@ -9,13 +9,14 @@ const images = [
 
 function WelcomePage({ setState }) {
   return (
-    <div style={{ height: "100%" }}>
+    <div style={{ height: "100%", overflow: "auto" }}>
       <div style={styles.imageDiv}>
-      <img
-        style={styles.BlazingImage}
-        src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
-        alt="Blazing Grill Image"
-      />
+        <img
+          className="BlazingImage"
+          // style={styles.BlazingImage}
+          src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+          alt=""
+        />
       </div>
       <h2 style={styles.text}>Come Get Some!!!</h2>
       <div
@@ -24,10 +25,11 @@ function WelcomePage({ setState }) {
           marginLeft: "auto",
           marginRight: "auto",
           height: "auto",
+          textAlign: "center",
         }}
       >
         <AutoImageSlideshow images={images} autoplayInterval={2000} />
-        <p style={styles.smallText}>
+        <p className="WelcomePageSmallText">
           Our passion and love for good food has always been the driving force
           behind our brand. The Blazing Grill was born in our home kitchen where
           we spent days on end perfecting every detail on our menu. Now we would
@@ -35,7 +37,7 @@ function WelcomePage({ setState }) {
           good quality affordable food.
         </p>
         <button
-          style={styles.getStarted}
+          className="WelcomePageGetStartedPage"
           onClick={() => setState("Specials")}
         >
           Get Started
@@ -50,6 +52,7 @@ const styles = {
     textAlign: "center",
     color: "#F7941D",
     fontSize: 25,
+    marginBlockStart: 0,
   },
   smallText: {
     textAlign: "left",
@@ -59,37 +62,14 @@ const styles = {
     // width: "90%",
     marginRight: "auto",
   },
-  BlazingImage: {
-    width: "70%",
-    // height: "30%",
-    marginLeft: "auto",
-    marginRight: "auto",
-    borderRadius: 80,
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  getStarted: {
-    marginTop: 25,
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "100%",
-    height: 50,
-    paddingTop: 5,
-    backgroundColor: "#F7941D",
-    borderRadius: 25,
-    color: "white",
-    fontSize: 20,
-    textAlign: "center",
-    cursor: "pointer",
-    border: "none"
-  },
+
   imageDiv: {
     width: "100%",
     height: "auto",
     marginLeft: "auto",
     marginRight: "auto",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 };
 
 export default WelcomePage;

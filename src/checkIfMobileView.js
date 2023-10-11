@@ -28,7 +28,11 @@ class MobileDetector extends React.Component {
 
     return (
       <div>
-        {isMobile ? <App /> : <p>Please ensure to only use a mobile device</p>}
+        {isMobile ? (
+          <App phoneHeight={window.innerHeight} />
+        ) : (
+          <p>Please ensure to only use a mobile device</p>
+        )}
       </div>
     );
   }

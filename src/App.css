@@ -128,6 +128,23 @@ body {
   .MainMenuText {
     font-size: 14px;
   }
+  .BlazingImage {
+    width: 60% !important;
+  }
+  .WelcomePageImage {
+    width: 80% !important;
+    border-radius: 10px;
+  }
+  .WelcomePageGetStartedPage {
+    width: 80% !important;
+    height: 40px !important;
+  }
+  .WelcomePageSmallText {
+    font-size: 11px !important;
+    width: 82% !important;
+    /* text-align: center !important; */
+    margin: auto;
+  }
 }
 
 @media only screen and (max-height: 600px) {
@@ -135,7 +152,6 @@ body {
     height: 58vh !important;
   }
 }
-
 
 .modalSlider2 {
   position: absolute;
@@ -148,4 +164,39 @@ body {
   right: 0;
   bottom: 0;
   z-index: 9;
+}
+.BlazingImage {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 80;
+  margin-top: 10%;
+  margin-bottom: 20;
+}
+.WelcomePageImage {
+  width: 100%;
+  border-radius: 10px;
+}
+.WelcomePageGetStartedPage {
+  margin-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 50px;
+  padding-top: 5px;
+  background-color: #f7941d;
+  border-radius: 25px;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+}
+.WelcomePageSmallText {
+  text-align: left;
+  color: white;
+  font-size: 13px;
+  margin-top: 15px;
+  /* width: 90%; */
+  margin-right: auto;
 }

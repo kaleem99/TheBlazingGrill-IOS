@@ -37,7 +37,7 @@ import WelcomePage from "./Pages/WelcomePage";
 
 import "./App.css"; // Import your CSS file for styling
 
-function App() {
+function App({ phoneHeight }) {
   const [section, setSection] = useState("Main");
   const [quantity, setQuantity] = useState(0);
   const [cart, setCart] = useState([]);

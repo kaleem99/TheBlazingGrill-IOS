@@ -33,7 +33,8 @@ const AutoImageSlideshow = ({ images, autoplayInterval }) => {
         <img
           src={state}
           alt=""
-          style={{ width: "100%", height: 200, borderRadius: 10 }}
+          className="WelcomePageImage"
+          // style={{ width: "100%", height: 200, borderRadius: 10 }}
         />
       </div>
     </div>
