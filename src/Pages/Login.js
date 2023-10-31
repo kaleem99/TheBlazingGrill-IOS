@@ -97,7 +97,8 @@ const LoginPage = ({ setMainSection }) => {
           style={styles.specialText}
           onClick={() => setMainSection("SignUp")}
         >
-        {" "}  Sign Up
+          {" "}
+          Sign Up
         </span>
       </div>
       <div style={{ marginTop: "10px" }}>
@@ -132,7 +133,7 @@ const styles = {
     color: "white",
   },
   input: {
-    width: "100%",
+    width: "98.5%",
     height: 30,
     // padding: 10,
     marginBottom: 20,
@@ -142,7 +143,7 @@ const styles = {
     background: "none",
   },
   button: {
-    width: "100%",
+    width: "102%",
     height: 40,
     backgroundColor: "#F0941E",
     color: "white",

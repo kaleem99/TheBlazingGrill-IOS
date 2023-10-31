@@ -194,7 +194,7 @@ const styles = {
     color: "white",
   },
   input: {
-    width: "90%",
+    width: "88.5%",
     height: 35,
     // padding: 10,
     marginBottom: 20,
@@ -204,7 +204,7 @@ const styles = {
     background: "none",
   },
   button: {
-    width: "90%",
+    width: "92%",
     height: 40,
     backgroundColor: "#F0941E",
     alignItems: "center",
