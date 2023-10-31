@@ -71,7 +71,7 @@ function Checkout({
 
   const getPaymentStatus = () => {
     fetch(
-      `http://express-backend-api.uc.r.appspot.com/validate/${checkoutUrl}/`
+      `https://express-backend-api.uc.r.appspot.com/validate/${checkoutUrl}/`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -168,7 +168,7 @@ function Checkout({
       //direct to payment gateway
       //if successful set paid to true
       fetch(
-        `http://express-backend-api.uc.r.appspot.com/create-checkout/${
+        `https://express-backend-api.uc.r.appspot.com/create-checkout/${
           totalPrice.toFixed(2) * 100
         }`
       )
