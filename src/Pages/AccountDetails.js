@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 import { auth } from "../database/config";
-import { updateProfile, updateEmail } from "firebase/auth";
+import {
+  updateProfile,
+  updateEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+} from "firebase/auth";
 import Logout from "./Logout";
 import LoginPage from "./Login";
 import { firebaseConfig } from "../database/config";
@@ -71,7 +76,35 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
       console.error("Error updating details:", e);
     }
   };
-
+  const deleteUserAccount = async () => {
+    const result = window.confirm(
+      "Are you sure you would like to delete your Blazing Grill Account"
+    );
+    if (result) {
+      // User clicked "OK"
+      const user = auth.currentUser;
+      const credentials = window.prompt(
+        "Please enter your password for confirmation:"
+      );
+    
+      const credential = EmailAuthProvider.credential(user.email, credentials);
+      console.log(credential, 30000);
+      await reauthenticateWithCredential(user, credential);
+      user
+        .delete()
+        .then(() => {
+          alert("Your Blazing Grill account has been deleted successfully.");
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Error, please try again later.");
+        });
+    } else {
+      // User clicked "Cancel"
+      console.log("User clicked Cancel. Action canceled.");
+    }
+  };
   return (
     <div style={styles.container}>
       <div
@@ -124,6 +157,19 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
           style={styles.input}
           value={details.phoneNumber}
         />
+        <button
+          onClick={() => deleteUserAccount()}
+          style={{
+            color: "red",
+            fontWeight: "bold",
+            background: "none",
+            border: "none",
+            marginTop: "30px",
+            fontSize: "16px",
+          }}
+        >
+          Delete Account
+        </button>
       </div>
     </div>
   );
