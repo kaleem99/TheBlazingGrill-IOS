@@ -367,7 +367,12 @@ function ChosenCategory({
           {console.log(itemsData)}
           {itemsData && name !== "Burgers" ? (
             itemsData
-              .sort((a, b) => (a.name > b.name ? 1 : -1))
+              .sort((a, b) => {
+                if (name === "Chicken Wings") {
+                  return a.name < b.name ? 1 : -1;
+                }
+                return a.name > b.name ? 1 : -1;
+              })
               .map((item) => {
                 return (
                   <button

@@ -35,8 +35,7 @@ const styles = {
     marginLeft: "auto",
     marginRight: "auto",
     flexDirection: "row",
-    display: "flex"
-
+    display: "flex",
   },
   specialContainer: {
     width: "50%",
@@ -44,7 +43,7 @@ const styles = {
     marginLeft: "auto",
     marginRight: "auto",
     flexDirection: "row",
-    display: "flex"
+    display: "flex",
   },
   button: {
     textAlign: "center",
@@ -57,8 +56,8 @@ const styles = {
     borderColor: "#F7941D",
     backgroundColor: "#F7941D",
     borderRadius: 20,
-    width: 35,
-    height: 28,
+    width: "auto",
+    height: "auto",
     cursor: "pointer",
     border: "none",
   },
