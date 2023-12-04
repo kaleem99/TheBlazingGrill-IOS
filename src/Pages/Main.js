@@ -380,7 +380,7 @@ const styles = {
   },
   bottomMenu: {
     width: "100%",
-    height: "7%",
+    height: "8%",
     paddingTop: 5,
     backgroundColor: "#F7941D",
     display: "flex",

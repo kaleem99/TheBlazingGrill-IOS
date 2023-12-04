@@ -343,7 +343,7 @@ function ChosenCategory({
           style={{
             overflow: "auto",
             width: "100%",
-            height: "55vh",
+            height: "50vh",
             margin: "50px auto",
           }}
           //   contentContainerStyle={{
@@ -383,7 +383,7 @@ function ChosenCategory({
                       // height: 100,
                       marginLeft: "auto",
                       marginRight: "auto",
-                      marginTop: 30,
+                      marginTop: "10px",
                       borderColor: "white",
                       borderBottomWidth: 2,
                       display: "flex",
@@ -392,6 +392,7 @@ function ChosenCategory({
                       background: "none",
                       borderTop: 0,
                       marginBlockStart: "1px",
+                      fontSize: "12px"
                     }}
                     onClick={() => {
                       let filteredData = [];

@@ -60,6 +60,7 @@ const styles = {
     height: "auto",
     cursor: "pointer",
     border: "none",
+    paddingTop: 2,
   },
   quantity: {
     textAlign: "center",
