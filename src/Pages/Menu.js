@@ -392,7 +392,7 @@ function ChosenCategory({
                       background: "none",
                       borderTop: 0,
                       marginBlockStart: "1px",
-                      fontSize: "12px"
+                      fontSize: "12px",
                     }}
                     onClick={() => {
                       let filteredData = [];
@@ -838,6 +838,7 @@ function Menu({
             marginTop: 10,
             justifyContent: "center",
             alignItems: "center",
+            textAlign: "center",
           }}
         >
           <span
