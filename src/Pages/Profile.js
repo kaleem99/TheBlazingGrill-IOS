@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { auth } from "../database/config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 // import Icon from "react-native-vector-icons/MaterialIcons";
+import "../Components/Profile.css";
 import logout from "./Logout";
 import LoginPage from "./Login";
 import AccountDetails from "./AccountDetails";
@@ -97,6 +98,10 @@ const Profile = ({
         <p style={styles.text}>{userDetails.displayName}</p>
         <p style={styles.text1}>{userDetails.email}</p>
       </div>
+      {/* <div className="card">
+        <div className="content">
+          <div className="back">
+            <div className="back-content"> */}
       <div style={{ margin: "auto", width: 160 }}>
         <img
           style={{ width: 160, top: 140 }}
@@ -104,6 +109,11 @@ const Profile = ({
           alt="Profile"
         ></img>
       </div>
+      {/* </div>
+          </div>
+        </div>
+      </div> */}
+
       <div style={{ width: "100%" }}>
         {content.map((data, i) => {
           return (

@@ -374,20 +374,23 @@ function ChosenCategory({
                     style={{
                       // flex: 1,
 
-                      width: "94%",
+                      width: "96%",
                       // height: 100,
                       marginLeft: "auto",
                       marginRight: "auto",
-                      marginTop: "10px",
+                      marginTop: "40px",
+                      // borderColor: "white",
                       borderColor: "white",
-                      borderBottomWidth: 2,
-                      display: "flex",
-                      borderLeft: 0,
-                      borderRight: 0,
+                      borderWidth: "1px",
+                      // display: "flex",
+                      // borderLeft: 0,
+                      // borderRight: 0,
                       background: "none",
-                      borderTop: 0,
                       marginBlockStart: "1px",
-                      fontSize: "12px"
+                      fontSize: "15px",
+                      borderRadius: "10px",
+                      marginBottom: "20px",
+                      // backdropFilter: "blur(2px)",
                     }}
                     onClick={() => {
                       let filteredData = [];
@@ -401,20 +404,22 @@ function ChosenCategory({
                       setChosenItem(item);
                     }}
                   >
-                    <p style={{ color: "white", fontWeight: "600" }}>
-                      {item.name}
-                    </p>
-                    <p
-                      style={{
-                        marginLeft: "auto",
-                        marginRight: 0,
-                        color: "white",
-                        fontWeight: "600",
-                        // fontFamily: "sans-serif"
-                      }}
-                    >
-                      R{item.price}
-                    </p>
+                    <div style={{ display: "flex", width: "100%" }}>
+                      <p className="menuItem">{item.name}</p>
+                      <p
+                        className="menuItem"
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: 0,
+
+                          // fontFamily: "sans-serif"
+                        }}
+                      >
+                        R{item.price}
+                      </p>
+                    </div>
+
+                    <p className="menuItem">{item.Information}</p>
                   </button>
                 );
               })

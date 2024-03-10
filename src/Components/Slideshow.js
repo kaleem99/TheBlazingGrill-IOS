@@ -6,7 +6,6 @@ const delay = 2500;
 function Slideshow({ items }) {
   const [index, setIndex] = React.useState(0);
   const timeoutRef = React.useRef(null);
-
   function resetTimeout() {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -27,16 +26,20 @@ function Slideshow({ items }) {
       resetTimeout();
     };
   }, [index]);
-  console.log(items);
+  // console.log(items);
   return (
     <div className="slideshow">
+      <div className="SlideShowContainer"></div>
+      <div className="ContentSideShow">
+        <h1>{items[index].title}</h1>
+        <p>{items[index].text}</p>
+      </div>
       <div
         className="slideshowSlider"
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
       >
         {items.map((data, index) => (
           <div className="slide" key={index}>
-            {console.log(data)}
             <img
               style={{ objectFit: "cover" }}
               width={"100%"}

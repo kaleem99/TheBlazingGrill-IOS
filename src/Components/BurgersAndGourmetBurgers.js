@@ -74,18 +74,60 @@ function BurgersAndGourmetBurgers({
               .sort((a, b) => (a.name > b.name ? 1 : -1))
               .map((item) => {
                 return (
-                  <div
+                  // <div
+                  //   style={{
+                  //     width: "94%",
+                  //     marginLeft: "auto",
+                  //     marginRight: "auto",
+                  //     marginTop: 30,
+                  //     borderColor: "white",
+                  //     borderBottomWidth: 1,
+                  //     display: "flex",
+                  //     flexDirection: "row",
+                  //     borderBottom: "1px solid white",
+                  //     marginBlockStart: "0px",
+                  //   }}
+                  //   onClick={() => {
+                  //     setChosenItem(item);
+                  //     const filteredData = filterOutExtras(item);
+                  //     setNewDataArr(filteredData);
+                  //   }}
+                  // >
+                  //   <p style={{ color: "white", fontWeight: "600" }}>
+                  //     {item.name}
+                  //   </p>
+                  //   <p
+                  //     style={{
+                  //       marginLeft: "auto",
+                  //       marginRight: 0,
+                  //       color: "white",
+                  //       fontWeight: "600",
+                  //     }}
+                  //   >
+                  //     R{item.price}
+                  //   </p>
+                  // </div>
+                  <button
                     style={{
-                      width: "94%",
+                      // flex: 1,
+
+                      width: "96%",
+                      // height: 100,
                       marginLeft: "auto",
                       marginRight: "auto",
-                      marginTop: 30,
+                      marginTop: "40px",
+                      // borderColor: "white",
                       borderColor: "white",
-                      borderBottomWidth: 1,
-                      display: "flex",
-                      flexDirection: "row",
-                      borderBottom: "1px solid white",
-                      marginBlockStart: "0px",
+                      borderWidth: "1px",
+                      // display: "flex",
+                      // borderLeft: 0,
+                      // borderRight: 0,
+                      background: "none",
+                      marginBlockStart: "1px",
+                      fontSize: "15px",
+                      borderRadius: "10px",
+                      marginBottom: "20px",
+                      // backdropFilter: "blur(2px)",
                     }}
                     onClick={() => {
                       setChosenItem(item);
@@ -93,20 +135,23 @@ function BurgersAndGourmetBurgers({
                       setNewDataArr(filteredData);
                     }}
                   >
-                    <p style={{ color: "white", fontWeight: "600" }}>
-                      {item.name}
-                    </p>
-                    <p
-                      style={{
-                        marginLeft: "auto",
-                        marginRight: 0,
-                        color: "white",
-                        fontWeight: "600",
-                      }}
-                    >
-                      R{item.price}
-                    </p>
-                  </div>
+                    <div style={{ display: "flex", width: "100%" }}>
+                      <p className="menuItem">{item.name}</p>
+                      <p
+                        className="menuItem"
+                        style={{
+                          marginLeft: "auto",
+                          marginRight: 0,
+
+                          // fontFamily: "sans-serif"
+                        }}
+                      >
+                        R{item.price}
+                      </p>
+                    </div>
+
+                    <p className="menuItem">{item.Information}</p>
+                  </button>
                 );
               })}
           <div
@@ -128,18 +173,60 @@ function BurgersAndGourmetBurgers({
           {beefburgers.length > 0 &&
             beefburgers.map((item) => {
               return (
-                <div
+                // <div
+                //   style={{
+                //     width: "94%",
+                //     marginLeft: "auto",
+                //     marginRight: "auto",
+                //     marginTop: 30,
+                //     borderColor: "white",
+                //     borderBottomWidth: 1,
+                //     display: "flex",
+                //     flexDirection: "row",
+                //     borderBottom: "1px solid white",
+                //     marginBlockStart: "0px",
+                //   }}
+                //   onClick={() => {
+                //     setChosenItem(item);
+                //     const filteredData = filterOutExtras(item);
+                //     setNewDataArr(filteredData);
+                //   }}
+                // >
+                //   <p style={{ color: "white", fontWeight: "600" }}>
+                //     {item.name}
+                //   </p>
+                //   <p
+                //     style={{
+                //       marginLeft: "auto",
+                //       marginRight: 0,
+                //       color: "white",
+                //       fontWeight: "600",
+                //     }}
+                //   >
+                //     R{item.price}
+                //   </p>
+                // </div>
+                <button
                   style={{
-                    width: "94%",
+                    // flex: 1,
+
+                    width: "96%",
+                    // height: 100,
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 30,
+                    marginTop: "40px",
+                    // borderColor: "white",
                     borderColor: "white",
-                    borderBottomWidth: 1,
-                    display: "flex",
-                    flexDirection: "row",
-                    borderBottom: "1px solid white",
-                    marginBlockStart: "0px",
+                    borderWidth: "1px",
+                    // display: "flex",
+                    // borderLeft: 0,
+                    // borderRight: 0,
+                    background: "none",
+                    marginBlockStart: "1px",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    marginBottom: "20px",
+                    // backdropFilter: "blur(2px)",
                   }}
                   onClick={() => {
                     setChosenItem(item);
@@ -147,20 +234,23 @@ function BurgersAndGourmetBurgers({
                     setNewDataArr(filteredData);
                   }}
                 >
-                  <p style={{ color: "white", fontWeight: "600" }}>
-                    {item.name}
-                  </p>
-                  <p
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: 0,
-                      color: "white",
-                      fontWeight: "600",
-                    }}
-                  >
-                    R{item.price}
-                  </p>
-                </div>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <p className="menuItem">{item.name}</p>
+                    <p
+                      className="menuItem"
+                      style={{
+                        marginLeft: "auto",
+                        marginRight: 0,
+
+                        // fontFamily: "sans-serif"
+                      }}
+                    >
+                      R{item.price}
+                    </p>
+                  </div>
+
+                  <p className="menuItem">{item.Information}</p>
+                </button>
               );
             })}
           <div
@@ -182,16 +272,58 @@ function BurgersAndGourmetBurgers({
           {chickenBurgers.length > 0 &&
             chickenBurgers.map((item) => {
               return (
-                <div
+                // <div
+                //   style={{
+                //     width: "94%",
+                //     marginLeft: "auto",
+                //     marginRight: "auto",
+                //     marginTop: 30,
+                //     display: "flex",
+                //     flexDirection: "row",
+                //     borderBottom: "1px solid white",
+                //     marginBlockStart: "0px",
+                //   }}
+                //   onClick={() => {
+                //     setChosenItem(item);
+                //     const filteredData = filterOutExtras(item);
+                //     setNewDataArr(filteredData);
+                //   }}
+                // >
+                //   <p style={{ color: "white", fontWeight: "600" }}>
+                //     {item.name}
+                //   </p>
+                //   <p
+                //     style={{
+                //       marginLeft: "auto",
+                //       marginRight: 0,
+                //       color: "white",
+                //       fontWeight: "600",
+                //     }}
+                //   >
+                //     R{item.price}
+                //   </p>
+                // </div>
+                <button
                   style={{
-                    width: "94%",
+                    // flex: 1,
+
+                    width: "96%",
+                    // height: 100,
                     marginLeft: "auto",
                     marginRight: "auto",
-                    marginTop: 30,
-                    display: "flex",
-                    flexDirection: "row",
-                    borderBottom: "1px solid white",
-                    marginBlockStart: "0px",
+                    marginTop: "40px",
+                    // borderColor: "white",
+                    borderColor: "white",
+                    borderWidth: "1px",
+                    // display: "flex",
+                    // borderLeft: 0,
+                    // borderRight: 0,
+                    background: "none",
+                    marginBlockStart: "1px",
+                    fontSize: "15px",
+                    borderRadius: "10px",
+                    marginBottom: "20px",
+                    // backdropFilter: "blur(2px)",
                   }}
                   onClick={() => {
                     setChosenItem(item);
@@ -199,20 +331,23 @@ function BurgersAndGourmetBurgers({
                     setNewDataArr(filteredData);
                   }}
                 >
-                  <p style={{ color: "white", fontWeight: "600" }}>
-                    {item.name}
-                  </p>
-                  <p
-                    style={{
-                      marginLeft: "auto",
-                      marginRight: 0,
-                      color: "white",
-                      fontWeight: "600",
-                    }}
-                  >
-                    R{item.price}
-                  </p>
-                </div>
+                  <div style={{ display: "flex", width: "100%" }}>
+                    <p className="menuItem">{item.name}</p>
+                    <p
+                      className="menuItem"
+                      style={{
+                        marginLeft: "auto",
+                        marginRight: 0,
+
+                        // fontFamily: "sans-serif"
+                      }}
+                    >
+                      R{item.price}
+                    </p>
+                  </div>
+
+                  <p className="menuItem">{item.Information}</p>
+                </button>
               );
             })}
         </div>

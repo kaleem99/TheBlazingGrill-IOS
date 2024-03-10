@@ -181,6 +181,19 @@ function App({ phoneHeight }) {
               src={require("./assets/TBG_Final_TransWhite-1024x894.png")}
               alt="Blazing Image"
             />
+            {/* <div className="card">
+              <div className="content">
+                <div className="back">
+                  <div className="back-content">
+                    <img
+                      className="blazing-image"
+                      src={require("./assets/TBG_Final_TransWhite-1024x894.png")}
+                      alt="Blazing Image"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div> */}
             <Lottie
               className="loading-animation"
               autoPlay
