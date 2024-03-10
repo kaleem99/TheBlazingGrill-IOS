@@ -28,7 +28,6 @@ const h3Header = {
 function Slideshow({ items }) {
   const [index, setIndex] = React.useState(0);
   const timeoutRef = React.useRef(null);
-
   function resetTimeout() {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -52,6 +51,11 @@ function Slideshow({ items }) {
 
   return (
     <div className="slideshow">
+      <div className="SlideShowContainer"></div>
+      <div className="ContentSideShow">
+        <h1>{items[index].title}</h1>
+        <p>{items[index].text}</p>
+      </div>
       <div
         className="slideshowSlider"
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
@@ -65,8 +69,6 @@ function Slideshow({ items }) {
               alt=""
               src={data.uri}
             ></img>
-            <h2 style={h2Header}>{data.title}</h2>
-            <p style={h3Header}>{data.text}</p>
             <div
               style={{
                 width: "100%",
