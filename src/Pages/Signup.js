@@ -3,6 +3,7 @@ import React, { useState, useRef } from "react";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 import { db } from "../database/config";
 import { auth } from "../database/config";
+
 import {
   getAuth,
   onAuthStateChanged,
@@ -15,7 +16,9 @@ import {
 } from "firebase/auth";
 import firebase from "firebase/compat/app";
 // import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-
+import { Icon } from "react-icons-kit";
+import { eyeOff } from "react-icons-kit/feather/eyeOff";
+import { eye } from "react-icons-kit/feather/eye";
 const SignUpPage = ({ setState, setMainSection }) => {
   const [formData, setFormData] = useState({
     username: "",
@@ -26,7 +29,7 @@ const SignUpPage = ({ setState, setMainSection }) => {
   });
   const [users, setUsers] = useState("");
   const [showPassword, setShowPassword] = useState("password");
-
+  const [icon, setIcon] = useState(eyeOff);
   const [verificationId, setVerificationId] = useState("");
   const [code, setCode] = useState("");
   const [verificationConfirmed, setVerificationConfirmed] = useState("");
@@ -34,9 +37,11 @@ const SignUpPage = ({ setState, setMainSection }) => {
 
   const handleTogglePassword = () => {
     if (showPassword === "password") {
+      setIcon(eye);
       setShowPassword("text");
     } else {
       setShowPassword("password");
+      setIcon(eyeOff);
     }
   };
 
@@ -129,13 +134,17 @@ const SignUpPage = ({ setState, setMainSection }) => {
             width: 40,
             height: 40,
             position: "absolute",
-            right: 10,
+            right: 20,
             background: "none",
             border: "none",
+            color: "white",
           }}
           onClick={handleTogglePassword}
         >
-          <div
+          <span class="flex justify-around items-center">
+            <Icon class="absolute mr-10" icon={icon} size={22} />
+          </span>
+          {/* <div
             style={{
               width: 20,
               height: 20,
@@ -155,7 +164,7 @@ const SignUpPage = ({ setState, setMainSection }) => {
               src={require("../assets/eye.png")}
               alt="Eye"
             />
-          </div>
+          </div> */}
         </button>
       </div>
       <button style={styles.button} className="button" onClick={addUser}>
@@ -192,6 +201,9 @@ const styles = {
     fontSize: 24,
     marginBottom: 20,
     color: "white",
+    width: "90%",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
   input: {
     width: "88.5%",
@@ -202,9 +214,10 @@ const styles = {
     borderColor: "white",
     color: "white",
     background: "none",
+    borderRadius: "5px",
   },
   button: {
-    width: "92%",
+    width: "90%",
     height: 40,
     backgroundColor: "#F0941E",
     alignItems: "center",
@@ -212,6 +225,7 @@ const styles = {
     border: "none",
     color: "white",
     fontWeight: "bold",
+    borderRadius: "5px",
   },
   buttonText: {
     color: "#fff",

@@ -36,6 +36,7 @@ import backgroundImage from "./assets/smokeyBackground1024_1.png";
 import WelcomePage from "./Pages/WelcomePage";
 
 import "./App.css"; // Import your CSS file for styling
+import SwipeBack from "./Components/SwipeBack";
 
 function App({ phoneHeight }) {
   const [section, setSection] = useState("Main");
@@ -53,6 +54,26 @@ function App({ phoneHeight }) {
   const [chosenItem, setChosenItem] = useState("");
   const [driverLoggedIn, setDriverLoggedIn] = useState(false);
 
+  // Call this function to send a message to the React Native app
+  useEffect(() => {
+    // Add an event listener to handle messages sent from the React Native WebView
+    const handleMessage = (event) => {
+      if (event.data === "BackButtonPressed") {
+        // Handle the back button message
+        console.log("Back button pressed from React Native");
+      } else {
+        // Handle other messages or ignore webpack warnings
+        console.log("Received message from React Native:", event.data);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.emailVerified) {
@@ -108,80 +129,86 @@ function App({ phoneHeight }) {
   }, [userDetails]);
 
   return (
-    <div
-      style={{
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
-        width: "100%",
-        minHeight: "100vh",
-        maxHeight: "auto",
-      }}
-      className="container"
-    >
-      <div className="background">
-        {connected && !driverLoggedIn ? (
-          <Sections
-            setQuantity={setQuantity}
-            quantity={quantity}
-            state={section}
-            setState={setSection}
-            cart={cart}
-            setCart={setCart}
-            setSection={setSection}
-            setSelectedStore={setSelectedStore}
-            isLoggedIn={isLoggedIn}
-            userDetails={userDetails}
-            user={user}
-            setUserDetails={setUserDetails}
-            selectedStore={selectedStore}
-            latitude={latitude}
-            longitude={longitude}
-            setLatitude={setLatitude}
-            setLongitude={setLongitude}
-            setAddress={setAddress}
-            address={address}
-            menuItemClicked={menuItemClicked}
-            setMenuItemClicked={setMenuItemClicked}
-            chosenItem={chosenItem}
-            setChosenItem={setChosenItem}
-            driverLoggedIn={driverLoggedIn}
-          />
-        ) : driverLoggedIn ? (
-          // <MainDriverApp
-          //   cart={cart}
-          //   setCart={setCart}
-          //   setQuantity={setQuantity}
-          //   quantity={quantity}
-          //   setState={setSection}
-          //   setSelectedStore={setSelectedStore}
-          //   isLoggedIn={isLoggedIn}
-          //   userDetails={userDetails}
-          //   setSection={setSection}
-          //   setUserDetails={setUserDetails}
-          //   selectedStore={selectedStore}
-          //   latitude={latitude}
-          //   longitude={longitude}
-          //   setLatitude={setLatitude}
-          //   setLongitude={setLongitude}
-          //   setAddress={setAddress}
-          //   address={address}
-          //   menuItemClicked={menuItemClicked}
-          //   setMenuItemClicked={setMenuItemClicked}
-          //   chosenItem={chosenItem}
-          //   setChosenItem={setChosenItem}
-          // />
-          <div>
-            <h1>Driver Profile</h1>
-          </div>
-        ) : (
-          <div style={{ textAlign: "center" }}>
-            <img
-              className="blazing-image"
-              src={require("./assets/TBG_Final_TransWhite-1024x894.png")}
-              alt="Blazing Image"
+      <div
+        style={{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          width: "100%",
+          minHeight: "100vh",
+          maxHeight: "auto",
+        }}
+        className="container"
+      >
+        {/* <button
+        style={{ position: "relative", zIndex: 99 }}
+        onClick={sendMessageToReactNative}
+      >
+        Click me{" "}
+      </button> */}
+        <div className="background">
+          {connected && !driverLoggedIn ? (
+            <Sections
+              setQuantity={setQuantity}
+              quantity={quantity}
+              state={section}
+              setState={setSection}
+              cart={cart}
+              setCart={setCart}
+              setSection={setSection}
+              setSelectedStore={setSelectedStore}
+              isLoggedIn={isLoggedIn}
+              userDetails={userDetails}
+              user={user}
+              setUserDetails={setUserDetails}
+              selectedStore={selectedStore}
+              latitude={latitude}
+              longitude={longitude}
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+              setAddress={setAddress}
+              address={address}
+              menuItemClicked={menuItemClicked}
+              setMenuItemClicked={setMenuItemClicked}
+              chosenItem={chosenItem}
+              setChosenItem={setChosenItem}
+              driverLoggedIn={driverLoggedIn}
             />
-            {/* <div className="card">
+          ) : driverLoggedIn ? (
+            // <MainDriverApp
+            //   cart={cart}
+            //   setCart={setCart}
+            //   setQuantity={setQuantity}
+            //   quantity={quantity}
+            //   setState={setSection}
+            //   setSelectedStore={setSelectedStore}
+            //   isLoggedIn={isLoggedIn}
+            //   userDetails={userDetails}
+            //   setSection={setSection}
+            //   setUserDetails={setUserDetails}
+            //   selectedStore={selectedStore}
+            //   latitude={latitude}
+            //   longitude={longitude}
+            //   setLatitude={setLatitude}
+            //   setLongitude={setLongitude}
+            //   setAddress={setAddress}
+            //   address={address}
+            //   menuItemClicked={menuItemClicked}
+            //   setMenuItemClicked={setMenuItemClicked}
+            //   chosenItem={chosenItem}
+            //   setChosenItem={setChosenItem}
+            // />
+            <div>
+              <h1>Driver Profile</h1>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center" }}>
+              <img
+                className="blazing-image"
+                src={require("./assets/TBG_Final_TransWhite-1024x894.png")}
+                alt="Blazing Image"
+              />
+              {/* <div className="card">
               <div className="content">
                 <div className="back">
                   <div className="back-content">
@@ -194,22 +221,22 @@ function App({ phoneHeight }) {
                 </div>
               </div>
             </div> */}
-            <Lottie
-              className="loading-animation"
-              autoPlay
-              loop
-              animationData={require("./assets/99109-loading.json")}
-            />
-            <div className="loading-text">
-              <p style={{ color: "white" }}>
-                Loading, Please ensure that you have a stable internet
-                connection.
-              </p>
+              <Lottie
+                className="loading-animation"
+                autoPlay
+                loop
+                animationData={require("./assets/99109-loading.json")}
+              />
+              <div className="loading-text">
+                <p style={{ color: "white" }}>
+                  Loading, Please ensure that you have a stable internet
+                  connection.
+                </p>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
   );
 }
 

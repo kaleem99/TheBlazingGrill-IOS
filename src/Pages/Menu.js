@@ -367,7 +367,12 @@ function ChosenCategory({
           {console.log(itemsData)}
           {itemsData && name !== "Burgers" ? (
             itemsData
-              .sort((a, b) => (a.name > b.name ? 1 : -1))
+              .sort((a, b) => {
+                if (name === "Chicken Wings") {
+                  return a.name < b.name ? 1 : -1;
+                }
+                return a.name > b.name ? 1 : -1;
+              })
               .map((item) => {
                 return (
                   <button
@@ -379,6 +384,7 @@ function ChosenCategory({
                       marginLeft: "auto",
                       marginRight: "auto",
                       marginTop: "40px",
+                      marginBottom: "14px",
                       // borderColor: "white",
                       borderColor: "white",
                       borderWidth: "1px",
@@ -387,10 +393,8 @@ function ChosenCategory({
                       // borderRight: 0,
                       background: "none",
                       marginBlockStart: "1px",
-                      fontSize: "15px",
-                      borderRadius: "10px",
-                      marginBottom: "20px",
-                      // backdropFilter: "blur(2px)",
+                      fontSize: "13px",
+                      borderRadius: "10px"
                     }}
                     onClick={() => {
                       let filteredData = [];
@@ -405,7 +409,7 @@ function ChosenCategory({
                     }}
                   >
                     <div style={{ display: "flex", width: "100%" }}>
-                      <p className="menuItem">{item.name}</p>
+                      <p className="menuItem name">{item.name}</p>
                       <p
                         className="menuItem"
                         style={{
@@ -838,6 +842,7 @@ function Menu({
             marginTop: 10,
             justifyContent: "center",
             alignItems: "center",
+            textAlign: "center",
           }}
         >
           <span

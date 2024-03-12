@@ -2,6 +2,7 @@ const MenuItemsSection = [
   {
     name: "Burgers",
     img: "https://kaleem99.github.io/The-Blazing-Grill-Images/Burgers.png",
+    
   },
   {
     name: "Grilled Chicken",

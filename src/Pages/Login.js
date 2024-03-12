@@ -141,9 +141,10 @@ const styles = {
     color: "white",
     borderColor: "#ccc",
     background: "none",
+    borderRadius: "5px",
   },
   button: {
-    width: "102%",
+    width: "100%",
     height: 40,
     backgroundColor: "#F0941E",
     color: "white",
@@ -152,6 +153,7 @@ const styles = {
     justifyContent: "center",
     border: "none",
     cursor: "pointer",
+    borderRadius: "5px"
   },
   specialText: {
     color: "#F0941E",

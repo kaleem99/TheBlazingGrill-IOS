@@ -270,7 +270,7 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
           ref={recapchaVerifier}
           firebaseConfig={firebaseConfig}
         /> */}
-        {/* {verificationId !== "" && (
+        {verificationId !== "" && (
           <div className="verification-container">
             <input
               style={styles.input}
@@ -280,14 +280,14 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
               value={code}
               placeholder="otp code"
             />
-            <button
+            {/* <button
               style={styles.button}
               onClick={() => resendVerificationCode()}
             >
               Did not receive otp? <span className="specialText">Resend</span>
-            </button>
+            </button> */}
           </div>
-        )} */}
+        )}
         <button
           style={styles.button}
           className="button"
