@@ -209,12 +209,15 @@ body {
   margin-block-end: 10px;
   margin-block-start: 10px;
 }
+.menuItem.name {
+  color: #f7941d;
+}
 .SlideShowContainer {
   position: absolute;
   height: 200px;
   width: 100%;
   background-color: #000000;
-  opacity: 0.4;
+  opacity: 0.2;
   z-index: 9;
   left: 0px;
   color: white;
@@ -240,13 +243,13 @@ body {
   width: 90vw;
 }
 .ContentSideShow > h1 {
-  font-size: 27px;
+  font-size: 25px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
 }
 .ContentSideShow > p {
-  font-size: 22px;
+  font-size: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

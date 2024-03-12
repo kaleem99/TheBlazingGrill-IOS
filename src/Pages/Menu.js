@@ -393,7 +393,7 @@ function ChosenCategory({
                       // borderRight: 0,
                       background: "none",
                       marginBlockStart: "1px",
-                      fontSize: "12px",
+                      fontSize: "13px",
                       borderRadius: "10px"
                     }}
                     onClick={() => {
@@ -409,7 +409,7 @@ function ChosenCategory({
                     }}
                   >
                     <div style={{ display: "flex", width: "100%" }}>
-                      <p className="menuItem">{item.name}</p>
+                      <p className="menuItem name">{item.name}</p>
                       <p
                         className="menuItem"
                         style={{

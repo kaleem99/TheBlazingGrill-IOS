@@ -16,6 +16,7 @@ import { getCartData } from "../Helpers/Common";
 import firebase from "firebase/compat/app";
 import VerifyPhoneNumber from "./VerifyPhoneNumber";
 import { ReactComponent as Homesvg } from "../assets/home-svgrepo-com.svg";
+import SwipeBack from "../Components/SwipeBack";
 
 function MainApp({
   setQuantity,
@@ -79,7 +80,13 @@ function MainApp({
       unsubscribe();
     };
   }, []);
+  // const sendMessageToReactNative = (data) => {
+  //   const dataToSend = { message: "Hello from React web app!", otherData: 123 };
+  //   window.ReactNativeWebView.postMessage(dataToSend.message + " " + data);
+  //   backAction();
 
+  //   console.log("sent");
+  // };
   const backAction = () => {
     if (menuItemClicked !== "" && chosenItem === "") {
       setMenuItemClicked("");
@@ -90,11 +97,6 @@ function MainApp({
       setProfileSection("");
     } else if (mainSection === "Checkout") {
       setMainSection("Cart");
-    } else {
-      const shouldExit = window.confirm("Are you sure you want to exit?");
-      if (shouldExit) {
-        window.close(); // Replace with your preferred method to close the window
-      }
     }
     return true;
   };
@@ -292,79 +294,79 @@ function MainApp({
   };
 
   return (
-    <div style={styles.div}>
-      <div style={styles.topMenu}></div>
-      {body}
+      <div style={styles.div}>
+        <div style={styles.topMenu}></div>
+        {body}
 
-      <div style={styles.bottomMenu}>
-        {arrOfMenuSections.map((section, i) => {
-          return (
-            <div
-              onClick={() =>
-                setMenuSection(
-                  section === "Login" && isLoggedIn ? "Logout" : section,
-                  userDetails,
-                  setCart
-                )
-              }
-              style={styles.icon}
-              key={i + 30}
-            >
-              {cart.length > 0 && i === 1 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    // right: -15,
-                    width: 20,
-                    height: 20,
-                    backgroundColor: "green",
-                    borderRadius: 10,
-                  }}
-                >
-                  <span
+        <div style={styles.bottomMenu}>
+          {arrOfMenuSections.map((section, i) => {
+            return (
+              <div
+                onClick={() =>
+                  setMenuSection(
+                    section === "Login" && isLoggedIn ? "Logout" : section,
+                    userDetails,
+                    setCart
+                  )
+                }
+                style={styles.icon}
+                key={i + 30}
+              >
+                {cart.length > 0 && i === 1 && (
+                  <div
                     style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontSize: 16,
+                      position: "absolute",
+                      top: 0,
+                      // right: -15,
+                      width: 20,
+                      height: 20,
+                      backgroundColor: "green",
+                      borderRadius: 10,
                     }}
                   >
-                    {cart.length}
-                  </span>
-                </div>
-              )}
-              <img
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-                className="MainMenuImages"
-                src={iconImages(arrOfMenuSections[i], mainSection)}
-                alt={section}
-              />
+                    <span
+                      style={{
+                        color: "white",
+                        textAlign: "center",
+                        fontSize: 16,
+                      }}
+                    >
+                      {cart.length}
+                    </span>
+                  </div>
+                )}
+                <img
+                  style={{
+                    width: 30,
+                    height: 30,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                  className="MainMenuImages"
+                  src={iconImages(arrOfMenuSections[i], mainSection)}
+                  alt={section}
+                />
 
-              <p
-                className="MainMenuText"
-                key={i + 20}
-                style={{
-                  marginBlockStart: 0,
-                  color:
-                    mainSection === section
-                      ? "white"
-                      : "black" ||
-                        mainSection === "PlaceOrder" ||
-                        (mainSection === "Checkout" && "white"),
-                }}
-              >
-                {section === "Login" && isLoggedIn ? "Logout" : section}
-              </p>
-            </div>
-          );
-        })}
+                <p
+                  className="MainMenuText"
+                  key={i + 20}
+                  style={{
+                    marginBlockStart: 0,
+                    color:
+                      mainSection === section
+                        ? "white"
+                        : "black" ||
+                          mainSection === "PlaceOrder" ||
+                          (mainSection === "Checkout" && "white"),
+                  }}
+                >
+                  {section === "Login" && isLoggedIn ? "Logout" : section}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
-    </div>
   );
 }
 

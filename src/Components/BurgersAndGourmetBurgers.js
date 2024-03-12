@@ -124,7 +124,7 @@ function BurgersAndGourmetBurgers({
                       // borderRight: 0,
                       background: "none",
                       marginBlockStart: "1px",
-                      fontSize: "15px",
+                      fontSize: "13px",
                       borderRadius: "10px",
                       marginBottom: "20px",
                       // backdropFilter: "blur(2px)",
@@ -136,7 +136,7 @@ function BurgersAndGourmetBurgers({
                     }}
                   >
                     <div style={{ display: "flex", width: "100%" }}>
-                      <p className="menuItem">{item.name}</p>
+                      <p className="menuItem name">{item.name}</p>
                       <p
                         className="menuItem"
                         style={{
@@ -223,7 +223,7 @@ function BurgersAndGourmetBurgers({
                     // borderRight: 0,
                     background: "none",
                     marginBlockStart: "1px",
-                    fontSize: "15px",
+                    fontSize: "13px",
                     borderRadius: "10px",
                     marginBottom: "20px",
                     // backdropFilter: "blur(2px)",
@@ -235,7 +235,7 @@ function BurgersAndGourmetBurgers({
                   }}
                 >
                   <div style={{ display: "flex", width: "100%" }}>
-                    <p className="menuItem">{item.name}</p>
+                    <p className="menuItem name">{item.name}</p>
                     <p
                       className="menuItem"
                       style={{
@@ -320,7 +320,7 @@ function BurgersAndGourmetBurgers({
                     // borderRight: 0,
                     background: "none",
                     marginBlockStart: "1px",
-                    fontSize: "15px",
+                    fontSize: "13px",
                     borderRadius: "10px",
                     marginBottom: "20px",
                     // backdropFilter: "blur(2px)",
@@ -332,7 +332,7 @@ function BurgersAndGourmetBurgers({
                   }}
                 >
                   <div style={{ display: "flex", width: "100%" }}>
-                    <p className="menuItem">{item.name}</p>
+                    <p className="menuItem name">{item.name}</p>
                     <p
                       className="menuItem"
                       style={{
