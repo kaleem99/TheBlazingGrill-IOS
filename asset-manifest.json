@@ -1,12 +1,15 @@
 {
   "files": {
-    "main.css": "/TheBlazingGrill-IOS/static/css/main.04aa56b2.css",
-    "main.js": "/TheBlazingGrill-IOS/static/js/main.237fc64d.js",
+    "main.css": "/TheBlazingGrill-IOS/static/css/main.47cf9b36.css",
+    "main.js": "/TheBlazingGrill-IOS/static/js/main.0710eb32.js",
     "static/js/787.5b9f418c.chunk.js": "/TheBlazingGrill-IOS/static/js/787.5b9f418c.chunk.js",
     "static/media/smokeyBackground1024_1.png": "/TheBlazingGrill-IOS/static/media/smokeyBackground1024_1.168d2a96c81c0792de19.png",
+    "static/media/background2.jpg": "/TheBlazingGrill-IOS/static/media/background2.030f23df53591a96f4d3.jpg",
     "static/media/TBG_Final_TransWhite-1024x894.png": "/TheBlazingGrill-IOS/static/media/TBG_Final_TransWhite-1024x894.aa520615c3bec4b41710.png",
+    "static/media/background5.jpeg": "/TheBlazingGrill-IOS/static/media/background5.dc60b5d3d64e0cecdd82.jpeg",
     "static/media/instagramLogo.png": "/TheBlazingGrill-IOS/static/media/instagramLogo.ed5ed57e98d053cf1e55.png",
     "static/media/currentOrders.png": "/TheBlazingGrill-IOS/static/media/currentOrders.89778f124c56369babc5.png",
+    "static/media/background4.jpeg": "/TheBlazingGrill-IOS/static/media/background4.59a84a4721ebae76273e.jpeg",
     "static/media/facebookLogo.png": "/TheBlazingGrill-IOS/static/media/facebookLogo.281a5d080b47d79d8ed8.png",
     "static/media/previousOrders.png": "/TheBlazingGrill-IOS/static/media/previousOrders.bb2d092da84fbd9dbb05.png",
     "static/media/userAccount.png": "/TheBlazingGrill-IOS/static/media/userAccount.4456cb7cc9f81df9f019.png",
@@ -27,12 +30,12 @@
     "static/media/menuWhite.png": "/TheBlazingGrill-IOS/static/media/menuWhite.7d2e8466022e02b71718.png",
     "static/media/home-svgrepo-com.svg": "/TheBlazingGrill-IOS/static/media/home-svgrepo-com.9d8f41a2dafcabf529aef6572aa50616.svg",
     "index.html": "/TheBlazingGrill-IOS/index.html",
-    "main.04aa56b2.css.map": "/TheBlazingGrill-IOS/static/css/main.04aa56b2.css.map",
-    "main.237fc64d.js.map": "/TheBlazingGrill-IOS/static/js/main.237fc64d.js.map",
+    "main.47cf9b36.css.map": "/TheBlazingGrill-IOS/static/css/main.47cf9b36.css.map",
+    "main.0710eb32.js.map": "/TheBlazingGrill-IOS/static/js/main.0710eb32.js.map",
     "787.5b9f418c.chunk.js.map": "/TheBlazingGrill-IOS/static/js/787.5b9f418c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.04aa56b2.css",
-    "static/js/main.237fc64d.js"
+    "static/css/main.47cf9b36.css",
+    "static/js/main.0710eb32.js"
   ]
 }
