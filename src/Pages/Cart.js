@@ -190,7 +190,7 @@ function Cart({
       >
         {cart.map((items, i) => {
           return (
-            <SwipeableList style={{height: "auto"}}>
+            <SwipeableList style={{ height: "auto" }}>
               <SwipeableListItem
                 // leadingActions={leadingActions()}
                 trailingActions={trailingActions(items.dataId)}
@@ -199,21 +199,22 @@ function Cart({
                   key={items.dataId}
                   style={{
                     width: "100%",
-                    height: 80,
+                    height: "auto",
                     marginTop: 10,
                   }}
                 >
                   <div
                     style={{
                       width: "93%",
-                      height: 80,
+                      height: "auto",
                       backgroundColor: "#303134",
                       marginLeft: "auto",
                       marginRight: "auto",
                       padding: 5,
                       marginBottom: 10,
-                      borderRadius: 20,
+                      borderRadius: 15,
                       display: "flex",
+                      border: "1px groove white",
                     }}
                   >
                     <img
@@ -410,6 +411,7 @@ const styles = {
     width: 30,
     height: 25,
     cursor: "pointer",
+    border: "none",
   },
   number: {
     textAlign: "center",

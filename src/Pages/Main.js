@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 // import { BackHandler, Alert } from "react-native"; // Replace with appropriate React.js imports for your environment
+import Swipeable from "react-swipeable";
 
 import Menu from "./Menu";
 import Cart from "./Cart";
@@ -16,7 +17,10 @@ import { getCartData } from "../Helpers/Common";
 import firebase from "firebase/compat/app";
 import VerifyPhoneNumber from "./VerifyPhoneNumber";
 import { ReactComponent as Homesvg } from "../assets/home-svgrepo-com.svg";
-import SwipeBack from "../Components/SwipeBack";
+// import { useSwipeable } from "react-swipeable";
+import { FaArrowLeft } from "react-icons/fa";
+import Draggable from "react-draggable";
+import { useSwipeable } from "react-swipeable";
 
 function MainApp({
   setQuantity,
@@ -55,6 +59,10 @@ function MainApp({
   const [deliveryInstructions, setDeliveryInstructions] = useState("");
   const [drinksQuantity, setDrinksQuantity] = useState([]);
 
+  const [iconPosition, setIconPosition] = useState(0);
+  const [swiped, setSwiped] = useState(false);
+  const [position, setPosition] = useState({ x: 300, y: 0 });
+
   useEffect(() => {
     getCartData(userDetails, setCart);
   }, []);
@@ -80,13 +88,20 @@ function MainApp({
       unsubscribe();
     };
   }, []);
-  // const sendMessageToReactNative = (data) => {
-  //   const dataToSend = { message: "Hello from React web app!", otherData: 123 };
-  //   window.ReactNativeWebView.postMessage(dataToSend.message + " " + data);
-  //   backAction();
+  const handleDrag = (e, ui) => {
+    // Restricting drag to horizontal axis
+    const newX = ui.x;
+    const newY = ui.y;
+    setPosition({ x: newX, y: newY });
 
-  //   console.log("sent");
-  // };
+    // Print something when dragged
+    console.log("Dragged to:", newX);
+  };
+  const sendMessageToReactNative = (data) => {
+    const dataToSend = { message: "ExitAPP", otherData: 123 };
+    window.postMessage(dataToSend.message);
+    console.log("sent");
+  };
   const backAction = () => {
     if (menuItemClicked !== "" && chosenItem === "") {
       setMenuItemClicked("");
@@ -97,6 +112,8 @@ function MainApp({
       setProfileSection("");
     } else if (mainSection === "Checkout") {
       setMainSection("Cart");
+    } else {
+      sendMessageToReactNative();
     }
     return true;
   };
@@ -292,81 +309,148 @@ function MainApp({
       getCartData(userDetails, setCart);
     }
   };
+  const handleSwipe = (deltaX) => {
+    // setIconPosition((prevPosition) => prevPosition + deltaX);
+    setSwiped(true);
+  };
+  const handleMouseMove = (e) => {
+    setPosition({ x: e.clientX, y: e.clientY });
+  };
 
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      console.log("Swiped left!");
+      backAction();
+      // setShowIcon(true);
+    },
+    // onSwipedRight: () => {
+    //   console.log("Swiped right!");
+    // setShowIcon(false);
+    // },
+  });
+
+  // const SwipeableWrapper = ({ children }) => {
+  //   // const history = useHistory();
+
+  //   const handlers = useSwipeable({
+  //     onSwipedLeft: () => {
+  //       console.log("BACK 100");
+  //       backAction();
+  //       // handleSwipe();
+  //     },
+  //     trackMouse: true,
+  //   });
+
+  //   return (
+  //     <div className="handleMouseMove">
+  //       <div className="iconMove" style={{ left: `${iconPosition}%` }}>
+  //         HelloWorld
+  //       </div>
+  //       {/* <FontAwesomeIcon
+  //         icon={faChevronLeft}
+  //         size="3x"
+  //         style={{
+  //           position: "absolute",
+  //           right: `${iconPosition}px`,
+  //           top: "50%",
+  //           transform: "translateY(-50%)",
+  //           color: "white",
+  //         }}
+  //       /> */}
+
+  //       {children}
+  //     </div>
+  //   );
+  // };
   return (
-      <div style={styles.div}>
-        <div style={styles.topMenu}></div>
-        {body}
-
-        <div style={styles.bottomMenu}>
-          {arrOfMenuSections.map((section, i) => {
-            return (
-              <div
-                onClick={() =>
-                  setMenuSection(
-                    section === "Login" && isLoggedIn ? "Logout" : section,
-                    userDetails,
-                    setCart
-                  )
-                }
-                style={styles.icon}
-                key={i + 30}
-              >
-                {cart.length > 0 && i === 1 && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      // right: -15,
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "green",
-                      borderRadius: 10,
-                    }}
-                  >
-                    <span
-                      style={{
-                        color: "white",
-                        textAlign: "center",
-                        fontSize: 16,
-                      }}
-                    >
-                      {cart.length}
-                    </span>
-                  </div>
-                )}
-                <img
-                  style={{
-                    width: 30,
-                    height: 30,
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }}
-                  className="MainMenuImages"
-                  src={iconImages(arrOfMenuSections[i], mainSection)}
-                  alt={section}
-                />
-
-                <p
-                  className="MainMenuText"
-                  key={i + 20}
-                  style={{
-                    marginBlockStart: 0,
-                    color:
-                      mainSection === section
-                        ? "white"
-                        : "black" ||
-                          mainSection === "PlaceOrder" ||
-                          (mainSection === "Checkout" && "white"),
-                  }}
-                >
-                  {section === "Login" && isLoggedIn ? "Logout" : section}
-                </p>
-              </div>
-            );
-          })}
+    // <SwipeableWrapper>
+    <div style={styles.div}>
+      <div
+        onMouseMove={handleMouseMove}
+        // style={{
+        //   position: "absolute",
+        //   top: "50%", // Adjust top position as needed
+        //   right: "1%", // Position to 1% from the right side of the screen
+        //   transform: "translate(0%, -50%)", // Center vertically
+        // }}
+      >
+        <div {...handlers}>
+          <div className="swipeable-container">
+            <div className="contentSwipe">{/* Your main content here */}</div>
+          </div>
         </div>
       </div>
+      <div style={styles.topMenu}></div>
+      {body}
+      <div style={styles.bottomMenu}>
+        {arrOfMenuSections.map((section, i) => {
+          return (
+            <div
+              onClick={() =>
+                setMenuSection(
+                  section === "Login" && isLoggedIn ? "Logout" : section,
+                  userDetails,
+                  setCart
+                )
+              }
+              style={styles.icon}
+              key={i + 30}
+            >
+              {cart.length > 0 && i === 1 && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    // right: -15,
+                    width: 20,
+                    height: 20,
+                    backgroundColor: "green",
+                    borderRadius: 10,
+                  }}
+                >
+                  <span
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontSize: 16,
+                    }}
+                  >
+                    {cart.length}
+                  </span>
+                </div>
+              )}
+              <img
+                style={{
+                  width: 30,
+                  height: 30,
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+                className="MainMenuImages"
+                src={iconImages(arrOfMenuSections[i], mainSection)}
+                alt={section}
+              />
+
+              <p
+                className="MainMenuText"
+                key={i + 20}
+                style={{
+                  marginBlockStart: 0,
+                  color:
+                    mainSection === section
+                      ? "white"
+                      : "black" ||
+                        mainSection === "PlaceOrder" ||
+                        (mainSection === "Checkout" && "white"),
+                }}
+              >
+                {section === "Login" && isLoggedIn ? "Logout" : section}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -383,7 +467,7 @@ const styles = {
   bottomMenu: {
     width: "100%",
     height: "8%",
-    paddingTop: 5,
+    paddingTop: 3,
     backgroundColor: "#F7941D",
     display: "flex",
     flexDirection: "row",

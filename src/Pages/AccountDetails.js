@@ -86,7 +86,7 @@ const AccountDetails = ({ userDetails, setProfile, setMainSection }) => {
       const credentials = window.prompt(
         "Please enter your password for confirmation:"
       );
-    
+
       const credential = EmailAuthProvider.credential(user.email, credentials);
       console.log(credential, 30000);
       await reauthenticateWithCredential(user, credential);
@@ -195,11 +195,11 @@ const styles = {
   input: {
     width: "98%",
     height: 40,
-
     borderWidth: 1,
     color: "white",
     borderColor: "white",
     background: "none",
+    borderRadius: "5px",
   },
   button: {
     width: "100%",

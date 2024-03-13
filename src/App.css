@@ -58,6 +58,7 @@ body {
   margin: 0 auto;
   overflow: hidden;
   max-width: 500px;
+  z-index: 999;
 }
 
 .slideshowSlider {
@@ -212,6 +213,10 @@ body {
 .menuItem.name {
   color: #f7941d;
 }
+.menuItem.price {
+  color: #f7941d;
+  /* opacity: 0.9; */
+}
 .SlideShowContainer {
   position: absolute;
   height: 200px;
@@ -255,4 +260,71 @@ body {
   overflow: hidden;
   font-weight: 600;
   margin-block-start: 5px;
+}
+
+.DeliveryPopup {
+  width: 86%;
+  height: 210px;
+  background-color: rgb(48, 49, 52);
+  position: absolute;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+  align-self: center;
+  justify-content: center;
+  border-radius: 10px;
+  /* padding: 20px; */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* border: 1px solid white; */
+  margin: auto;
+  text-align: center;
+}
+.input.DeliverTextArea {
+  width: 88%;
+  margin: auto;
+  height: 100px;
+  background: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+}
+.save-button {
+  width: 40%;
+  margin: 15px auto;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: 27px;
+  border-radius: 5px;
+  border: 1px solid white;
+  background: rgb(247, 148, 29);
+  font-weight: 600;
+}
+.ProfileSections {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  border-color: white;
+  /* border-bottom-width: 1px; */
+  display: flex;
+  flex-direction: row;
+  /* border-bottom-style: solid; */
+  border: 1px groove white;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+}
+
+.contentSwipe {
+  width: 3px;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  display: none;
+  right: 0px;
+  /* top: 100px; */
 }

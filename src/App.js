@@ -31,6 +31,10 @@ import { auth } from "./database/config";
 import { onAuthStateChanged } from "firebase/auth";
 import Sections from "./sections";
 import backgroundImage from "./assets/smokeyBackground1024_1.png";
+import backgroundImage2 from "./assets/background2.jpg"
+import backgroundImage4 from "./assets/background4.jpeg"
+import backgroundImage5 from "./assets/background5.jpeg"
+
 // import MainApp from "./Pages/Main";
 // import MainDriverApp from "./DriverProfile/MainApp";
 import WelcomePage from "./Pages/WelcomePage";
@@ -55,25 +59,7 @@ function App({ phoneHeight }) {
   const [driverLoggedIn, setDriverLoggedIn] = useState(false);
 
   // Call this function to send a message to the React Native app
-  useEffect(() => {
-    // Add an event listener to handle messages sent from the React Native WebView
-    const handleMessage = (event) => {
-      if (event.data === "BackButtonPressed") {
-        // Handle the back button message
-        console.log("Back button pressed from React Native");
-      } else {
-        // Handle other messages or ignore webpack warnings
-        console.log("Received message from React Native:", event.data);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener("message", handleMessage);
-    };
-  }, []);
+ 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user && user.emailVerified) {
@@ -131,7 +117,7 @@ function App({ phoneHeight }) {
   return (
       <div
         style={{
-          backgroundImage: `url(${backgroundImage})`,
+          backgroundImage: `url(${backgroundImage2})`,
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           width: "100%",

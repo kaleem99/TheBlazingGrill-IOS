@@ -382,6 +382,7 @@ function Checkout({
         </button>
         {orderType === "Delivery" && (
           <button
+            style={styles.orderButton}
             onClick={() => setPopup(true)}
             className="add-delivery-instructions"
           >
@@ -431,22 +432,7 @@ function Checkout({
         </div>
       )}
       {popup && (
-        <div
-          style={{
-            width: "90%",
-            height: "auto",
-            backgroundColor: "#303134",
-            position: "absolute",
-            zIndex: 1,
-            marginLeft: "auto",
-            marginRight: "auto",
-            // marginTop: "20%",
-            alignSelf: "center",
-            justifyContent: "center",
-            borderRadius: 10,
-            padding: 20,
-          }}
-        >
+        <div className="DeliveryPopup">
           <p
             style={{
               fontSize: 16,
@@ -458,7 +444,7 @@ function Checkout({
             Add Delivery Instructions for the Driver
           </p>
           <textarea
-            className="input"
+            className="input DeliverTextArea"
             rows="4"
             placeholder="Delivery Instructions"
             value={deliveryInstructions}

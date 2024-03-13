@@ -1,4 +1,6 @@
 import React from "react";
+// import { useSwipeable } from "react-swipeable";
+import SwipeableViews from "react-swipeable-views";
 
 const colors = ["#0088FE", "#00C49F", "#FFBB28"];
 const delay = 2500;
@@ -33,7 +35,24 @@ function Slideshow({ items }) {
       clearTimeout(timeoutRef.current);
     }
   }
+  // const handlers = useSwipeable({
+  //   onSwipedLeft: () => handleSwipeLeft(),
+  //   onSwipedRight: () => handleSwipeRight(),
+  // });
 
+  // const handleSwipeLeft = () => {
+  //   console.log("left");
+  //   setIndex((prevIndex) =>
+  //     prevIndex === items.length - 1 ? 0 : prevIndex + 1
+  //   );
+  // };
+
+  // const handleSwipeRight = () => {
+  //   console.log("right");
+  //   setIndex((prevIndex) =>
+  //     prevIndex === 0 ? items.length - 1 : prevIndex - 1
+  //   );
+  // };
   React.useEffect(() => {
     resetTimeout();
     timeoutRef.current = setTimeout(
@@ -48,8 +67,36 @@ function Slideshow({ items }) {
       resetTimeout();
     };
   }, [index]);
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  const handleTouchStart = (e) => {
+    touchStartX = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX - touchEndX > 50 && index < items.length - 1) {
+      // Swipe left
+      setIndex(index + 1);
+    }
+
+    if (touchStartX - touchEndX < -50 && index > 0) {
+      // Swipe right
+      setIndex(index - 1);
+    }
+  };
   return (
-    <div className="slideshow">
+    <div
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      
+      className="slideshow"
+    >
       <div className="SlideShowContainer"></div>
       <div className="ContentSideShow">
         <h1>{items[index].title}</h1>
@@ -60,6 +107,7 @@ function Slideshow({ items }) {
         style={{ transform: `translate3d(${-index * 100}%, 0, 0)` }}
       >
         {items.map((data, idx) => (
+      
           <div className="slide" key={idx}>
             <img
               style={{ objectFit: "cover" }}

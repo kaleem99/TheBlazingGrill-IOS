@@ -411,7 +411,7 @@ function ChosenCategory({
                     <div style={{ display: "flex", width: "100%" }}>
                       <p className="menuItem name">{item.name}</p>
                       <p
-                        className="menuItem"
+                        className="menuItem price"
                         style={{
                           marginLeft: "auto",
                           marginRight: 0,

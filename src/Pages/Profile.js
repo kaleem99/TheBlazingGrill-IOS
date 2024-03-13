@@ -102,7 +102,14 @@ const Profile = ({
         <div className="content">
           <div className="back">
             <div className="back-content"> */}
-      <div style={{ margin: "auto", width: 160 }}>
+      <div
+        style={{
+          margin: "auto",
+          width: 160,
+          borderRadius: "10px",
+          border: "1px groove white",
+        }}
+      >
         <img
           style={{ width: 160, top: 140 }}
           src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
@@ -119,18 +126,19 @@ const Profile = ({
           return (
             <div
               key={i}
-              style={{
-                width: "90%",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: 20,
-                borderColor: "white",
-                borderBottomWidth: 1,
-                display: "flex",
-                flexDirection: "row",
-                borderBottom: "1px solid white",
-                // paddingBottom: 5
-              }}
+              className="ProfileSections"
+              // style={{
+              //   width: "90%",
+              //   marginLeft: "auto",
+              //   marginRight: "auto",
+              //   marginTop: 20,
+              //   borderColor: "white",
+              //   borderBottomWidth: 1,
+              //   display: "flex",
+              //   flexDirection: "row",
+              //   borderBottom: "1px solid white",
+              //   // paddingBottom: 5
+              // }}
               onClick={() => checkOnClick(data)}
             >
               <img
@@ -138,6 +146,7 @@ const Profile = ({
                   width: 30,
                   height: 30,
                   marginRight: 20,
+                  marginLeft: 10,
                 }}
                 src={data1[i].img}
                 alt={data}

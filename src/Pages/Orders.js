@@ -76,19 +76,21 @@ const Orders = ({ userDetails, setProfile }) => {
             overflow: "auto",
           }}
         >
-          {prevOrders.map((data, i) => (
-            <button
-              className="ordersColumn"
-              style={styles.ordersColumn}
-              onClick={() => setOrderDetails(data)}
-              key={i}
-            >
-              <p style={styles.textOrders}>Order {i + 1}</p>
-              <p style={styles.textOrders}>Details</p>
-              <p style={styles.textOrders}>{data.date}</p>
-              <p style={styles.textOrders}>{data.time}</p>
-            </button>
-          ))}
+          {prevOrders
+            // .sort((a, b) => a.date - b.date)
+            .map((data, i) => (
+              <button
+                className="ordersColumn"
+                style={styles.ordersColumn}
+                onClick={() => setOrderDetails(data)}
+                key={i}
+              >
+                <p style={styles.textOrders}>Order {i + 1}</p>
+                <p style={styles.textOrders}>Details</p>
+                <p style={styles.textOrders}>{data.date}</p>
+                <p style={styles.textOrders}>{data.time}</p>
+              </button>
+            ))}
         </div>
       ) : (
         <div
@@ -143,9 +145,10 @@ const styles = {
     margin: "10px auto",
     background: "none",
     color: "white",
-    border: "1px solid white",
+    border: "1px groove white",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: "5px",
   },
   textOrders: {
     width: "25%",
