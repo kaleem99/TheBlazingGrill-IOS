@@ -28,13 +28,16 @@ const AutoImageSlideshow = ({ images, autoplayInterval }) => {
           marginLeft: "auto",
           marginRight: "auto",
           marginTop: 10,
+          height: 210,
+          border: "1px solid white",
+          borderRadius: 10
         }}
       >
         <img
           src={state}
           alt=""
           className="WelcomePageImage"
-          // style={{ width: "100%", height: 200, borderRadius: 10 }}
+          style={{ width: "100%", height: 210, borderRadius: 10 }}
         />
       </div>
     </div>

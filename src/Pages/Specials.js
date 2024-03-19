@@ -21,7 +21,7 @@ const Specials = ({ setState }) => {
     },
     {
       fileURL:
-        "https://firebasestorage.googleapis.com/v0/b/blazing-grills.appspot.com/o/files%2FDogg%20Burger%20Double?alt=media&token=2d37ef95-04b7-4119-98de-a121ae5ff300",
+        "https://firebasestorage.googleapis.com/v0/b/blazing-grills.appspot.com/o/files%2F2%20x%20Any%20Pizzas%20Deal?alt=media&token=a62a7a0e-c5e2-4b5b-963c-1e21a11b3946",
     },
   ];
 

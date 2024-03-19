@@ -190,6 +190,7 @@ function Store({
                     {distanceResult}
                   </p>
                 )}
+                {console.log(data[storeName].storeStatus)}
                 <p style={styles.standardText}>
                   {!data[storeName].storeStatus || !storeTimes
                     ? "Store is Currently Offline"

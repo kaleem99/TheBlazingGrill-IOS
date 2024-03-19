@@ -28,7 +28,7 @@ function WelcomePage({ setState }) {
           textAlign: "center",
         }}
       >
-        <AutoImageSlideshow images={images} autoplayInterval={2000} />
+        <AutoImageSlideshow images={images} autoplayInterval={3000} />
         <p className="WelcomePageSmallText">
           Our passion and love for good food has always been the driving force
           behind our brand. The Blazing Grill was born in our home kitchen where

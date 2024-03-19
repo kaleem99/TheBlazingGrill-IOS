@@ -30,16 +30,18 @@ export function distance(lat1, lat2, lon1, lon2) {
 export function checkStoreTimes() {
   let dayOfTheWeek = new Date().getDay();
   let time = new Date().toLocaleTimeString();
+  console.log(time)
+  console.log(dayOfTheWeek)
   if (dayOfTheWeek >= 1 && dayOfTheWeek <= 4) {
-    return time >= "10:00 AM" && time <= "19:30 PM";
+    return time >= "09:30 AM" && time <= "19:30 PM";
   } else if (dayOfTheWeek === 5) {
     return (
-      (time >= "10:00 AM" && time <= "12:00 PM") ||
-      (time >= "13:30 PM" && time <= "20:00 PM")
+      (time >= "09:30 AM" && time <= "12:00 PM") ||
+      (time >= "13:30 PM" && time <= "20:30 PM")
     );
   } else if (dayOfTheWeek === 6) {
-    return time >= "9:30 AM" && time <= "20:00 PM";
+    return time >= "09:00 AM" && time <= "20:30 PM";
   } else if (dayOfTheWeek === 0) {
-    return time >= "10:00 AM" && time <= "19:00 PM";
+    return time >= "09:30 AM" && time <= "19:30 PM";
   }
 }

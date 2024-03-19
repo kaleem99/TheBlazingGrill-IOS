@@ -67,7 +67,17 @@ const LoginPage = ({ setMainSection }) => {
 
   return (
     <div style={styles.container}>
-      <div style={{ margin: "auto", width: 220, height: "30vh" }}>
+      <div
+        style={{
+          margin: "auto",
+          width: 220,
+          height: "auto",
+          border: "1px groove white",
+          borderRadius: 10,
+          marginTop: 10,
+
+        }}
+      >
         <img
           style={styles.BlazingImage}
           src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
@@ -130,6 +140,7 @@ const styles = {
   title: {
     fontSize: 24,
     marginBottom: 20,
+    marginTop: "20%",
     color: "white",
   },
   input: {
@@ -153,7 +164,7 @@ const styles = {
     justifyContent: "center",
     border: "none",
     cursor: "pointer",
-    borderRadius: "5px"
+    borderRadius: "5px",
   },
   specialText: {
     color: "#F0941E",
