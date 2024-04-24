@@ -9,7 +9,7 @@ import {
   TrailingActions,
 } from "react-swipeable-list";
 import "react-swipeable-list/dist/styles.css";
-import { clearAllData, clearData } from "../Helpers/localStorage";
+import { clearAllData, clearData, storeData } from "../Helpers/localStorage";
 function Cart({
   cart,
   setCart,
@@ -41,11 +41,14 @@ function Cart({
       existingItem.productQuantity -= 1;
       existingItem.productPrice *= existingItem.productQuantity;
     }
-
+    console.log(existingItem, "EXISTING");
     if (existingItem.productQuantity <= 0) {
-      cart = cart.filter((itemsCart) => itemsCart !== existingItem);
+      // cart = cart.filter((itemsCart) => itemsCart !== existingItem);
+      localStorage.removeItem(existingItem.dataId);
       // Handle document deletion logic here
     } else {
+      storeData(existingItem.dataId, existingItem);
+
       // Handle document update logic here
     }
     getCartData(userDetails, setCart);
