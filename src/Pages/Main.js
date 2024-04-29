@@ -53,7 +53,7 @@ function MainApp({
   const icons = ["wysiwyg", "shopping-cart", "store", "perm-identity"];
   const [storeDetails, setStoreDetails] = useState([]);
   const [orderStatus, setOrderStatus] = useState([]);
-  const [orderType, setOrderType] = useState("Collection");
+  const [orderType, setOrderType] = useState("");
   const [profileSection, setProfileSection] = useState("");
   const [items, setItems] = useState("");
   const [deliveryInstructions, setDeliveryInstructions] = useState("");

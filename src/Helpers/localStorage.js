@@ -1,4 +1,3 @@
-
 // Store data in local storage
 export const storeData = async (key, value) => {
   try {
@@ -29,14 +28,19 @@ export const getAllData = async (setCart) => {
   const cartData = [];
   try {
     const keys = await Object.keys(localStorage);
-  
+
     // Process the items array
     keys.forEach((key) => {
       if (key.includes("cart")) {
-        const value = localStorage.getItem(key)
+        const value = localStorage.getItem(key);
         cartData.push(JSON.parse(value));
       }
     });
+    console.log(cartData, "CARTDATA");
+    cartData.forEach((data) => {
+      data.subTotal = (data.productPrice * data.productQuantity).toFixed(2);
+    });
+    console.log(cartData, "CART NEW");
     setCart(cartData);
   } catch (error) {
     console.log("Error retrieving items:", error);

@@ -79,7 +79,7 @@ function Store({
     }
   };
 
-  const deliveryOrder = () => {
+  const deliveryOrder = (name) => {
     setSelectedStore("");
     setOrderType("Delivery");
   };
@@ -87,7 +87,17 @@ function Store({
   const testing = async () => {
     // Add code here to get user's location and address using Geolocation and Geocoder
   };
-
+  const StoresDataArr = [
+    {
+      Name: "Delivery",
+      functionName: deliveryOrder,
+    },
+    {
+      Name: "Collection",
+      functionName: setOrderType,
+    },
+    
+  ];
   return (
     <div style={styles.div}>
       <p
@@ -111,7 +121,7 @@ function Store({
           height: 40,
         }}
       >
-        <button
+        {/* <button
           style={{
             width: "47%",
             backgroundColor:
@@ -126,23 +136,27 @@ function Store({
           onClick={() => deliveryOrder()}
         >
           Delivery
-        </button>
-        <button
-          style={{
-            width: "47%",
-            backgroundColor:
-              orderType === "Collection" ? "#F7941D" : "transparent",
-            borderColor: "white",
-            borderWidth: 1,
-            borderRadius: 10,
-            marginLeft: "2%",
-            height: 40,
-            color: "white",
-          }}
-          onClick={() => setOrderType("Collection")}
-        >
-          Collection
-        </button>
+        </button> */}
+        {StoresDataArr.map((obj) => {
+          return (
+            <button
+              style={{
+                width: "47%",
+                backgroundColor:
+                  orderType === obj.Name ? "#F7941D" : "transparent",
+                borderColor: "white",
+                borderWidth: 1,
+                borderRadius: 10,
+                marginLeft: "2%",
+                height: 40,
+                color: "white",
+              }}
+              onClick={() => obj.functionName(obj.Name)}
+            >
+              {obj.Name}
+            </button>
+          );
+        })}
       </div>
       {orderType === "Delivery" && (
         <div style={{ width: "100%", height: 60, marginTop: 10 }}>

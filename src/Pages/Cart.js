@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SlideUpModal from "../Components/Slider";
 import { auth, db } from "../database/config";
+import MenuItemsSection from "../frontend/data";
 import {
   LeadingActions,
   SwipeableList,
@@ -20,16 +21,27 @@ function Cart({
   getCartData,
 }) {
   const [modalVisible, setModalVisible] = useState(true);
+  const [result, setResult] = useState([]);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
   };
-
+  const handlePasswordReset = () => {
+    // Your password reset logic here
+  };
+  useEffect(() => {
+    const cartData = cart.map((data) => data.productType);
+    const filteredData = MenuItemsSection.filter(
+      (item) => !cartData.includes(item.name)
+    );
+    const randomizedData = filteredData.sort(() => Math.random() - 0.5);
+    setResult(randomizedData.slice(0, 3));
+  }, []);
   const totalPrices = cart.map((items) => {
-    return parseFloat(items.productPrice);
+    return parseFloat(items.subTotal);
   });
 
-  const increDecreCartUpdate = async (name, type, items) => {
+  const increDecreCartUpdate = (name, type, items) => {
     const existingItem = cart.find(
       (i) => i.productName === name && i.extras === items.extras
     );
@@ -39,7 +51,7 @@ function Cart({
       existingItem.productQuantity += 1;
     } else {
       existingItem.productQuantity -= 1;
-      existingItem.productPrice *= existingItem.productQuantity;
+      // existingItem.productPrice *= existingItem.productQuantity;
     }
     console.log(existingItem, "EXISTING");
     if (existingItem.productQuantity <= 0) {
@@ -57,6 +69,7 @@ function Cart({
   const getTotalSum = () => {
     if (cart.length > 0) {
       const totalP = totalPrices.reduce((a, b) => Number(a) + Number(b));
+      console.log(totalP, totalPrices, "++++");
       return totalP.toFixed(2);
     }
   };
@@ -166,6 +179,7 @@ function Cart({
       </SwipeAction>
     </TrailingActions>
   );
+
   return (
     <div style={styles.div}>
       <p style={styles.text}>My Cart</p>
@@ -178,6 +192,7 @@ function Cart({
             setMenuItemClicked={setMenuItemClicked}
             fetchPost={fetchPost}
             cart={cart}
+            result={result}
           />
         </>
       ) : (
@@ -224,6 +239,7 @@ function Cart({
                       style={{
                         width: "30%",
                         // height: "100%",
+                        maxHeight: "80px",
                         marginTop: "auto",
                         marginBottom: "auto",
                         borderRadius: 10,
@@ -246,7 +262,7 @@ function Cart({
                             marginTop: 2,
                           }}
                         >
-                          R{totalPrices[i].toFixed(2)}
+                          R{items.subTotal}
                         </p>
                         <div
                           style={{

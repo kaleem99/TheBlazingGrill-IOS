@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import Icon from "@material-ui/icons/Clear"; // Assuming you have imported the Material-UI clear icon
 import MenuItemsSection from "../frontend/data";
 import close from "../assets/cancel.png";
+import { memo } from "react";
 const SlideUpModal = ({
   visible,
   onClose,
@@ -9,13 +10,10 @@ const SlideUpModal = ({
   setMenuItemClicked,
   fetchPost,
   cart,
+  result,
 }) => {
   const [email, setEmail] = useState("");
-
-  const handlePasswordReset = () => {
-    // Your password reset logic here
-  };
-
+ 
   const setItemSection = (name) => {
     setMainSection("Menu");
     fetchPost(name);
@@ -23,13 +21,6 @@ const SlideUpModal = ({
       setMenuItemClicked(name);
     }, 100);
   };
-
-  const cartData = cart.map((data) => data.productType);
-  const filteredData = MenuItemsSection.filter(
-    (item) => !cartData.includes(item.name)
-  );
-  const randomizedData = filteredData.sort(() => Math.random() - 0.5);
-  const result = randomizedData.slice(0, 3);
 
   return (
     <div
@@ -85,7 +76,7 @@ const styles = {
     // paddingLeft: 20,
     // paddingRight: 20,
     backgroundColor: "#303134",
-    paddingTop: 5
+    paddingTop: 5,
   },
   closeButton: {
     position: "absolute",
@@ -112,7 +103,6 @@ const styles = {
     // width: "150%",
     overflow: "auto",
     gap: "20px",
-
   },
   menuItem: {
     alignItems: "center",
@@ -165,4 +155,4 @@ const styles = {
   },
 };
 
-export default SlideUpModal;
+export default memo(SlideUpModal);

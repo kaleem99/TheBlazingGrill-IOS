@@ -71,7 +71,6 @@ export const checkForOrders = (userDetails, setOrder, setStatus) => {
       const items = [];
       querySnapshot.forEach((doc) => {
         if (doc.data().email === userDetails.email) {
-
           if (
             doc.data().status === "Pending" ||
             doc.data().status === "In Progress" ||

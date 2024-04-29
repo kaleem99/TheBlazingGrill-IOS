@@ -228,7 +228,11 @@ function Checkout({
       checkoutUrl
     );
   };
-
+  const selectOrderTypeArr = [
+    { name: "Select Order Type", value: "none" },
+    { name: "Collection", value: "Collection" },
+    { name: "Delivery", value: "Delivery" },
+  ];
   return (
     <div className="container">
       <div className="modal" style={{ display: isVisible ? "block" : "none" }}>
@@ -347,7 +351,8 @@ function Checkout({
       <div style={styles.cardContainer} className="card-container">
         {/* Dropdown component */}
         <select
-          // value={""}
+          value={""}
+          onChange={(e) => setOrderType(e.currentTarget.value)}
           className="select-dropdown"
           style={{
             backgroundColor: "#F7941D",
@@ -363,7 +368,7 @@ function Checkout({
             textAlign: "center",
           }}
         >
-          <option selected value={"none"}>
+          {/* <option selected value={"none"}>
             Select Order Type
           </option>
           <option selected value={"Collection"}>
@@ -371,7 +376,14 @@ function Checkout({
           </option>
           <option selected value={"Delivery"}>
             Delivery
-          </option>
+          </option> */}
+          {selectOrderTypeArr.map((obj, i) => {
+            return (
+              <option selected={i === 1 ? true : false} value={obj.value}>
+                {obj.name}
+              </option>
+            );
+          })}
         </select>
         <button
           style={styles.selectAStore}
@@ -640,6 +652,7 @@ const styles = {
     color: "white",
     alignItems: "center",
     justifyContent: "center",
+    border: "1px solid",
     // position: "absolute",
     borderRadius: 10,
     marginBottom: "4%",
