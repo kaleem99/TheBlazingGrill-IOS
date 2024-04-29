@@ -6,6 +6,7 @@ import { db } from "../database/config";
 import Geocode from "react-geocode";
 
 import { checkStoreTimes, distance } from "../Helpers/StoreFunctions";
+import SelectTableValue from "../Components/SelectTableValue";
 // import Geolocation from "react-native-geolocation-service";
 // import Geocoder from "react-native-geocoding";
 const APIKEY = "AIzaSyAe8Q7gExQ3CEzxqr4PFm3ikcMboQPKJIg";
@@ -33,6 +34,8 @@ function Store({
   longitude,
   address,
   setAddress,
+  setTableValue,
+  tableValue,
 }) {
   const [storeTimes, setStoreTimes] = useState(checkStoreTimes());
 
@@ -81,22 +84,23 @@ function Store({
 
   const deliveryOrder = (name) => {
     setSelectedStore("");
-    setOrderType("Delivery");
+    setOrderType(name);
   };
 
-  const testing = async () => {
-    // Add code here to get user's location and address using Geolocation and Geocoder
-  };
   const StoresDataArr = [
-    {
-      Name: "Delivery",
-      functionName: deliveryOrder,
-    },
     {
       Name: "Collection",
       functionName: setOrderType,
     },
-    
+    {
+      Name: "Delivery",
+      functionName: deliveryOrder,
+    },
+
+    {
+      Name: "Table Ordering",
+      functionName: setOrderType,
+    },
   ];
   return (
     <div style={styles.div}>
@@ -137,7 +141,7 @@ function Store({
         >
           Delivery
         </button> */}
-        {StoresDataArr.map((obj) => {
+        {/* {StoresDataArr.map((obj) => {
           return (
             <button
               style={{
@@ -156,7 +160,32 @@ function Store({
               {obj.Name}
             </button>
           );
-        })}
+        })} */}
+        <select
+          onChange={(e) => {
+            const value = e.currentTarget.value;
+            const objectArr = StoresDataArr.filter((obj) => obj.Name === value);
+            objectArr[0].functionName(value);
+          }}
+          value={orderType}
+          style={{
+            backgroundColor: "#F7941D",
+            width: "100%",
+            marginLeft: "auto",
+            marginRight: "auto",
+            borderRadius: 8,
+            borderWidth: 2,
+            borderColor: "white",
+            height: 40,
+            fontSize: "20px",
+            fontWeight: "bold",
+            textAlign: "center",
+          }}
+        >
+          {StoresDataArr.map((obj) => {
+            return <option value={obj.Name}>{obj.Name}</option>;
+          })}
+        </select>
       </div>
       {orderType === "Delivery" && (
         <div style={{ width: "100%", height: 60, marginTop: 10 }}>
@@ -164,6 +193,14 @@ function Store({
           <GooglePlacesAutocomplete
             selectProps={{ address, onChange: setAddress }}
             apiKey={APIKEY}
+          />
+        </div>
+      )}
+      {orderType === "Table Ordering" && (
+        <div style={{ width: "80%", margin: "-10px auto" }}>
+          <SelectTableValue
+            setTableValue={setTableValue}
+            tableValue={tableValue}
           />
         </div>
       )}

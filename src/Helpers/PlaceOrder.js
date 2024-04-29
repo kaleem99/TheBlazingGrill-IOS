@@ -34,7 +34,8 @@ function PlaceOrder(
   address,
   orderType,
   deliveryInstructions,
-  checkoutUrl
+  checkoutUrl,
+  tableValue
 ) {
   const colRef = collection(db, "Orders");
   const dateAndTime = new Date().toISOString();
@@ -53,7 +54,9 @@ function PlaceOrder(
     specialInstructions:
       data.specialInstruction === undefined ? "" : data.specialInstruction,
   }));
-
+  if (orderType === "Table Ordering") {
+    orderType = orderType + " " + tableValue;
+  }
   try {
     addDoc(colRef, {
       Name: name,

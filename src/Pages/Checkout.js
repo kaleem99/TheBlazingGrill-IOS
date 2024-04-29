@@ -31,6 +31,7 @@ import jwtDecode from "jwt-decode";
 
 import { checkForOrders } from "../Helpers/Common";
 import Store from "./Store";
+import SelectTableValue from "../Components/SelectTableValue";
 function Checkout({
   cart,
   userDetails,
@@ -51,6 +52,10 @@ function Checkout({
   setAddress,
   deliveryInstructions,
   setDeliveryInstructions,
+  totalPrice,
+  setTotalPrice,
+  tableValue,
+  setTableValue,
 }) {
   const [paymentMethod, setPaymentMethod] = useState("cardPayment");
   const [payUsingCard, setPayUsingCard] = useState(false);
@@ -60,13 +65,13 @@ function Checkout({
   const [success, setSuccess] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [order, setOrder] = useState("");
-  const [totalPrice, setTotalPrice] = useState(0);
   const [popup, setPopup] = useState(false);
   const [url, setUrl] = useState("");
   const [checkoutUrl, setCheckoutUrl] = useState("");
-
+  const [delivery, setDelivery] = useState(0);
   useEffect(() => {
     checkForOrders(userDetails, setOrder, setStatus);
+    // fetchData();
   }, []);
 
   const getPaymentStatus = () => {
@@ -129,13 +134,13 @@ function Checkout({
     return result;
   };
 
-  const fetchData = async () => {
-    const prevOrders = await getOrdersData();
-    const result = getTotalPrice(cart, orderType, prevOrders.length);
-    setTotalPrice(result);
-    return result;
-  };
-  fetchData();
+  // const fetchData = async () => {
+  //   const prevOrders = await getOrdersData();
+  //   const result = getTotalPrice(cart, orderType, prevOrders.length);
+  //   console.log(result, "RESULT< >");
+  //   // setTotalPrice(result);
+  //   return result;
+  // };
 
   const totalQuantity = cart.reduce((acc, curr) => {
     return acc + curr.productQuantity;
@@ -147,6 +152,8 @@ function Checkout({
   );
 
   const PlaceAnOrder = () => {
+    console.log(checkoutUrl, "CheckoutURL", paymentMethod);
+
     const paid = paymentMethod === "payInStore" ? "Not Paid" : "Paid";
     setPaidState(paid);
     if (
@@ -202,7 +209,9 @@ function Checkout({
         uniqueOrderNum,
         address,
         orderType,
-        deliveryInstructions
+        deliveryInstructions,
+        checkoutUrl,
+        tableValue
       );
     }
   };
@@ -232,6 +241,7 @@ function Checkout({
     { name: "Select Order Type", value: "none" },
     { name: "Collection", value: "Collection" },
     { name: "Delivery", value: "Delivery" },
+    { name: "Table Ordering", value: "Table Ordering" },
   ];
   return (
     <div className="container">
@@ -344,15 +354,31 @@ function Checkout({
           </span>
           <span style={styles.totalTextLeft} className="total-text-left">
             {" "}
-            R{totalPrice.toFixed(2)}
+            R{totalPrice}
           </span>
         </div>
       </div>
       <div style={styles.cardContainer} className="card-container">
         {/* Dropdown component */}
+
         <select
-          value={""}
-          onChange={(e) => setOrderType(e.currentTarget.value)}
+          value={orderType}
+          onChange={(e) => {
+            let deliveryValue = delivery;
+            if (e.currentTarget.value === "Delivery") {
+              deliveryValue = 25;
+            } else if (
+              e.currentTarget.value === "Collection" &&
+              deliveryValue === 25
+            ) {
+              deliveryValue = -25;
+            } else {
+              deliveryValue = 0;
+            }
+            setOrderType(e.currentTarget.value);
+            setDelivery(deliveryValue);
+            setTotalPrice((parseFloat(totalPrice) + deliveryValue).toFixed(2));
+          }}
           className="select-dropdown"
           style={{
             backgroundColor: "#F7941D",
@@ -377,6 +403,7 @@ function Checkout({
           <option selected value={"Delivery"}>
             Delivery
           </option> */}
+
           {selectOrderTypeArr.map((obj, i) => {
             return (
               <option selected={i === 1 ? true : false} value={obj.value}>
@@ -385,6 +412,13 @@ function Checkout({
             );
           })}
         </select>
+        {orderType === "Table Ordering" && (
+          <SelectTableValue
+            setTableValue={setTableValue}
+            tableValue={tableValue}
+            style={{ marginTop: 20 }}
+          />
+        )}
         <button
           style={styles.selectAStore}
           className="select-a-store"
@@ -408,6 +442,7 @@ function Checkout({
         >
           Pay and Place Order
         </button>
+        {orderType === "Collection" && <div></div>}
       </div>
       {payUsingCard === true && (
         <div

@@ -19,6 +19,8 @@ function Cart({
   setMenuItemClicked,
   fetchPost,
   getCartData,
+  totalPrice,
+  setTotalPrice,
 }) {
   const [modalVisible, setModalVisible] = useState(true);
   const [result, setResult] = useState([]);
@@ -70,6 +72,7 @@ function Cart({
     if (cart.length > 0) {
       const totalP = totalPrices.reduce((a, b) => Number(a) + Number(b));
       console.log(totalP, totalPrices, "++++");
+      setTotalPrice(totalP.toFixed(2));
       return totalP.toFixed(2);
     }
   };
@@ -339,9 +342,11 @@ function Cart({
               fontSize: 20,
             }}
             onClick={() => {
-              auth.currentUser === null
-                ? redirectUser()
-                : setMainSection("Checkout");
+              if (auth.currentUser === null) {
+                redirectUser();
+              } else {
+                setMainSection("Checkout");
+              }
             }}
           >
             Checkout

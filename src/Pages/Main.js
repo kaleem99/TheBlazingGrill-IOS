@@ -58,7 +58,8 @@ function MainApp({
   const [items, setItems] = useState("");
   const [deliveryInstructions, setDeliveryInstructions] = useState("");
   const [drinksQuantity, setDrinksQuantity] = useState([]);
-
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [tableValue, setTableValue] = useState(1);
   const [iconPosition, setIconPosition] = useState(0);
   const [swiped, setSwiped] = useState(false);
   const [position, setPosition] = useState({ x: 300, y: 0 });
@@ -198,6 +199,8 @@ function MainApp({
           fetchPost={fetchPost}
           getCartData={getCartData}
           userDetails={userDetails}
+          totalPrice={totalPrice}
+          setTotalPrice={setTotalPrice}
         />
       );
       break;
@@ -232,6 +235,10 @@ function MainApp({
           setSelectedStore={setSelectedStore}
           deliveryInstructions={deliveryInstructions}
           setDeliveryInstructions={setDeliveryInstructions}
+          totalPrice={totalPrice}
+          setTotalPrice={setTotalPrice}
+          setTableValue={setTableValue}
+          tableValue={tableValue}
         />
       );
       break;
@@ -269,6 +276,8 @@ function MainApp({
           setLongitude={setLongitude}
           setAddress={setAddress}
           address={address}
+          setTableValue={setTableValue}
+          tableValue={tableValue}
         />
       );
       break;
