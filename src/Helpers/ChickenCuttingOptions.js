@@ -21,7 +21,11 @@ function ChickenCuttingOptions({ cuttingOption, setCuttingOption, name }) {
   return (
     <div style={styles.container}>
       {resultArr.map((data, i) => (
-        <div key={i} style={styles.section}>
+        <div
+          onClick={() => changeToppingState(data)}
+          key={i}
+          style={styles.section}
+        >
           <input
             type="checkbox"
             style={styles.checkbox}

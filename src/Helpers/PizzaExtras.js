@@ -51,7 +51,11 @@ const ThreeColumnSelectBox = ({
       <div style={styles.container}>
         {newDataArr.map((data, i) => {
           return (
-            <div style={styles.section} key={i}>
+            <div
+              onClick={() => changeToppingsState(data, i)}
+              style={styles.section}
+              key={i}
+            >
               <input
                 type="checkbox"
                 checked={data.check}

@@ -14,7 +14,11 @@ function PsychoFriesExtras({
     <div style={styles.container}>
       {flavoursArr.map((data) => {
         return (
-          <div style={styles.section} key={data.name}>
+          <div
+            onClick={() => changeToppingState(data.name)}
+            style={styles.section}
+            key={data.name}
+          >
             <input
               type="checkbox"
               checked={selectedTopping === data.name}

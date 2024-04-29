@@ -11,7 +11,11 @@ function ChooseChickenPiece({ selectedPiece, setSelectedPiece }) {
   return (
     <div style={styles.container}>
       {chickenPieces.map((data, index) => (
-        <div key={index} style={styles.section}>
+        <div
+          onClick={() => changeToppingState(data)}
+          key={index}
+          style={styles.section}
+        >
           <input
             type="checkbox"
             style={styles.checkbox}

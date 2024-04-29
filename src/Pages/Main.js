@@ -471,7 +471,8 @@ const styles = {
   icon: {
     marginLeft: "auto",
     marginRight: "auto",
-    marginTop: "2px",
+    // marginTop: "2px",
+    height: "85%",
   },
   bottomMenu: {
     width: "100%",
