@@ -170,21 +170,25 @@ function Checkout({
       alert("Please select a store.");
       return setIsVisible(true);
     }
-
+    if (orderType === "Delivery" && address == null) {
+      return alert("Please ensure to add your delivery address.");
+    }
+    console.log(address, "ADDRESS");
     if (paymentMethod === "cardPayment") {
       //direct to payment gateway
       //if successful set paid to true
+      // console.log(totalPrice);
       fetch(
         `https://express-backend-api.uc.r.appspot.com/create-checkout/${
-          totalPrice.toFixed(2) * 100
+          totalPrice * 100
         }`
       )
         .then((response) => response.json())
         .then((data) => {
           setUrl(data.redirectUrl);
           setCheckoutUrl(data.checkoutId);
-          console.log(data);
-          console.log("100".repeat(20));
+          // console.log(data);
+          // console.log("100".repeat(20));
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
