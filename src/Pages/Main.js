@@ -374,7 +374,7 @@ function MainApp({
   return (
     // <SwipeableWrapper>
     <div style={styles.div}>
-      <div
+      {/* <div
         onMouseMove={handleMouseMove}
         // style={{
         //   position: "absolute",
@@ -385,11 +385,11 @@ function MainApp({
       >
         <div {...handlers}>
           <div className="swipeable-container">
-            <div className="contentSwipe">{/* Your main content here */}</div>
+            <div className="contentSwipe">Your main content here</div>
           </div>
         </div>
-      </div>
-      <div style={styles.topMenu}></div>
+      </div> */}
+      {/* <div style={styles.topMenu}></div> */}
       {body}
       <div style={styles.bottomMenu}>
         {arrOfMenuSections.map((section, i) => {

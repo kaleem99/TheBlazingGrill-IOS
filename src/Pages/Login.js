@@ -145,7 +145,7 @@ const styles = {
   },
   input: {
     width: "98.5%",
-    height: 30,
+    height: 38,
     // padding: 10,
     marginBottom: 20,
     border: "1px solid #ccc",

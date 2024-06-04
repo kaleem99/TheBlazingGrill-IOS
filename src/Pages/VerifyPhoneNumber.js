@@ -1,24 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  collection,
-  addDoc,
-  getDocs,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../database/config";
 import { firebaseConfig } from "../database/config";
-// import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+
 import {
   RecaptchaVerifier,
-  getAuth,
-  linkWithCredential,
   PhoneAuthProvider,
-  signInWithPhoneNumber,
   updatePhoneNumber,
+  linkWithPhoneNumber,
 } from "firebase/auth";
 import { auth } from "../database/config";
-import firebase from "firebase/compat/app";
 import { storeData } from "../Helpers/localStorage";
 
 function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
@@ -69,82 +62,97 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
       );
     }
   }
-  const sendVerification = () => {
-    console.log(auth.settings);
-    console.log(100);
+  // const sendVerification = async () => {
+  //   const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
+  //   console.log(result);
+  //   // recapchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+  //   //   size: "normal",
+  //   //   callback: (response) => {
+  //   // reCAPTCHA solved, allow signInWithPhoneNumber.
+  //   // try {
+  //   //   const applicationVerifier = new RecaptchaVerifier(
+  //   //     auth,
+  //   //     "recaptcha-container", {}
+  //   //   );
+  //   //   // const provider = new PhoneAuthProvider(auth);
+  //   //   const provider = new PhoneAuthProvider(auth);
+  //   //   console.log(provider);
+  //   //   const verificationId = await provider.verifyPhoneNumber(
+  //   //     "+27760600653",
+  //   //     applicationVerifier
+  //   //   );
+  //   //   console.log(verificationId);
+  //   //   console.log("+".repeat(100));
+  //   //   setVerificationId(verificationId);
+  //   //   // Obtain the verificationCode from the user.
+  //   //   // const phoneCredential = PhoneAuthProvider.credential(
+  //   //   //   verificationId,
+  //   //   //   verificationCode
+  //   //   // );
+  //   //   // const userCredential = await signInWithCredential(auth, phoneCredential);
+
+  //   //   // provider
+  //   //   //   .verifyPhoneNumber(result, recapchaVerifier)
+  //   //   //   .then((verificationId) => {
+  //   //   //     setVerificationId(verificationId);
+  //   //   //     console.log(verificationId);
+  //   //   alert("OTP sent successfully");
+  //   // } catch (err) {
+  //   //   console.log(err);
+  //   // }
+  //   //     })
+  //   //     .catch((error) => {
+  //   //       // Error occurred.
+  //   //       console.log(error);
+  //   //     });
+  //   // },
+  //   // "expired-callback": () => {
+  //   //   // Response expired. Ask user to solve reCAPTCHA again.
+  //   //   console.log("reCAPTCHA expired; asking user to solve it again.");
+  //   // },
+  //   // });
+
+  //   // Render the reCAPTCHA widget
+  //   // recapchaVerifier.render().then((widgetId) => {
+  //   //   window.recaptchaWidgetId = widgetId;
+  //   // });
+  //   const applicationVerifier = new firebase.auth.RecaptchaVerifier(
+  //     "recaptcha-container",
+  //     {
+  //       size: "invisible",
+  //     }
+  //   );
+  //   try {
+  //     linkWithPhoneNumber(auth, result, applicationVerifier)
+  //     setVerificationId(confirmationResult.verificationId);
+  //     alert("OTP sent successfully");
+  //   } catch (error) {
+  //     console.error("Error during sending OTP:", error);
+  //     alert("Failed to send OTP");
+  //   }
+  // };
+  const sendVerification = async () => {
     const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
-    console.log(result);
+    const applicationVerifier = new firebase.auth.RecaptchaVerifier(
+      "recaptcha-container",
+      {
+        size: "invisible",
+      }
+    );
 
-    // window.recaptchaVerifier = new RecaptchaVerifier(
-    //   auth,
-    //   "recaptcha-container"
-    // );
-    // window.recaptchaVerifier.render();
-    // if (!result) {
-    //   return alert("Please ensure number format is correct");
-    // }
-    // try {
-    //   const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    //   phoneProvider
-    //     .verifyPhoneNumber(result, recapchaVerifier.current)
-    //     .then(setVerificationId)
-    //     .then(() => {
-    //       alert("mobile verification code sent successfully");
-    //     })
-    //     .catch((err) => alert(err + " Please Try again later"));
-    // } catch (err) {
-    //   alert(err);
-    // }
-    // const newAuth = getAuth();
-    // const appVerifier = window.recaptchaVerifier;
-    // console.log(appVerifier);
-    // signInWithPhoneNumber(auth, result, appVerifier)
-    //   .then((confirmationResult) => {
-    //     console.log(confirmationResult);
-    //     setVerificationId(confirmationResult);
-    //     // SMS sent. Prompt user to type the code from the message, then sign the
-    //     // user in with confirmationResult.confirm(code).
-    //     window.confirmationResult = confirmationResult;
-    //     // ...
-
-    //   })
-    //   .catch((error) => {
-    //     // Error; SMS not sent
-    //     // ...
-    //   });
-    // console.log(verify);
-    // firebase.auth.RecaptchaVerifier
-    //   auth.signInWithPhoneNumber(result, verify).then((result) => {
-    //     // setfinal(result);
-    //     alert("code sent")
-    //     // setshow(true);
-    // })
-    //     .catch((err) => {
-    //         alert(err);
-    //         window.location.reload()
-    //     });
-    var appVerifier = new RecaptchaVerifier(auth, "recaptcha-container");
-    var provider = new PhoneAuthProvider(auth);
-    provider
-      .verifyPhoneNumber(result, appVerifier)
-      .then(function (verificationId) {
-        // var verificationCode = window.prompt(
-        //   "Please enter the verification " +
-        //     "code that was sent to your mobile device."
-        // );
-        // console.log(verificationCode);
-
-        recapchaVerifier = appVerifier;
-        setVerificationId(verificationId);
-        console.log(verificationId);
-        alert("otp sent successfully");
-      })
-      .catch((error) => {
-        // Error occurred.
-        console.log(error);
-      });
+    try {
+      const phoneAuthProvider = new firebase.auth.PhoneAuthProvider(auth);
+      const verificationId = await phoneAuthProvider.verifyPhoneNumber(
+        result,
+        applicationVerifier
+      );
+      setVerificationId(verificationId);
+      alert("OTP sent successfully");
+    } catch (error) {
+      console.error("Error during sending OTP:", error);
+      alert("Failed to send OTP please try again later");
+    }
   };
-
   const resendVerificationCode = () => {
     const result = formatPhoneNumberWithCountryCode(formData.mobile, "+27");
     const phoneProvider = new PhoneAuthProvider(auth);
@@ -167,6 +175,7 @@ function VerifyPhoneNumber({ setMainSection, userDetails, type, setSection }) {
       return false;
     }
     const result = countryCode + cleaned.slice(1);
+    console.log(result, 121);
     return result;
   }
 
@@ -314,7 +323,7 @@ const styles = {
   },
   content: {
     display: "flex",
-    height: "90vh",
+    height: "auto",
     justifyContent: "center",
     alignItems: "center",
   },
