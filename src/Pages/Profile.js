@@ -279,6 +279,7 @@ const Profile = ({
       setOrderStatus={setOrderStatus}
       setProfile={setProfileSection}
       setCart={setCart}
+      setProfileSection={setProfileSection}
     />
   ) : (
     <LoginPage setMainSection={setMainSection} />

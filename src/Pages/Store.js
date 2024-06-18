@@ -36,6 +36,7 @@ function Store({
   setAddress,
   setTableValue,
   tableValue,
+  setIsVisible,
 }) {
   const [storeTimes, setStoreTimes] = useState(checkStoreTimes());
 
@@ -79,6 +80,7 @@ function Store({
     } else {
       setSelectedStore(store);
       alert("You have chosen " + store + " for your orders.");
+      setIsVisible(false);
     }
   };
 

@@ -56,6 +56,7 @@ export const addOrUpdateCartCollection = async (
     };
 
     storeData(uniqueId, newItem);
+    console.log(newItem, "*********");
     return true;
   } else {
     const docRef = existingItem.dataId;

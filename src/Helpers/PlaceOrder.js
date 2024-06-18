@@ -44,7 +44,7 @@ function PlaceOrder(
   const hours = String(currentDate.getHours()).padStart(2, "0"); // Get hours and pad with leading zero if necessary
   const minutes = String(currentDate.getMinutes()).padStart(2, "0"); // Get minutes and pad with leading zero if necessary
   const time = `${hours}:${minutes}`; // Combine hours and minutes with a colon separator
-
+  console.log(orderType, 47)
   const food = orders.map((data) => ({
     productType: data.productType,
     productName: data.productName,

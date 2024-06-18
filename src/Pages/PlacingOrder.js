@@ -33,11 +33,20 @@ const PlacingOrder = ({
   setOrderStatus,
   setProfile,
   setCart,
+  setProfileSection,
 }) => {
   const [status, setStatus] = useState("");
   const [order, setOrder] = useState("");
+  const setPayUsingCard = () => {};
   useEffect(() => {
-    checkForOrders(userDetails, setOrder, setStatus);
+    checkForOrders(
+      userDetails,
+      setOrder,
+      setStatus,
+      setPayUsingCard,
+      setMainSection,
+      setProfileSection
+    );
     // console.log(status);
     if (status !== "In Progress" && cart.length > 0) {
       setCart([]);

@@ -62,15 +62,23 @@ export const generateUniqueOrderNumber = (storeName, username) => {
   );
 };
 
-export const checkForOrders = (userDetails, setOrder, setStatus) => {
+export const checkForOrders = (
+  userDetails,
+  setOrder,
+  setStatus,
+  setPayUsingCard,
+  setMainSection,
+  setProfileSection
+) => {
   // console.log(userDetails);
   const q = query(collection(db, "Orders"));
-  // console.log(q)
+  console.log("++++++++");
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     if (!querySnapshot.empty) {
       const items = [];
       querySnapshot.forEach((doc) => {
         if (doc.data().email === userDetails.email) {
+          console.log(doc.data(), 80);
           if (
             doc.data().status === "Pending" ||
             doc.data().status === "In Progress" ||
@@ -82,6 +90,15 @@ export const checkForOrders = (userDetails, setOrder, setStatus) => {
             // console.log(doc.data());
 
             setOrder(doc.data());
+            console.log(10000);
+          }
+          if (
+            doc.data().status === "In Progress" ||
+            doc.data().status === "Declined"
+          ) {
+            setPayUsingCard(false);
+            setMainSection("Profile");
+            setProfileSection("Current Orders");
           }
         }
       });

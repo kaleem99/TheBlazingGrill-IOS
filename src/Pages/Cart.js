@@ -83,7 +83,7 @@ function Cart({
     );
     if (confirmed) {
       // Perform delete logic here
-      await await clearAllData(setCart);
+      await clearAllData(setCart);
       getCartData(userDetails, setCart);
       alert("item has been deleted successfully.");
       console.log(cart);
@@ -204,7 +204,8 @@ function Cart({
       <div
         style={{
           width: "100%",
-          height: "64vh",
+          height: "60vh",
+          overflow: "auto",
         }}
         className="CartDivHeight"
         scrollEnabled={true}
@@ -266,6 +267,7 @@ function Cart({
                           }}
                         >
                           R{items.subTotal}
+                          {console.log(items)}
                         </p>
                         <div
                           style={{
@@ -308,18 +310,19 @@ function Cart({
             </SwipeableList>
           );
         })}
-        {cart.length > 0 && (
-          <button onClick={() => deleteCart()} style={styles.clearCart}>
-            Clear Cart
-          </button>
-        )}
       </div>
+      {cart.length > 0 && (
+        <button onClick={() => deleteCart()} style={styles.clearCart}>
+          Clear Cart
+        </button>
+      )}
       {cart.length > 0 && (
         <div
           style={{
             width: "100%",
             height: "30%",
             textAlign: "center",
+            marginTop: "5%",
           }}
         >
           <div style={{ display: "flex", width: "90%", margin: "auto" }}>

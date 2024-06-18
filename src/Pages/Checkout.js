@@ -58,7 +58,7 @@ function Checkout({
   setTableValue,
 }) {
   const [paymentMethod, setPaymentMethod] = useState("cardPayment");
-  const [payUsingCard, setPayUsingCard] = useState(false);
+  const [payUsingCard, setPayUsingCard] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [paidState, setPaidState] = useState("Paid");
   const [status, setStatus] = useState("");
@@ -70,40 +70,52 @@ function Checkout({
   const [checkoutUrl, setCheckoutUrl] = useState("");
   const [delivery, setDelivery] = useState(0);
   useEffect(() => {
-    checkForOrders(userDetails, setOrder, setStatus);
+    checkForOrders(
+      userDetails,
+      setOrder,
+      setStatus,
+      setPayUsingCard,
+      setMainSection,
+      setProfileSection
+    );
     // fetchData();
   }, []);
 
   const getPaymentStatus = () => {
-    fetch(
-      `https://express-backend-api.uc.r.appspot.com/validate/${checkoutUrl}/`
-    )
+    // const interval = setInterval(() => {
+    console.log(100);
+    fetch(`http://localhost:8080/validate/${checkoutUrl}/`)
       .then((response) => response.json())
       .then((data) => {
         if (data.valid) {
           setPayUsingCard(false);
+
           setSuccess(true);
           let result = checkoutUrl;
           cardPaymentOrder(result);
           setCheckoutUrl("");
           setUrl("");
+          // clearInterval(interval);
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
+    console.log(checkoutUrl, 11);
+    // }, 50000);
   };
+  console.log(checkoutUrl);
 
-  useEffect(() => {
-    if (checkoutUrl) {
-      const interval = setInterval(() => {
-        getPaymentStatus();
-      }, 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }
-  }, [checkoutUrl]);
+  // useEffect(() => {
+  //   if (checkoutUrl) {
+  //     // const interval = setInterval(() => {
+  //     getPaymentStatus();
+  //     // }, 1000);
+  //     // return () => {
+  //     //   clearInterval(interval);
+  //     // };
+  //   }
+  // }, [checkoutUrl]);
 
   const handlePayInStore = () => {
     setPaymentMethod("payInStore");
@@ -150,7 +162,7 @@ function Checkout({
     selectedStore,
     userDetails.displayName
   );
-
+  console.log(orderType, selectedStore, 165);
   const PlaceAnOrder = () => {
     console.log(checkoutUrl, "CheckoutURL", paymentMethod);
 
@@ -166,10 +178,14 @@ function Checkout({
       );
     }
 
+    if (orderType == "" || orderType == null || orderType == undefined) {
+      return alert("Please select an order type");
+    }
     if (selectedStore === "") {
       alert("Please select a store.");
       return setIsVisible(true);
     }
+
     if (orderType === "Delivery" && address == null) {
       return alert("Please ensure to add your delivery address.");
     }
@@ -177,18 +193,41 @@ function Checkout({
     if (paymentMethod === "cardPayment") {
       //direct to payment gateway
       //if successful set paid to true
-      // console.log(totalPrice);
-      fetch(
-        `https://express-backend-api.uc.r.appspot.com/create-checkout/${
-          totalPrice * 100
-        }`
-      )
+      console.log(totalPrice, 195);
+
+      fetch(`https://express-backend-api.uc.r.appspot.com/create-checkout/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          amount: totalPrice * 100,
+          uid: userDetails.uid,
+        }),
+      })
         .then((response) => response.json())
         .then((data) => {
           setUrl(data.redirectUrl);
           setCheckoutUrl(data.checkoutId);
-          // console.log(data);
-          // console.log("100".repeat(20));
+          console.log(data.redirectUrl, "*".repeat(10));
+          PlaceOrder(
+            userDetails.displayName,
+            userDetails.email,
+            userDetails.phoneNumber,
+            "Backlog",
+            cart,
+            userDetails.uid,
+            selectedStore,
+            paidState,
+            totalPrice,
+            uniqueOrderNum,
+            address,
+            orderType,
+            deliveryInstructions,
+            data.checkoutId
+          );
+          console.log(data);
+          console.log("100".repeat(20));
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -199,12 +238,11 @@ function Checkout({
     } else {
       setMainSection("Profile");
       setProfileSection("Current Orders");
-
       PlaceOrder(
         userDetails.displayName,
         userDetails.email,
         userDetails.phoneNumber,
-        "Pending",
+        "Backlog",
         cart,
         userDetails.uid,
         selectedStore,
@@ -228,7 +266,7 @@ function Checkout({
       userDetails.displayName,
       userDetails.email,
       userDetails.phoneNumber,
-      "Pending",
+      "Backlog",
       cart,
       userDetails.uid,
       selectedStore,
@@ -247,6 +285,9 @@ function Checkout({
     { name: "Delivery", value: "Delivery" },
     { name: "Table Ordering", value: "Table Ordering" },
   ];
+  // getPaymentStatus();
+  console.log(auth.currentUser.uid, 1000);
+
   return (
     <div className="container">
       <div className="modal" style={{ display: isVisible ? "block" : "none" }}>
@@ -270,6 +311,7 @@ function Checkout({
               setLongitude={setLongitude}
               setAddress={setAddress}
               address={address}
+              setIsVisible={setIsVisible}
             />
             <button
               style={styles.closeButton}
@@ -468,6 +510,7 @@ function Checkout({
             right: 0,
           }}
         >
+          {console.log(url, 11)}
           <iframe
             src={url}
             title="Payment Gateway"

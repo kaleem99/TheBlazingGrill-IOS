@@ -38,9 +38,9 @@ export const getAllData = async (setCart) => {
     });
     console.log(cartData, "CARTDATA");
     cartData.forEach((data) => {
-      data.subTotal = (data.productPrice * data.productQuantity).toFixed(2);
+      data.subTotal = (parseFloat(data.defaultPrice) * data.productQuantity).toFixed(2);
     });
-    console.log(cartData, "CART NEW");
+    console.log(cartData, "CART NEW", "+++++");
     setCart(cartData);
   } catch (error) {
     console.log("Error retrieving items:", error);

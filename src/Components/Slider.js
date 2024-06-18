@@ -13,7 +13,11 @@ const SlideUpModal = ({
   result,
 }) => {
   const [email, setEmail] = useState("");
- 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     onClose();
+  //   }, 5000);
+  // }, []);
   const setItemSection = (name) => {
     setMainSection("Menu");
     fetchPost(name);

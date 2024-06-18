@@ -278,6 +278,7 @@ function MainApp({
           address={address}
           setTableValue={setTableValue}
           tableValue={tableValue}
+          setIsVisible={() => {}}
         />
       );
       break;
