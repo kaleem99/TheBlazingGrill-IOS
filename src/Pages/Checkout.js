@@ -58,7 +58,7 @@ function Checkout({
   setTableValue,
 }) {
   const [paymentMethod, setPaymentMethod] = useState("cardPayment");
-  const [payUsingCard, setPayUsingCard] = useState(true);
+  const [payUsingCard, setPayUsingCard] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [paidState, setPaidState] = useState("Paid");
   const [status, setStatus] = useState("");
