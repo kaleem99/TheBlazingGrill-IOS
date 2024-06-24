@@ -203,6 +203,7 @@ function Checkout({
         body: JSON.stringify({
           amount: totalPrice * 100,
           uid: userDetails.uid,
+          test: "Yes",
         }),
       })
         .then((response) => response.json())

@@ -118,8 +118,13 @@ body {
   right: 0;
 }
 .modal-content {
-  background-image: url("./assets/smokeyBackground1024_1.png");
+  /* background-image: url("./assets/smokeyBackground1024_1.png"); */
   /* margin: 20px auto; */
+  background-color:#101010;
+  /* background-image: url('./assets/background2.jpg'); */
+  background-repeat: no-repeat;
+
+
 }
 
 @media only screen and (max-height: 670px) {
