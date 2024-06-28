@@ -204,12 +204,14 @@ function Checkout({
           amount: totalPrice * 100,
           uid: userDetails.uid,
           test: "Yes",
+          email: userDetails.email,
+          contact: userDetails.phoneNumber,
         }),
       })
         .then((response) => response.json())
         .then((data) => {
-          setUrl(data.redirectUrl);
-          setCheckoutUrl(data.checkoutId);
+          // setUrl(data.redirectUrl);
+          // setCheckoutUrl(data.checkoutId);
           console.log(data.redirectUrl, "*".repeat(10));
           PlaceOrder(
             userDetails.displayName,
@@ -511,18 +513,24 @@ function Checkout({
             right: 0,
           }}
         >
-          {console.log(url, 11)}
-          <iframe
+          {/* {console.log(url, 11)} */}
+          {/* <iframe
             src={url}
             title="Payment Gateway"
             style={{ width: "100%", height: "100%" }}
-          />
+          /> */}
+          <div style={{ width: "100%", height: "100%", padding: "5px" }}>
+            <h3>
+              Please look out for an email or sms and complete the payment to
+              place an order
+            </h3>
+          </div>
           <button
             style={styles.saveOrCancel}
             onClick={() => setPayUsingCard(false)}
             className="cancel-button"
           >
-            Cancel
+            Close
           </button>
         </div>
       )}
