@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../database/config";
+import { onSnapshot, collection } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 // import Icon from "react-native-vector-icons/MaterialIcons";
 import "../Components/Profile.css";
@@ -8,10 +9,12 @@ import LoginPage from "./Login";
 import AccountDetails from "./AccountDetails";
 import Orders from "./Orders";
 import PlacingOrder from "./PlacingOrder";
+import Rewards from "./Rewards";
 // import firebase from "firebase/compat/app";
 // import { Button } from "react-native-elements";
 // import base64 from "react-native-base64";
-
+import { db } from "../database/config";
+import EmployeeRewards from "./EmployeeRewards";
 const Profile = ({
   setMainSection,
   userDetails,
@@ -27,7 +30,37 @@ const Profile = ({
   driverLoggedIn,
   setSection,
 }) => {
-  let content = ["Account Details", "Orders", "Sign out", "Current Orders"];
+  const [staff, setStaff] = useState([]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      collection(db, "TheBlazingGrillStaff"),
+      (snapshot) => {
+        const staffList = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const newStaffList = staffList.map((data) => data.email.toLowerCase());
+        // if (newStaffList.includes(auth?.currentUser?.email)) {
+        //   content.push("Text");
+        //   data1.push({ img: require("../assets/rewards.png") });
+        // }
+        console.log(newStaffList);
+
+        setStaff(newStaffList);
+      }
+    );
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+  let content = [
+    "Account Details",
+    "Orders",
+    "Sign out",
+    "Current Orders",
+    "Rewards",
+    // "Staff Rewards",
+  ];
   const icons = [
     require("../assets/TBG_Final_TransWhite-1024x894.png"),
     require("../assets/facebookLogo.png"),
@@ -41,7 +74,6 @@ const Profile = ({
     } else {
       setMainSection("Main");
     }
-    console.log(2000);
     logout();
     setUserDetails([]);
   };
@@ -55,6 +87,7 @@ const Profile = ({
   };
 
   const checkOnClick = (type) => {
+    // console.log(type);
     switch (type) {
       case "Account Details":
         setProfileSection("Account Details");
@@ -68,6 +101,10 @@ const Profile = ({
         return setProfileSection("Current Orders");
       case "Delivery Orders":
         return setMainSection("Delivery");
+      case "Rewards":
+        return setProfileSection(type);
+      case "Staff Rewards":
+        return setProfileSection(type);
       default:
         return;
     }
@@ -78,6 +115,8 @@ const Profile = ({
     { img: require("../assets/previousOrders.png") },
     { img: require("../assets/exit.png") },
     { img: require("../assets/currentOrders.png") },
+    { img: require("../assets/rewards.png") },
+    // { img: require("../assets/staff.png") },
   ];
 
   if (driverLoggedIn === true) {
@@ -111,6 +150,12 @@ const Profile = ({
         }}
       >
         <img
+          onClick={() => {
+            console.log(staff);
+            if (staff.includes(auth?.currentUser?.email.toLowerCase())) {
+              setProfileSection("Staff Rewards");
+            }
+          }}
           style={{ width: 160, top: 140 }}
           src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
           alt="Profile"
@@ -280,6 +325,13 @@ const Profile = ({
       setProfile={setProfileSection}
       setCart={setCart}
       setProfileSection={setProfileSection}
+    />
+  ) : profileSection === "Rewards" ? (
+    <Rewards userId={userDetails} setProfileSection={setProfileSection} />
+  ) : profileSection === "Staff Rewards" ? (
+    <EmployeeRewards
+      setProfileSection={setProfileSection}
+      userId={userDetails}
     />
   ) : (
     <LoginPage setMainSection={setMainSection} />
