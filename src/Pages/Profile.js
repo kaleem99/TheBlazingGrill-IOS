@@ -143,7 +143,7 @@ const Profile = ({
             <div className="back-content"> */}
       <div
         style={{
-          margin: "auto",
+          margin: "20px auto",
           width: 160,
           borderRadius: "10px",
           border: "1px groove white",
@@ -209,7 +209,8 @@ const Profile = ({
           flexDirection: "row",
           // position: "absolute",
           width: "60%",
-          margin: "auto",
+          gap: "15px",
+          margin: "15px auto",
           justifyContent: "space-between",
           alignItems: "center",
         }}
@@ -258,8 +259,9 @@ const Profile = ({
           flexDirection: "row",
           // position: "absolute",
           bottom: 90,
+          gap: "15px",
           width: "60%",
-          margin: "auto",
+          margin: "15px auto",
           justifyContent: "space-between",
           alignItems: "center",
         }}

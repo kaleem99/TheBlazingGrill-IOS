@@ -124,3 +124,13 @@
     transform: translateY(0px);
   }
 }
+
+.loyaltyStars {
+  border: 1px solid white;
+  border-radius: 50%;
+  width: 50px !important;
+  height: 41px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
