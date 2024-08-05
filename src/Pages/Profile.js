@@ -153,7 +153,11 @@ const Profile = ({
           onClick={() => {
             console.log(staff);
             if (staff.includes(auth?.currentUser?.email.toLowerCase())) {
-              setProfileSection("Staff Rewards");
+              // setProfileSection("Staff Rewards");
+              window.open(
+                "http://localhost:3001/TheBlazingGrill-IOS/?Employee",
+                "_blank"
+              );
             }
           }}
           style={{ width: 160, top: 140 }}

@@ -114,24 +114,24 @@ function App({ phoneHeight }) {
       }
     });
   }, [userDetails]);
-  // if (window.location.href.includes("Employee")) {
-  //   return (
-  //     <div
-  //       style={{
-  //         backgroundImage: `url(${backgroundImage2})`,
-  //         backgroundSize: "cover",
-  //         backgroundRepeat: "no-repeat",
-  //         width: "100%",
-  //         height: "100vh",
-  //         // maxHeight: "auto",
-  //         overflow: "auto",
-  //       }}
-  //       className="container"
-  //     >
-  //       <EmployeeRewards userId={userDetails} />
-  //     </div>
-  //   );
-  // }
+  if (window.location.href.includes("Employee")) {
+    return (
+      <div
+        style={{
+          backgroundImage: `url(${backgroundImage2})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          width: "100%",
+          height: "100vh",
+          // maxHeight: "auto",
+          overflow: "auto",
+        }}
+        className="container"
+      >
+        <EmployeeRewards userId={userDetails} />
+      </div>
+    );
+  }
   return (
     <div
       style={{
