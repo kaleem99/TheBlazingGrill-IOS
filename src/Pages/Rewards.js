@@ -113,7 +113,7 @@ const Rewards = ({ userId, setProfileSection }) => {
               style={{
                 fontSize: "20px",
                 color: "white",
-                textAlign: "center",
+                textAlign: "left",
               }}
               onClick={() => setSelectedLoyalty(item)}
             >

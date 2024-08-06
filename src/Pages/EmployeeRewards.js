@@ -5,94 +5,80 @@ import { QrReader } from "react-qr-reader";
 import { auth } from "../database/config";
 import { collection, getDocs } from "firebase/firestore";
 import MenuItemsSection from "../frontend/data";
-const MenuItems = ({ items, setItems, itemName, setItemName }) => {
-  const [selectedItem, setSelectedItem] = useState("");
-  const [scanResult, setScanResult] = useState("");
-  const [error, setError] = useState("");
+const MenuItems = ({
+  items,
+  setItems,
+  itemName,
+  setItemName,
+  setView,
+  setSelectedOption,
+  selectedOption,
+}) => {
+  const [selectedItem, setSelectedItem] = useState([]);
+
   const handleChange = (event) => {
     setSelectedItem(event.target.value);
   };
-  const handleResult = async (result, error) => {
-    if (!!result) {
-      setScanResult(result?.text);
-      try {
-        // await addDataToDatabase(auth.currentUser.email, {
-        //   name: "kaleem",
-        //   age: 38,
-        // });
-        // console.log("Data added to database successfully.");
-        alert(result?.text);
-        setError("");
-      } catch (err) {
-        setError("Error adding data to database.");
-        console.error("Error adding data to database:", err);
-      }
-    }
 
-    if (!!error) {
-      console.error(error);
-      setError("Error scanning QR code.");
-    }
-  };
-  const addDataToDatabase = async () => {
-    // alert(itemName);
-    try {
-      const docRef = doc(db, "Rewards", scanResult);
-      const docSnap = await getDoc(docRef);
+  // const addDataToDatabase = async () => {
+  //   // alert(itemName);
+  //   try {
+  //     const docRef = doc(db, "Rewards", scanResult);
+  //     const docSnap = await getDoc(docRef);
 
-      let rewardsDoc = {
-        email: scanResult,
-        scanData: [],
-        scannedAt: new Date(),
-      };
+  //     let rewardsDoc = {
+  //       email: scanResult,
+  //       scanData: [],
+  //       scannedAt: new Date(),
+  //     };
 
-      if (docSnap.exists()) {
-        // Document exists, update the scanData array
-        const existingData = docSnap.data();
-        const scanData = existingData.scanData || [];
-        const itemIndex = scanData.findIndex(
-          (item) => item.name === selectedItem && item.type === itemName
-        );
+  //     if (docSnap.exists()) {
+  //       // Document exists, update the scanData array
+  //       const existingData = docSnap.data();
+  //       const scanData = existingData.scanData || [];
+  //       const itemIndex = scanData.findIndex(
+  //         (item) => item.name === selectedItem && item.type === itemName
+  //       );
 
-        if (itemIndex >= 0) {
-          // Item exists in the array, update the stars property
-          scanData[itemIndex].stars += 1;
-        } else {
-          // Item does not exist in the array, add a new object
-          scanData.push({
-            type: itemName,
-            name: selectedItem,
-            claimCount: 0,
-            stars: 1,
-          });
-        }
+  //       if (itemIndex >= 0) {
+  //         // Item exists in the array, update the stars property
+  //         scanData[itemIndex].stars += 1;
+  //       } else {
+  //         // Item does not exist in the array, add a new object
+  //         scanData.push({
+  //           type: itemName,
+  //           name: selectedItem,
+  //           claimCount: 0,
+  //           stars: 1,
+  //         });
+  //       }
 
-        rewardsDoc.scanData = scanData;
-      } else {
-        // Document does not exist, create a new one
-        rewardsDoc.scanData.push({
-          type: itemName,
-          name: selectedItem,
-          claimCount: 0,
-          stars: 1,
-        });
-      }
+  //       rewardsDoc.scanData = scanData;
+  //     } else {
+  //       // Document does not exist, create a new one
+  //       rewardsDoc.scanData.push({
+  //         type: itemName,
+  //         name: selectedItem,
+  //         claimCount: 0,
+  //         stars: 1,
+  //       });
+  //     }
 
-      // Use updateDoc, and if the document does not exist, create it with setDoc
-      await updateDoc(docRef, rewardsDoc).catch(async (err) => {
-        if (err.code === "not-found") {
-          await setDoc(docRef, rewardsDoc);
-        } else {
-          throw err;
-        }
-      });
-      alert("Customers Loyalty point added.");
-      setSelectedItem("");
-      setScanResult("");
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
+  //     // Use updateDoc, and if the document does not exist, create it with setDoc
+  //     await updateDoc(docRef, rewardsDoc).catch(async (err) => {
+  //       if (err.code === "not-found") {
+  //         await setDoc(docRef, rewardsDoc);
+  //       } else {
+  //         throw err;
+  //       }
+  //     });
+  //     alert("Customers Loyalty point added.");
+  //     setSelectedItem("");
+  //     setScanResult("");
+  //   } catch (err) {
+  //     throw new Error(err.message);
+  //   }
+  // };
   return (
     <div
       style={
@@ -115,7 +101,7 @@ const MenuItems = ({ items, setItems, itemName, setItemName }) => {
           left: 10,
           border: "none",
         }}
-        onClick={() => setItems([])}
+        onClick={() => setView("Main")}
       >
         <img
           style={{
@@ -128,7 +114,7 @@ const MenuItems = ({ items, setItems, itemName, setItemName }) => {
       </button>
       <p style={styles.text}>{itemName}</p>
 
-      <div style={{ width: "100%", margin: "50px auto" }}>
+      {/* <div style={{ width: "100%", margin: "50px auto" }}>
         <select
           value={selectedItem}
           onChange={handleChange}
@@ -150,8 +136,57 @@ const MenuItems = ({ items, setItems, itemName, setItemName }) => {
             </option>
           ))}
         </select>
+      </div> */}
+      <div
+        style={{
+          width: "100%",
+          margin: "10px auto",
+          height: "50vh",
+          overflow: "auto",
+          textAlign: "left",
+        }}
+      >
+        {items.map((item, i) => (
+          <div key={item.name} style={{ height: "50px" }}>
+            <label style={{ fontSize: "16px", color: "white" }}>
+              <input
+                type="checkbox"
+                value={item.name}
+                checked={selectedOption.some(
+                  (data) =>
+                    data.type === item.category && data.name === item.name
+                )}
+                onChange={(e) => {
+                  if (e.currentTarget.checked) {
+                    setSelectedOption((prevState) => [
+                      ...prevState,
+                      { type: item.category, name: item.name },
+                    ]);
+                  } else {
+                    setSelectedOption((prevState) =>
+                      prevState.filter(
+                        (data) =>
+                          !(
+                            data.type === item.category &&
+                            data.name === item.name
+                          )
+                      )
+                    );
+                  }
+                }}
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  marginRight: "10px",
+                }}
+              />
+              {item.name} - R{item.price}
+            </label>
+          </div>
+        ))}
       </div>
-      {selectedItem !== "" && (
+
+      {/* {selectedItem !== "" && (
         <div style={styles.qrReader}>
           <QrReader
             constraints={{ facingMode: "environment" }}
@@ -159,20 +194,11 @@ const MenuItems = ({ items, setItems, itemName, setItemName }) => {
             style={{ width: "100%" }}
           />
         </div>
-      )}
-      {scanResult && (
-        <div style={styles.result}>
-          {/* <h3>Scanned Data</h3>
-          <p>{scanResult}</p> */}
-          <button style={styles.button} onClick={() => addDataToDatabase()}>
-            Add loyalty point
-          </button>
-        </div>
-      )}
+      )} */}
     </div>
   );
 };
-const MenuSections = ({ setItems, setItemName }) => {
+const MenuSections = ({ setItems, setItemName, setView }) => {
   const fetchData = async (data) => {
     setItemName(data);
     try {
@@ -224,7 +250,10 @@ const MenuSections = ({ setItems, setItemName }) => {
                 borderRadius: 10,
                 textAlign: "center",
               }}
-              onClick={() => fetchData(data.name)}
+              onClick={() => {
+                fetchData(data.name);
+                setView("");
+              }}
             >
               <img
                 src={data.img}
@@ -250,21 +279,168 @@ const MenuSections = ({ setItems, setItemName }) => {
 const EmployeeRewards = ({ userId, setProfileSection }) => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState([]);
+  const [scanResult, setScanResult] = useState(null);
+  const [error, setError] = useState("");
+  const [selectedOption, setSelectedOption] = useState([]);
   const [itemName, setItemName] = useState("");
-
+  const [view, setView] = useState("Main");
   useEffect(() => {
     // fetchData();
   }, []);
+  const handleResult = async (result, error) => {
+    if (!!result && scanResult === null) {
+      setScanResult(result?.text);
+      try {
+        // alert(result?.text);
+        setView("Main");
+        setError("");
+      } catch (err) {
+        setError("Error adding data to database.");
+        console.error("Error adding data to database:", err);
+      }
+    }
+
+    if (!!error) {
+      console.error(error);
+      setError("Error scanning QR code.");
+    }
+  };
+  const addDataToDatabase = async (newItems) => {
+    try {
+      const docRef = doc(db, "Rewards", "kaleemnike1@gmail.com");
+      const docSnap = await getDoc(docRef);
+
+      let rewardsDoc = {
+        email: "kaleemnike1@gmail.com",
+        scanData: [],
+        scannedAt: new Date(),
+      };
+
+      if (docSnap.exists()) {
+        // Document exists, update the scanData array
+        const existingData = docSnap.data();
+        const scanData = existingData.scanData || [];
+
+        newItems.forEach((newItem) => {
+          const itemIndex = scanData.findIndex(
+            (item) => item.name === newItem.name && item.type === newItem.type
+          );
+
+          if (itemIndex >= 0) {
+            // Item exists in the array, update the stars property
+            scanData[itemIndex].stars += 1;
+          } else {
+            // Item does not exist in the array, add a new object
+            scanData.push({
+              type: newItem.type,
+              name: newItem.name,
+              claimCount: 0,
+              stars: 1,
+            });
+          }
+        });
+
+        rewardsDoc.scanData = scanData;
+      } else {
+        // Document does not exist, create a new one
+        newItems.forEach((newItem) => {
+          rewardsDoc.scanData.push({
+            type: newItem.type,
+            name: newItem.name,
+            claimCount: 0,
+            stars: 1,
+          });
+        });
+      }
+
+      // Use updateDoc, and if the document does not exist, create it with setDoc
+      await updateDoc(docRef, rewardsDoc).catch(async (err) => {
+        if (err.code === "not-found") {
+          await setDoc(docRef, rewardsDoc);
+        } else {
+          throw err;
+        }
+      });
+
+      alert("Customers Loyalty points added.");
+      setSelectedOption([]);
+      // setSelectedItem("");
+      setScanResult(null);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
 
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>Employee Rewards</h2>
-      <button onClick={() => setProfileSection("")}>Back</button>
-      {items.length === 0 ? (
-        <MenuSections setItemName={setItemName} setItems={setItems} />
+
+      {view === "Main" ? (
+        <MenuSections
+          setView={setView}
+          setItemName={setItemName}
+          setItems={setItems}
+        />
+      ) : view === "QRCODE" ? (
+        !scanResult && (
+          <div style={styles.qrReader}>
+            <button onClick={() => setView("Main")}>Back</button>
+            <QrReader
+              constraints={{ facingMode: "environment" }}
+              onResult={handleResult}
+              style={{ width: "100%" }}
+            />
+          </div>
+        )
       ) : (
-        <MenuItems itemName={itemName} setItems={setItems} items={items} />
+        <MenuItems
+          setView={setView}
+          itemName={itemName}
+          setItems={setItems}
+          items={items}
+          setSelectedOption={setSelectedOption}
+          selectedOption={selectedOption}
+        />
       )}
+
+      {view === "Main" && !scanResult && (
+        <button
+          style={styles.button}
+          onClick={() =>
+            selectedOption.length > 0
+              ? setView("QRCODE")
+              : alert("please select items")
+          }
+        >
+          Scan Code
+        </button>
+      )}
+      {scanResult && view === "Main" && (
+        <div style={styles.result}>
+          <h3>Scanned Data</h3>
+          <p>{scanResult}</p>
+          <button
+            style={styles.button}
+            onClick={() => addDataToDatabase(selectedOption)}
+          >
+            Add loyalty point
+          </button>
+          {/* <button
+          style={styles.button}
+          onClick={() => {
+            setView("Main");
+            console.log(selectedOption);
+            addDataToDatabase(selectedOption);
+          }}
+        >
+          Continue
+        </button> */}
+        </div>
+      )}
+
+      {/* <button style={styles.button} onClick={() => setProfileSection("")}>
+        Back
+      </button> */}
       {/*
       <button
         onClick={() => {
@@ -299,6 +475,7 @@ const styles = {
     color: "white",
     fontWeight: "bold",
     borderRadius: "5px",
+    marginTop: "50px",
   },
   title: {
     fontSize: 22,
@@ -314,6 +491,7 @@ const styles = {
   result: {
     marginTop: 20,
     textAlign: "center",
+    color: "white",
   },
   error: {
     color: "red",

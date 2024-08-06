@@ -155,7 +155,7 @@ const Profile = ({
             if (staff.includes(auth?.currentUser?.email.toLowerCase())) {
               // setProfileSection("Staff Rewards");
               window.open(
-                "http://localhost:3001/TheBlazingGrill-IOS/?Employee",
+                "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee",
                 "_blank"
               );
             }
