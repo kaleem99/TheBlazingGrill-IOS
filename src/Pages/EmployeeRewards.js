@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { doc, setDoc, updateDoc, getDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import { db } from "../database/config";
 import { QrReader } from "react-qr-reader";
 import { auth } from "../database/config";
@@ -20,65 +22,6 @@ const MenuItems = ({
     setSelectedItem(event.target.value);
   };
 
-  // const addDataToDatabase = async () => {
-  //   // alert(itemName);
-  //   try {
-  //     const docRef = doc(db, "Rewards", scanResult);
-  //     const docSnap = await getDoc(docRef);
-
-  //     let rewardsDoc = {
-  //       email: scanResult,
-  //       scanData: [],
-  //       scannedAt: new Date(),
-  //     };
-
-  //     if (docSnap.exists()) {
-  //       // Document exists, update the scanData array
-  //       const existingData = docSnap.data();
-  //       const scanData = existingData.scanData || [];
-  //       const itemIndex = scanData.findIndex(
-  //         (item) => item.name === selectedItem && item.type === itemName
-  //       );
-
-  //       if (itemIndex >= 0) {
-  //         // Item exists in the array, update the stars property
-  //         scanData[itemIndex].stars += 1;
-  //       } else {
-  //         // Item does not exist in the array, add a new object
-  //         scanData.push({
-  //           type: itemName,
-  //           name: selectedItem,
-  //           claimCount: 0,
-  //           stars: 1,
-  //         });
-  //       }
-
-  //       rewardsDoc.scanData = scanData;
-  //     } else {
-  //       // Document does not exist, create a new one
-  //       rewardsDoc.scanData.push({
-  //         type: itemName,
-  //         name: selectedItem,
-  //         claimCount: 0,
-  //         stars: 1,
-  //       });
-  //     }
-
-  //     // Use updateDoc, and if the document does not exist, create it with setDoc
-  //     await updateDoc(docRef, rewardsDoc).catch(async (err) => {
-  //       if (err.code === "not-found") {
-  //         await setDoc(docRef, rewardsDoc);
-  //       } else {
-  //         throw err;
-  //       }
-  //     });
-  //     alert("Customers Loyalty point added.");
-  //     setSelectedItem("");
-  //     setScanResult("");
-  //   } catch (err) {
-  //     throw new Error(err.message);
-  //   }
-  // };
   return (
     <div
       style={
@@ -113,30 +56,6 @@ const MenuItems = ({
         ></img>
       </button>
       <p style={styles.text}>{itemName}</p>
-
-      {/* <div style={{ width: "100%", margin: "50px auto" }}>
-        <select
-          value={selectedItem}
-          onChange={handleChange}
-          style={{
-            width: "96%",
-            height: "40px",
-            borderColor: "white",
-            borderWidth: "1px",
-            borderRadius: "10px",
-            fontSize: "23",
-          }}
-        >
-          <option value="" disabled>
-            Select an item
-          </option>
-          {items.map((item) => (
-            <option key={item.name} value={item.name}>
-              {item.name} - R{item.price}
-            </option>
-          ))}
-        </select>
-      </div> */}
       <div
         style={{
           width: "100%",
@@ -210,7 +129,7 @@ const MenuSections = ({ setItems, setItemName, setView }) => {
       }));
       // setCartItems(items);
       setItems(items);
-      console.log(items);
+      // console.log(items, 130);
     } catch (error) {
       console.error("Error fetching cart items:", error);
     }
@@ -284,9 +203,21 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
   const [selectedOption, setSelectedOption] = useState([]);
   const [itemName, setItemName] = useState("");
   const [view, setView] = useState("Main");
+  const [imageUrl, setImageUrl] = useState(null);
   useEffect(() => {
     // fetchData();
   }, []);
+  const storage = getStorage();
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const storageRef = ref(storage, `RewardsSlips/${file.name}`);
+    await uploadBytes(storageRef, file);
+    const downloadURL = await getDownloadURL(storageRef);
+    setImageUrl(downloadURL);
+  };
+  console.log(selectedOption, 207);
   const handleResult = async (result, error) => {
     if (!!result && scanResult === null) {
       setScanResult(result?.text);
@@ -314,6 +245,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         email: "kaleemnike1@gmail.com",
         scanData: [],
         scannedAt: new Date(),
+        imageUrl: imageUrl,
       };
 
       if (docSnap.exists()) {
@@ -328,14 +260,17 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
 
           if (itemIndex >= 0) {
             // Item exists in the array, update the stars property
-            scanData[itemIndex].stars += 1;
+            // scanData[itemIndex].stars += 1;
+            scanData[itemIndex].reviewStars += 1;
           } else {
             // Item does not exist in the array, add a new object
             scanData.push({
               type: newItem.type,
               name: newItem.name,
               claimCount: 0,
-              stars: 1,
+              stars: 0,
+              reviewStars: 1,
+              approved: false,
             });
           }
         });
@@ -348,7 +283,8 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
             type: newItem.type,
             name: newItem.name,
             claimCount: 0,
-            stars: 1,
+            stars: 0,
+            reviewStars: 1,
           });
         });
       }
@@ -365,7 +301,9 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
       alert("Customers Loyalty points added.");
       setSelectedOption([]);
       // setSelectedItem("");
+      setImageUrl(null);
       setScanResult(null);
+      window.location.reload();
     } catch (err) {
       throw new Error(err.message);
     }
@@ -415,7 +353,10 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
           Scan Code
         </button>
       )}
-      {scanResult && view === "Main" && (
+      {scanResult && !imageUrl && (
+        <input style={styles.input} type="file" onChange={handleImageUpload} />
+      )}
+      {scanResult && view === "Main" && imageUrl && (
         <div style={styles.result}>
           <h3>Scanned Data</h3>
           <p>{scanResult}</p>
@@ -425,32 +366,8 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
           >
             Add loyalty point
           </button>
-          {/* <button
-          style={styles.button}
-          onClick={() => {
-            setView("Main");
-            console.log(selectedOption);
-            addDataToDatabase(selectedOption);
-          }}
-        >
-          Continue
-        </button> */}
         </div>
       )}
-
-      {/* <button style={styles.button} onClick={() => setProfileSection("")}>
-        Back
-      </button> */}
-      {/*
-      <button
-        onClick={() => {
-          handleResult({ text: "kaleemnike1@gmail.com", err: "Message" });
-          setState(state + 1);
-        }}
-      >
-        Testing {state}
-      </button> */}
-      {/* {error && <p style={styles.error}>{error}</p>} */}
     </div>
   );
 };
@@ -476,6 +393,14 @@ const styles = {
     fontWeight: "bold",
     borderRadius: "5px",
     marginTop: "50px",
+  },
+  input: {
+    width: "90%",
+    color: "white",
+    margin: "30px auto",
+    height: "40px",
+    borderRadius: "5px",
+    border: "1px solid white",
   },
   title: {
     fontSize: 22,

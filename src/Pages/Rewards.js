@@ -14,6 +14,7 @@ const Rewards = ({ userId, setProfileSection }) => {
   const [orderCount, setOrderCount] = useState(0);
   const [data, setData] = useState([]);
   const [selectedLoyalty, setSelectedLoyalty] = useState([]);
+  const [docData, setDocData] = useState([]);
   useEffect(() => {
     const docRef = doc(db, "Rewards", auth.currentUser.email);
     // Subscribe to the document
@@ -23,6 +24,7 @@ const Rewards = ({ userId, setProfileSection }) => {
         if (docSnap.exists()) {
           console.log(docSnap.data());
           setData(docSnap.data().scanData);
+          setDocData(docSnap.data());
         } else {
           console.log("No such document!");
           setData([]); // Handle case when the document does not exist
@@ -37,15 +39,21 @@ const Rewards = ({ userId, setProfileSection }) => {
     return () => unsubscribe();
   }, []);
 
-  const createRewardsDoc = async (email, orderCount) => {
+  const createRewardsDoc = async (email, data) => {
     try {
-      const rewardsDoc = {
-        email,
-        orderCount,
-        lastUpdated: new Date(),
-      };
-      await setDoc(doc(db, "Rewards", email), rewardsDoc);
+      const rewardsDoc = { ...docData };
+      rewardsDoc.scanData.forEach((obj) => {
+        if (obj.name === data.name && obj.type === data.type) {
+          obj.stars = 0;
+          obj.claimCount += 1;
+        }
+      });
+      console.log(email, rewardsDoc);
+      const docRef = doc(db, "Rewards", email);
+
+      await setDoc(docRef, rewardsDoc);
       console.log("Rewards document created/updated successfully.");
+      setSelectedLoyalty([]);
     } catch (error) {
       console.error("Error creating/updating Rewards document:", error);
     }
@@ -109,6 +117,8 @@ const Rewards = ({ userId, setProfileSection }) => {
       {selectedLoyalty.length === 0 ? (
         data.map((item, i) => (
           <div style={{ width: "90%", margin: "20px auto" }}>
+            {console.log(item, "ITEM")}
+
             <div
               style={{
                 fontSize: "20px",
@@ -133,7 +143,7 @@ const Rewards = ({ userId, setProfileSection }) => {
             <b style={{ color: "#f7941d" }}>{selectedLoyalty.type}:</b>{" "}
             {selectedLoyalty.name}
           </div>
-
+          {console.log(selectedLoyalty.stars, "STARS")}
           <div key={selectedLoyalty.name} style={styles.stars}>
             {Array.from({ length: 10 }, (_, index) => (
               <div
@@ -147,6 +157,27 @@ const Rewards = ({ userId, setProfileSection }) => {
               </div>
             ))}
           </div>
+          {selectedLoyalty.stars === 10 && (
+            <div>
+              <p
+                onClick={() => {
+                  let result = window.confirm(
+                    "Are you sure you want to claim your free " +
+                      selectedLoyalty.name +
+                      ". Proceed only after you claimed your free order!"
+                  );
+                  if (result) {
+                    createRewardsDoc(docData.email, selectedLoyalty);
+                  }
+                  console.log(result);
+                }}
+                style={styles.freeOrder}
+              >
+                Congratulations! You get a free order. claim now!
+              </p>
+            </div>
+          )}
+          {console.log(selectedLoyalty.stars, "TEST")}
           <button style={styles.button} onClick={() => setSelectedLoyalty([])}>
             Back
           </button>

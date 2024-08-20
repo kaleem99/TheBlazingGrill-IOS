@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { auth } from "../database/config";
-import { onSnapshot, collection } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
 // import Icon from "react-native-vector-icons/MaterialIcons";
 import "../Components/Profile.css";
-import logout from "./Logout";
-import LoginPage from "./Login";
 import AccountDetails from "./AccountDetails";
+import LoginPage from "./Login";
+import logout from "./Logout";
 import Orders from "./Orders";
 import PlacingOrder from "./PlacingOrder";
 import Rewards from "./Rewards";
@@ -149,21 +148,22 @@ const Profile = ({
           border: "1px groove white",
         }}
       >
-        <img
-          onClick={() => {
-            console.log(staff);
-            if (staff.includes(auth?.currentUser?.email.toLowerCase())) {
-              // setProfileSection("Staff Rewards");
-              window.open(
-                "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee",
-                "_blank"
-              );
-            }
-          }}
-          style={{ width: 160, top: 140 }}
-          src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
-          alt="Profile"
-        ></img>
+        {staff.includes(auth?.currentUser?.email.toLowerCase()) ? (
+          <a href="https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee">
+            <img
+              style={{ width: 160, top: 140 }}
+              src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+              alt="Profile"
+            />
+          </a>
+        ) : (
+          <img
+            style={{ width: 160, top: 140 }}
+            src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
+            alt="Profile"
+            // Optionally, add a tooltip or visual indication here
+          />
+        )}
       </div>
       {/* </div>
           </div>
