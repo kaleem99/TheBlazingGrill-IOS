@@ -21,6 +21,8 @@
     "react-icons-kit": "^2.0.0",
     "react-native-swipe-gestures": "^1.0.5",
     "react-push-notification": "^1.5.3",
+    "react-qr-code": "^2.0.15",
+    "react-qr-reader": "^3.0.0-beta-1",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-swipeable": "^7.0.1",
