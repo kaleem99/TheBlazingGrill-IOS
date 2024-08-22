@@ -262,6 +262,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
             // Item exists in the array, update the stars property
             // scanData[itemIndex].stars += 1;
             scanData[itemIndex].reviewStars += 1;
+            scanData[itemIndex].approved = false;
           } else {
             // Item does not exist in the array, add a new object
             scanData.push({
