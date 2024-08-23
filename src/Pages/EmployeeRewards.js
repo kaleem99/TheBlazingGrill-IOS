@@ -245,7 +245,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         email: "kaleemnike1@gmail.com",
         scanData: [],
         scannedAt: new Date(),
-        imageUrl: imageUrl,
+        // imageUrl: [...docSnap.data().imageUrl, imageUrl],
       };
 
       if (docSnap.exists()) {
@@ -272,6 +272,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
               stars: 0,
               reviewStars: 1,
               approved: false,
+              image: imageUrl,
             });
           }
         });
@@ -286,6 +287,8 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
             claimCount: 0,
             stars: 0,
             reviewStars: 1,
+            approved: false,
+            image: imageUrl,
           });
         });
       }
