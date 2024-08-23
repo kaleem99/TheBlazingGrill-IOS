@@ -149,8 +149,14 @@ const Profile = ({
         }}
       >
         {staff.includes(auth?.currentUser?.email.toLowerCase()) ? (
-          <a href="https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee">
+          <a>
             <img
+              onClick={() =>
+                window.open(
+                  "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee",
+                  "_blank"
+                )
+              }
               style={{ width: 160, top: 140 }}
               src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
               alt="Profile"
