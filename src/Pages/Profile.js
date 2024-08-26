@@ -149,14 +149,18 @@ const Profile = ({
         }}
       >
         {staff.includes(auth?.currentUser?.email.toLowerCase()) ? (
-          <a>
+          <a
+            href="https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <img
-              onClick={() =>
-                window.open(
-                  "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee",
-                  "_blank"
-                )
-              }
+              // onClick={() =>
+              //   window.open(
+              //     "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee",
+              //     "_blank"
+              //   )
+              // }
               style={{ width: 160, top: 140 }}
               src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
               alt="Profile"
