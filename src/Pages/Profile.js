@@ -121,6 +121,17 @@ const Profile = ({
   if (driverLoggedIn === true) {
     content = ["Sign out", "Delivery Orders"];
   }
+  const handleCopyLink = () => {
+    const url = "https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee";
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        alert("URL copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy the URL: ", err);
+      });
+  };
   return auth.currentUser != undefined && profileSection === "" ? (
     <div className="container" style={styles.container}>
       <div
@@ -150,9 +161,9 @@ const Profile = ({
       >
         {staff.includes(auth?.currentUser?.email.toLowerCase()) ? (
           <a
-            href="https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee"
-            target="_blank"
-            rel="noopener noreferrer"
+          // href="https://kaleem99.github.io/TheBlazingGrill-IOS/?Employee"
+          // target="_blank"
+          // rel="noopener noreferrer"
           >
             <img
               // onClick={() =>
@@ -161,6 +172,7 @@ const Profile = ({
               //     "_blank"
               //   )
               // }
+              onClick={handleCopyLink}
               style={{ width: 160, top: 140 }}
               src={require("../assets/TBG_Final_TransWhite-1024x894.png")}
               alt="Profile"
