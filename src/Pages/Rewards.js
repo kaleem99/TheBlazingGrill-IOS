@@ -114,78 +114,7 @@ const Rewards = ({ userId, setProfileSection }) => {
         />
       </div>
       {/* <div style={styles.stars}>{renderStars()}</div> */}
-      {selectedLoyalty.length === 0 ? (
-        data.map((item, i) => (
-          <div style={{ width: "90%", margin: "20px auto" }}>
-            {console.log(item, "ITEM")}
-
-            <div
-              style={{
-                fontSize: "20px",
-                color: "white",
-                textAlign: "left",
-              }}
-              onClick={() => setSelectedLoyalty(item)}
-            >
-              <b style={{ color: "#f7941d" }}>{item.type}:</b> {item.name}
-            </div>
-          </div>
-        ))
-      ) : (
-        <div style={{ width: "90%", margin: "20px auto" }}>
-          <div
-            style={{
-              fontSize: "20px",
-              color: "white",
-              textAlign: "center",
-            }}
-          >
-            <b style={{ color: "#f7941d" }}>{selectedLoyalty.type}:</b>{" "}
-            {selectedLoyalty.name}
-          </div>
-          {console.log(selectedLoyalty.stars, "STARS")}
-          <div key={selectedLoyalty.name} style={styles.stars}>
-            {Array.from({ length: 10 }, (_, index) => (
-              <div
-                className="loyaltyStars"
-                key={index}
-                style={{
-                  color: index < selectedLoyalty.stars ? "#FFD700" : "#D3D3D3",
-                }}
-              >
-                ★
-              </div>
-            ))}
-          </div>
-          {selectedLoyalty.stars === 10 && (
-            <div>
-              <p
-                onClick={() => {
-                  let result = window.confirm(
-                    "Are you sure you want to claim your free " +
-                      selectedLoyalty.name +
-                      ". Proceed only after you claimed your free order!"
-                  );
-                  if (result) {
-                    createRewardsDoc(docData.email, selectedLoyalty);
-                  }
-                  console.log(result);
-                }}
-                style={styles.freeOrder}
-              >
-                Congratulations! You get a free order. claim now!
-              </p>
-            </div>
-          )}
-          {console.log(selectedLoyalty.stars, "TEST")}
-          <button style={styles.button} onClick={() => setSelectedLoyalty([])}>
-            Back
-          </button>
-        </div>
-      )}
-      {orderCount >= 10 && (
-        <p style={styles.freeOrder}>Congratulations! You get a free order!</p>
-      )}
+     
     </div>
   );
 };

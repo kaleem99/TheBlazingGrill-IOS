@@ -7,6 +7,7 @@ import { QrReader } from "react-qr-reader";
 import { auth } from "../database/config";
 import { collection, getDocs } from "firebase/firestore";
 import MenuItemsSection from "../frontend/data";
+
 const MenuItems = ({
   items,
   setItems,
@@ -24,15 +25,12 @@ const MenuItems = ({
 
   return (
     <div
-      style={
-        (styles.div,
-        {
-          flexGrow: 1,
-          textAlign: "center",
-          paddingTop: 12,
-          width: "90%",
-        })
-      }
+      style={{
+        flexGrow: 1,
+        textAlign: "center",
+        paddingTop: 12,
+        width: "90%",
+      }}
     >
       <button
         style={{
@@ -40,20 +38,16 @@ const MenuItems = ({
           height: 28,
           background: "none",
           position: "absolute",
-          // top: 12,
           left: 10,
           border: "none",
         }}
         onClick={() => setView("Main")}
       >
         <img
-          style={{
-            width: 30,
-            height: 28,
-          }}
+          style={{ width: 30, height: 28 }}
           alt=""
           src={require("../assets/back.png")}
-        ></img>
+        />
       </button>
       <p style={styles.text}>{itemName}</p>
       <div
@@ -79,7 +73,12 @@ const MenuItems = ({
                   if (e.currentTarget.checked) {
                     setSelectedOption((prevState) => [
                       ...prevState,
-                      { type: item.category, name: item.name },
+                      {
+                        type: item.category,
+                        name: item.name,
+                        price: item.price,
+                        points: item.price * 10, // Calculate points based on item price
+                      },
                     ]);
                   } else {
                     setSelectedOption((prevState) =>
@@ -104,16 +103,6 @@ const MenuItems = ({
           </div>
         ))}
       </div>
-
-      {/* {selectedItem !== "" && (
-        <div style={styles.qrReader}>
-          <QrReader
-            constraints={{ facingMode: "environment" }}
-            onResult={handleResult}
-            style={{ width: "100%" }}
-          />
-        </div>
-      )} */}
     </div>
   );
 };
@@ -198,16 +187,15 @@ const MenuSections = ({ setItems, setItemName, setView }) => {
 const EmployeeRewards = ({ userId, setProfileSection }) => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState([]);
-  const [scanResult, setScanResult] = useState(null);
+  const [scanResult, setScanResult] = useState("kaleemnike1@gmail.com");
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState([]);
   const [itemName, setItemName] = useState("");
   const [view, setView] = useState("Main");
   const [imageUrl, setImageUrl] = useState(null);
-  useEffect(() => {
-    // fetchData();
-  }, []);
+  useEffect(() => {}, []);
   const storage = getStorage();
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -217,12 +205,11 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
     const downloadURL = await getDownloadURL(storageRef);
     setImageUrl(downloadURL);
   };
-  console.log(selectedOption, 207);
+
   const handleResult = async (result, error) => {
     if (!!result && scanResult === null) {
       setScanResult(result?.text);
       try {
-        // alert(result?.text);
         setView("Main");
         setError("");
       } catch (err) {
@@ -236,75 +223,58 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
       setError("Error scanning QR code.");
     }
   };
+
   const addDataToDatabase = async (newItems) => {
     try {
       const docRef = doc(db, "Rewards", "kaleemnike1@gmail.com");
       const docSnap = await getDoc(docRef);
-
+  
+      // Initialize the rewards document structure
       let rewardsDoc = {
         email: "kaleemnike1@gmail.com",
-        scanData: [],
+        reviewPoints: 0,
+        points: 0,
+        items: [], // Array to store items
         scannedAt: new Date(),
-        // imageUrl: [...docSnap.data().imageUrl, imageUrl],
       };
-
+  
+      // Calculate total points for selected items
+      const totalPoints = newItems.reduce((acc, item) => acc + item.points, 0);
+  
+      // Structure each item with its details
+      const selectedItems = newItems.map((item) => ({
+        type: item.type,
+        name: item.name,
+        claimCount: 0,
+        points: item.points,
+        approved: false,
+        image: imageUrl,
+      }));
+  
       if (docSnap.exists()) {
-        // Document exists, update the scanData array
         const existingData = docSnap.data();
-        const scanData = existingData.scanData || [];
-
-        newItems.forEach((newItem) => {
-          const itemIndex = scanData.findIndex(
-            (item) => item.name === newItem.name && item.type === newItem.type
-          );
-
-          if (itemIndex >= 0) {
-            // Item exists in the array, update the stars property
-            // scanData[itemIndex].stars += 1;
-            scanData[itemIndex].reviewStars += 1;
-            scanData[itemIndex].approved = false;
-          } else {
-            // Item does not exist in the array, add a new object
-            scanData.push({
-              type: newItem.type,
-              name: newItem.name,
-              claimCount: 0,
-              stars: 0,
-              reviewStars: 1,
-              approved: false,
-              image: imageUrl,
-            });
-          }
-        });
-
-        rewardsDoc.scanData = scanData;
+        // Update existing points and items
+        rewardsDoc.reviewPoints = existingData.reviewPoints + totalPoints;
+        rewardsDoc.points = existingData.points;
+        rewardsDoc.items = [...existingData.items, ...selectedItems];
       } else {
-        // Document does not exist, create a new one
-        newItems.forEach((newItem) => {
-          rewardsDoc.scanData.push({
-            type: newItem.type,
-            name: newItem.name,
-            claimCount: 0,
-            stars: 0,
-            reviewStars: 1,
-            approved: false,
-            image: imageUrl,
-          });
-        });
+        // If document doesn't exist, initialize points and items
+        rewardsDoc.reviewPoints = totalPoints;
+        rewardsDoc.points = 0;
+        rewardsDoc.items = selectedItems;
       }
-
-      // Use updateDoc, and if the document does not exist, create it with setDoc
+  
+      // Update the document with the consolidated rewardsDoc object
       await updateDoc(docRef, rewardsDoc).catch(async (err) => {
         if (err.code === "not-found") {
-          await setDoc(docRef, rewardsDoc);
+          await setDoc(docRef, rewardsDoc); // Create new doc if not found
         } else {
           throw err;
         }
       });
-
-      alert("Customers Loyalty points added.");
+  
+      alert("Customer's loyalty points have been added.");
       setSelectedOption([]);
-      // setSelectedItem("");
       setImageUrl(null);
       setScanResult(null);
       window.location.reload();
@@ -312,6 +282,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
       throw new Error(err.message);
     }
   };
+  
 
   return (
     <div style={styles.container}>
@@ -327,11 +298,6 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         !scanResult && (
           <div style={styles.qrReader}>
             <button onClick={() => setView("Main")}>Back</button>
-            <QrReader
-              constraints={{ facingMode: "environment" }}
-              onResult={handleResult}
-              style={{ width: "100%" }}
-            />
           </div>
         )
       ) : (
@@ -368,7 +334,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
             style={styles.button}
             onClick={() => addDataToDatabase(selectedOption)}
           >
-            Add loyalty point
+            Add loyalty points
           </button>
         </div>
       )}

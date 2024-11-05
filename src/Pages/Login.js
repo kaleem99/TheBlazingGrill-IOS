@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { auth } from "../database/config";
 import {
   sendEmailVerification,
@@ -11,20 +11,16 @@ const calculateEmailExpiration = (str) => {
   const currentTime = new Date().toLocaleTimeString();
   const specificTime = new Date(str).toLocaleTimeString();
 
-  // Convert the time strings to Date objects
   const currentTimeObj = new Date(`1970-01-01 ${currentTime}`);
   const specificTimeObj = new Date(`1970-01-01 ${specificTime}`);
 
-  // Calculate the time difference in milliseconds
   const timeDiffInMillis = currentTimeObj - specificTimeObj;
 
-  // Convert the time difference to hours and minutes
   const hours = Math.floor(timeDiffInMillis / (1000 * 60 * 60));
   const minutes = Math.floor(
     (timeDiffInMillis % (1000 * 60 * 60)) / (1000 * 60)
   );
 
-  // console.log(`Time difference: ${hours} hours ${minutes} minutes`);
   return minutes;
 };
 
@@ -32,6 +28,37 @@ const LoginPage = ({ setMainSection }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [emailVerification, setEmailVerification] = useState(false);
+
+  const containerRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const handleFocus = () => {
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    };
+
+    const handleKeyboardOpen = () => {
+      if (containerRef.current) {
+        containerRef.current.style.paddingBottom = "300px"; // Add space for the keyboard
+      }
+    };
+
+    const handleKeyboardClose = () => {
+      if (containerRef.current) {
+        containerRef.current.style.paddingBottom = "20px"; // Reset the padding
+      }
+    };
+
+    window.addEventListener("focusin", handleKeyboardOpen); // Keyboard is opening
+    window.addEventListener("focusout", handleKeyboardClose); // Keyboard is closing
+
+    return () => {
+      window.removeEventListener("focusin", handleKeyboardOpen);
+      window.removeEventListener("focusout", handleKeyboardClose);
+    };
+  }, []);
 
   const login = async () => {
     await signInWithEmailAndPassword(auth, username, password)
@@ -52,21 +79,19 @@ const LoginPage = ({ setMainSection }) => {
         if (user.stsTokenManager.accessToken) {
           storeData("ACCESS_TOKEN", user.stsTokenManager.accessToken);
         }
-        // console.log("user", user);
         alert("Welcome " + user.displayName);
         setTimeout(() => {
           setMainSection("Menu");
         }, 1000);
       })
       .catch((error) => {
-        const errorCode = error.code;
         const errorMessage = error.message;
         alert(errorMessage);
       });
   };
 
   return (
-    <div style={styles.container}>
+    <div ref={containerRef} style={styles.container}>
       <div
         style={{
           margin: "auto",
@@ -75,7 +100,6 @@ const LoginPage = ({ setMainSection }) => {
           border: "1px groove white",
           borderRadius: 10,
           marginTop: 10,
-
         }}
       >
         <img
@@ -86,10 +110,12 @@ const LoginPage = ({ setMainSection }) => {
       </div>
       <h1 style={styles.title}>Login</h1>
       <input
+        ref={inputRef}
         style={styles.input}
         placeholder="Email"
         value={username}
         onChange={(e) => setUsername(e.target.value.trim())}
+        onFocus={() => inputRef.current.scrollIntoView({ behavior: "smooth" })}
       />
       <input
         style={styles.input}
@@ -97,6 +123,7 @@ const LoginPage = ({ setMainSection }) => {
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value.trim())}
+        onFocus={() => inputRef.current.scrollIntoView({ behavior: "smooth" })}
       />
       <button style={styles.button} onClick={() => login()}>
         Login
@@ -129,12 +156,12 @@ const styles = {
     height: "100%",
     paddingTop: "20px",
     margin: "auto",
+    overflow: "auto", // Ensures scrolling when necessary
+    // paddingBottom: "20px", // Padding to accommodate keyboard
   },
   BlazingImage: {
     width: 220,
     height: 200,
-    // margin: "10% auto",
-
     borderRadius: 40,
   },
   title: {
@@ -144,9 +171,8 @@ const styles = {
     color: "white",
   },
   input: {
-    width: "98.5%",
+    width: "98%",
     height: 38,
-    // padding: 10,
     marginBottom: 20,
     border: "1px solid #ccc",
     color: "white",
@@ -159,7 +185,6 @@ const styles = {
     height: 40,
     backgroundColor: "#F0941E",
     color: "white",
-    // display: "flex",
     alignItems: "center",
     justifyContent: "center",
     border: "none",
