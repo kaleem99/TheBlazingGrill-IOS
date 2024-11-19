@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import emailjs from "emailjs-com";
+
 import {
   collection,
   getDocs,
@@ -12,7 +14,7 @@ import QRCode from "react-qr-code";
 import { auth } from "../database/config";
 import logo from "../assets/TBG_Final_TransWhite-1024x894.png";
 import MenuItemsSection from "../frontend/data";
-import { width } from "@fortawesome/free-solid-svg-icons/fa0";
+import RewardDetails from "./RewardDetails";
 const Rewards = ({ userId, setProfileSection }) => {
   const [orderCount, setOrderCount] = useState(0);
   const [data, setData] = useState([]);
@@ -20,6 +22,18 @@ const Rewards = ({ userId, setProfileSection }) => {
   const [points, setPoints] = useState(0);
   const [docData, setDocData] = useState([]);
   const [allMenuItems, setAllMenuItems] = useState([]);
+  const [selectedReward, setSelectedReward] = useState(null);
+
+  const handleItemClick = (item) => {
+    console.log(item);
+    setSelectedReward(item);
+  };
+
+  const handleClaimReward = async (item) => {
+    // Implement the logic to claim the reward
+    console.log(`Claiming reward: ${item.name}`);
+    setSelectedReward(null); // Close the details modal after claiming
+  };
   useEffect(() => {
     const docRef = doc(db, "Rewards", auth.currentUser.email);
     // Subscribe to the document
@@ -127,7 +141,6 @@ const Rewards = ({ userId, setProfileSection }) => {
         {myIcon2}
         {/* <h2 style={styles.title}>Rewards</h2> */}
         <h3 style={{ color: "white", marginRight: "10px" }}>{points} points</h3>
-
       </div>
       {/* <div
         style={{
@@ -168,7 +181,7 @@ const Rewards = ({ userId, setProfileSection }) => {
           flexWrap: "wrap",
           border: "1px solid white",
           color: "white",
-          overflow: "auto"
+          overflow: "auto",
         }}
       >
         {allMenuItems.map((data) => {
@@ -188,7 +201,7 @@ const Rewards = ({ userId, setProfileSection }) => {
                   textAlign: "center",
                   opacity: points < data.points ? "0.5" : "1",
                 }}
-                // onClick={() => itemCategoryClicked(data)}
+                onClick={() => points > data.points && handleItemClick(data)}
               >
                 <img
                   src={data.fileURL}
@@ -212,6 +225,13 @@ const Rewards = ({ userId, setProfileSection }) => {
       </div>
 
       {/* <div style={styles.stars}>{renderStars()}</div> */}
+      {selectedReward && (
+        <RewardDetails
+          item={selectedReward}
+          onClaim={handleClaimReward}
+          onClose={() => setSelectedReward(null)}
+        />
+      )}
     </div>
   );
 };

@@ -187,7 +187,7 @@ const MenuSections = ({ setItems, setItemName, setView }) => {
 const EmployeeRewards = ({ userId, setProfileSection }) => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState([]);
-  const [scanResult, setScanResult] = useState("kaleemnike1@gmail.com");
+  const [scanResult, setScanResult] = useState(null);
   const [error, setError] = useState("");
   const [selectedOption, setSelectedOption] = useState([]);
   const [itemName, setItemName] = useState("");
