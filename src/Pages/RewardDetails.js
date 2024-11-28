@@ -1,7 +1,7 @@
 import React from "react";
 import emailjs from "emailjs-com";
 import { auth } from "../database/config";
-import { doc, runTransaction } from "firebase/firestore";
+import { doc, runTransaction, collection, addDoc } from "firebase/firestore";
 import { db } from "../database/config";
 
 const RewardDetails = ({ item, onClaim, onClose }) => {
@@ -11,7 +11,8 @@ const RewardDetails = ({ item, onClaim, onClose }) => {
       return;
     }
 
-    const docRef = doc(db, "Rewards", auth.currentUser.email);
+    const rewardsRef = doc(db, "Rewards", auth.currentUser.email);
+    const historyRef = collection(db, "RewardsClaimed"); // Reference to RewardsClaimed collection
 
     try {
       // Send the email
@@ -27,31 +28,31 @@ const RewardDetails = ({ item, onClaim, onClose }) => {
           expiry_date: new Date().toLocaleDateString(), // Today's date in a readable format
           from_name: "The Blazing Grill", // Replace with your sender name
           reply_to: "noreply", // Replace with the reply-to email
-          to_email: auth.currentUser.email, // Replace with the recipient email
+          to_email: [auth.currentUser.email, "Yushaawally@gmail.com"], // Replace with the recipient email
         },
         "0-uD_Hfp8_pN7YASA"
       );
 
       console.log("Email sent successfully!", response.status, response.text);
 
-      // Deduct points from the database
+      // Deduct points and update the database
       await runTransaction(db, async (transaction) => {
-        const docSnap = await transaction.get(docRef);
+        const rewardsSnap = await transaction.get(rewardsRef);
 
-        if (!docSnap.exists()) {
+        if (!rewardsSnap.exists()) {
           throw new Error("User rewards document does not exist.");
         }
 
-        const currentPoints = docSnap.data().points || 0;
+        const currentPoints = rewardsSnap.data().points || 0;
 
         if (currentPoints < item.points) {
           throw new Error("Not enough points to claim this reward.");
         }
 
-        // Deduct points and update the database
+        // Deduct points
         const updatedPoints = currentPoints - item.points;
-        const updatedReviewPoints = docSnap.data().reviewPoints || 0;
-        transaction.update(docRef, {
+        const updatedReviewPoints = rewardsSnap.data().reviewPoints || 0;
+        transaction.update(rewardsRef, {
           points: updatedPoints,
           reviewPoints: updatedReviewPoints - item.points,
         });
@@ -59,9 +60,20 @@ const RewardDetails = ({ item, onClaim, onClose }) => {
         console.log(
           `Points deducted successfully! Remaining points: ${updatedPoints}`
         );
-        alert("Items has been claimed successfully please check your email");
-        onClose();
       });
+
+      // Add the claimed item to RewardsClaimed history
+      await addDoc(historyRef, {
+        user: auth.currentUser.email,
+        itemName: item.name,
+        itemImage: item.fileURL,
+        pointsSpent: item.points,
+        claimedAt: new Date().toISOString(), // Timestamp for when the reward was claimed
+      });
+
+      console.log("Reward added to history successfully.");
+      alert("Item has been claimed successfully! Please check your email.");
+      onClose();
     } catch (error) {
       console.error("Failed to claim reward:", error.message);
     }
@@ -81,7 +93,6 @@ const RewardDetails = ({ item, onClaim, onClose }) => {
     </div>
   );
 };
-
 const detailStyles = {
   container: {
     position: "fixed",
