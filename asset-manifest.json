@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/TheBlazingGrill-IOS/static/css/main.028df753.css",
-    "main.js": "/TheBlazingGrill-IOS/static/js/main.ca4772e6.js",
+    "main.js": "/TheBlazingGrill-IOS/static/js/main.db6839a9.js",
     "static/js/787.5b9f418c.chunk.js": "/TheBlazingGrill-IOS/static/js/787.5b9f418c.chunk.js",
     "static/media/smokeyBackground1024_1.png": "/TheBlazingGrill-IOS/static/media/smokeyBackground1024_1.168d2a96c81c0792de19.png",
     "static/media/background2.jpg": "/TheBlazingGrill-IOS/static/media/background2.030f23df53591a96f4d3.jpg",
@@ -32,11 +32,11 @@
     "static/media/home-svgrepo-com.svg": "/TheBlazingGrill-IOS/static/media/home-svgrepo-com.9d8f41a2dafcabf529aef6572aa50616.svg",
     "index.html": "/TheBlazingGrill-IOS/index.html",
     "main.028df753.css.map": "/TheBlazingGrill-IOS/static/css/main.028df753.css.map",
-    "main.ca4772e6.js.map": "/TheBlazingGrill-IOS/static/js/main.ca4772e6.js.map",
+    "main.db6839a9.js.map": "/TheBlazingGrill-IOS/static/js/main.db6839a9.js.map",
     "787.5b9f418c.chunk.js.map": "/TheBlazingGrill-IOS/static/js/787.5b9f418c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.028df753.css",
-    "static/js/main.ca4772e6.js"
+    "static/js/main.db6839a9.js"
   ]
 }
