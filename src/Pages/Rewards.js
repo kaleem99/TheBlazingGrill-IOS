@@ -170,12 +170,14 @@ const styles = {
     borderRadius: "10px",
     textAlign: "center",
     cursor: "pointer",
+    paddingBottom: "5px"
   },
   itemImage: {
-    width: "80%",
+    width: "90%",
     height: "100px",
     objectFit: "cover",
-    marginBottom: "10px",
+    marginBottom: "5px",
+    marginTop: "5px",
     borderRadius: "8px",
   },
   itemPoints: {
@@ -183,7 +185,7 @@ const styles = {
     marginBottom: "5px",
   },
   itemName: {
-    fontSize: "16px",
+    fontSize: "14px",
     fontWeight: "bold",
   },
 };

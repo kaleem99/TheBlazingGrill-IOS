@@ -3,7 +3,7 @@ import emailjs from "emailjs-com";
 import { auth } from "../database/config";
 import { doc, runTransaction, collection, addDoc } from "firebase/firestore";
 import { db } from "../database/config";
-
+import { IoCloseCircle } from "react-icons/io5";
 const RewardDetails = ({ item, onClaim, onClose }) => {
   const claimRewards = async () => {
     if (!item || !item.points) {
@@ -82,7 +82,7 @@ const RewardDetails = ({ item, onClaim, onClose }) => {
   return (
     <div style={detailStyles.container}>
       <button style={detailStyles.closeButton} onClick={onClose}>
-        Close
+        <IoCloseCircle/>
       </button>
       <img src={item.fileURL} alt={item.name} style={detailStyles.image} />
       <h2 style={detailStyles.title}>{item.name}</h2>
@@ -99,10 +99,10 @@ const detailStyles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: "90%",
+    width: "80%",
     maxWidth: "400px",
     backgroundColor: "white",
-    padding: "20px",
+    padding: "10px",
     borderRadius: "10px",
     boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.2)",
     textAlign: "center",
@@ -113,14 +113,15 @@ const detailStyles = {
     border: "none",
     fontSize: "1.5rem",
     position: "absolute",
-    top: "10px",
-    right: "15px",
+    top: "1px",
+    right: "1px",
     cursor: "pointer",
   },
   image: {
     width: "100%",
     height: "auto",
     borderRadius: "10px",
+    marginTop: "20px"
   },
   title: {
     margin: "15px 0",
