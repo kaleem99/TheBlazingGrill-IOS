@@ -14,6 +14,7 @@ import Rewards from "./Rewards";
 // import base64 from "react-native-base64";
 import { db } from "../database/config";
 import EmployeeRewards from "./EmployeeRewards";
+import RewardsHistory from "./RewardsHistory";
 const Profile = ({
   setMainSection,
   userDetails,
@@ -103,6 +104,8 @@ const Profile = ({
       case "Rewards":
         return setProfileSection(type);
       case "Staff Rewards":
+        return setProfileSection(type);
+      case "RewardsClaims":
         return setProfileSection(type);
       default:
         return;
@@ -361,6 +364,8 @@ const Profile = ({
       setProfileSection={setProfileSection}
       userId={userDetails}
     />
+  ) : profileSection === "RewardsClaims" ? (
+    <RewardsHistory setProfileSection={setProfileSection} />
   ) : (
     <LoginPage setMainSection={setMainSection} />
   );
