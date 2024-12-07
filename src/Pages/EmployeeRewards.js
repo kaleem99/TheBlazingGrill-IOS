@@ -77,7 +77,8 @@ const MenuItems = ({
                         type: item.category,
                         name: item.name,
                         price: item.price,
-                        points: item.price * 10, // Calculate points based on item price
+                        points: item.price * 5, // Calculate points based on item price
+                        quantity: 1,
                       },
                     ]);
                   } else {
@@ -226,21 +227,21 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
 
   const addDataToDatabase = async (newItems) => {
     try {
-      const docRef = doc(db, "Rewards", "kaleemnike1@gmail.com");
+      const docRef = doc(db, "Rewards", scanResult);
       const docSnap = await getDoc(docRef);
-  
+
       // Initialize the rewards document structure
       let rewardsDoc = {
-        email: "kaleemnike1@gmail.com",
+        email: scanResult,
         reviewPoints: 0,
         points: 0,
         items: [], // Array to store items
         scannedAt: new Date(),
       };
-  
+
       // Calculate total points for selected items
-      const totalPoints = newItems.reduce((acc, item) => acc + item.points, 0);
-  
+      const totalPoints = newItems.reduce((acc, item) => acc + item.points * item.quantity, 0);
+
       // Structure each item with its details
       const selectedItems = newItems.map((item) => ({
         type: item.type,
@@ -250,7 +251,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         approved: false,
         image: imageUrl,
       }));
-  
+
       if (docSnap.exists()) {
         const existingData = docSnap.data();
         // Update existing points and items
@@ -263,7 +264,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         rewardsDoc.points = 0;
         rewardsDoc.items = selectedItems;
       }
-  
+
       // Update the document with the consolidated rewardsDoc object
       await updateDoc(docRef, rewardsDoc).catch(async (err) => {
         if (err.code === "not-found") {
@@ -272,7 +273,7 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
           throw err;
         }
       });
-  
+
       alert("Customer's loyalty points have been added.");
       setSelectedOption([]);
       setImageUrl(null);
@@ -282,8 +283,18 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
       throw new Error(err.message);
     }
   };
-  
-
+  const updateQuantity = (itemName, delta) => {
+    setSelectedOption((prevItems) =>
+      prevItems.map((item) =>
+        item.name === itemName
+          ? {
+              ...item,
+              quantity: Math.max(1, item.quantity + delta), // Ensure quantity doesn't go below 1
+            }
+          : item
+      )
+    );
+  };
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>Employee Rewards</h2>
@@ -298,6 +309,13 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
         !scanResult && (
           <div style={styles.qrReader}>
             <button onClick={() => setView("Main")}>Back</button>
+            <div style={styles.qrReader}>
+              <QrReader
+                constraints={{ facingMode: "environment" }}
+                onResult={handleResult}
+                style={{ width: "100%" }}
+              />
+            </div>
           </div>
         )
       ) : (
@@ -310,7 +328,74 @@ const EmployeeRewards = ({ userId, setProfileSection }) => {
           selectedOption={selectedOption}
         />
       )}
-
+      {console.log(selectedOption, 10)}
+      {view === "Main" &&
+        selectedOption.map((item) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                color: "white",
+                width: "90%", // Adjust width as needed
+                margin: "10px auto",
+                padding: "5px",
+                backgroundColor: "#333", // Background color for contrast
+                borderRadius: "8px",
+              }}
+            >
+              <p style={{ margin: "0", flex: "1", textAlign: "center" }}>
+                {item.name}
+              </p>
+              <button
+                style={{
+                  backgroundColor: "#555",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  fontSize: "18px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => updateQuantity(item.name, -1)}
+              >
+                -
+              </button>
+              <p
+                style={{
+                  margin: "0 10px",
+                  fontWeight: "bold",
+                  fontSize: "16px",
+                }}
+              >
+                {item.quantity}
+              </p>
+              <button
+                style={{
+                  backgroundColor: "#555",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  fontSize: "18px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+                onClick={() => updateQuantity(item.name, 1)}
+              >
+                +
+              </button>
+            </div>
+          );
+        })}
       {view === "Main" && !scanResult && (
         <button
           style={styles.button}
@@ -362,7 +447,7 @@ const styles = {
     color: "white",
     fontWeight: "bold",
     borderRadius: "5px",
-    marginTop: "50px",
+    marginTop: "15px",
   },
   input: {
     width: "90%",

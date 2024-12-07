@@ -53,7 +53,7 @@ const Rewards = ({ userId, setProfileSection }) => {
           const newItems = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
-            points: Math.round(doc.data().price * 50),
+            points: Math.round((doc.data().price * 50) / 100) * 100,
           }));
           itemsArray.push(...newItems);
         });
@@ -81,11 +81,7 @@ const Rewards = ({ userId, setProfileSection }) => {
       </header>
 
       <div style={styles.qrContainer}>
-        <QRCode
-          size={128}
-          value={userId.email}
-          style={styles.qrCode}
-        />
+        <QRCode size={128} value={userId.email} style={styles.qrCode} />
       </div>
 
       <div style={styles.itemsContainer}>
@@ -98,11 +94,7 @@ const Rewards = ({ userId, setProfileSection }) => {
             }}
             onClick={() => points >= item.points && handleItemClick(item)}
           >
-            <img
-              src={item.fileURL}
-              alt={item.name}
-              style={styles.itemImage}
-            />
+            <img src={item.fileURL} alt={item.name} style={styles.itemImage} />
             <div style={styles.itemPoints}>{item.points} points</div>
             <div style={styles.itemName}>{item.name}</div>
           </div>
@@ -128,7 +120,7 @@ const styles = {
     color: "white",
     // padding: "10px",
     overflow: "hidden",
-    margin: "auto"
+    margin: "auto",
   },
   header: {
     display: "flex",
@@ -161,7 +153,7 @@ const styles = {
     justifyContent: "space-between",
     gap: "10px",
     height: "69%",
-    overflow: "auto"
+    overflow: "auto",
   },
   item: {
     width: "45%",
@@ -170,7 +162,7 @@ const styles = {
     borderRadius: "10px",
     textAlign: "center",
     cursor: "pointer",
-    paddingBottom: "5px"
+    paddingBottom: "5px",
   },
   itemImage: {
     width: "90%",
