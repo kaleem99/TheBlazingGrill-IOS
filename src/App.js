@@ -45,7 +45,7 @@ import EmployeeRewards from "./Pages/EmployeeRewards";
 
 function App({ phoneHeight }) {
   const [section, setSection] = useState("Main");
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]);
   const [connected, setConnected] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);

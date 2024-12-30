@@ -96,6 +96,7 @@ function ChosenCategory({
     setMainSection("Profile");
   };
   const addItemToCart = async () => {
+    console.log(chosenItem)
     if (user.phoneNumber == undefined) {
       setMainSection("VerifyPhoneNumber");
       return alert(
